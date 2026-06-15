@@ -1,179 +1,162 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NamozVaqti</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NamozVaqti Pro</title>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <style>
-    :root {
-      --bg-dark: #0f172a;
-      --bg-light: #f8fafc;
-      --card-dark: #111c33;
-      --card-light: #ffffff;
-      --text-dark: #ffffff;
-      --text-light: #111827;
-      --accent: #22c55e;
-    }
+<style>
+body{
+  font-family: Arial;
+  margin:0;
+  padding:15px;
+  transition:0.3s;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      transition: 0.3s;
-    }
+.dark{
+  background:#0f172a;
+  color:white;
+}
 
-    body.dark {
-      background: var(--bg-dark);
-      color: var(--text-dark);
-    }
+.light{
+  background:#f8fafc;
+  color:black;
+}
 
-    body.light {
-      background: var(--bg-light);
-      color: var(--text-light);
-    }
+.card{
+  padding:15px;
+  border-radius:12px;
+  margin-top:10px;
+  background:rgba(255,255,255,0.05);
+}
 
-    .container {
-      padding: 18px;
-    }
+select,button{
+  padding:10px;
+  margin-top:8px;
+  width:100%;
+  border-radius:10px;
+  border:none;
+}
 
-    .title {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .card {
-      padding: 15px;
-      border-radius: 14px;
-      margin-top: 12px;
-      transition: 0.3s;
-    }
-
-    .dark .card {
-      background: var(--card-dark);
-    }
-
-    .light .card {
-      background: var(--card-light);
-    }
-
-    button, select {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 10px;
-      border: none;
-      font-size: 14px;
-    }
-
-    .btn {
-      background: var(--accent);
-      color: white;
-      font-weight: bold;
-    }
-
-    .row {
-      display: flex;
-      gap: 10px;
-    }
-
-    .row select {
-      flex: 1;
-    }
-
-    .time {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 6px;
-      font-size: 14px;
-    }
-
-  </style>
+button{
+  background:#22c55e;
+  color:white;
+  font-weight:bold;
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<h2>🕌 NamozVaqti Pro</h2>
 
-  <div class="title">🕌 NamozVaqti</div>
+<div class="card">
+<label>Viloyat:</label>
+<select id="region" onchange="loadDistricts()"></select>
 
-  <!-- THEME -->
-  <div class="card">
-    <button onclick="setTheme('dark')">🌙 Dark Mode</button>
-    <button onclick="setTheme('light')">☀️ Light Mode</button>
-  </div>
+<label>Tuman:</label>
+<select id="district"></select>
 
-  <!-- REGION SELECT -->
-  <div class="card">
-    <div>📍 Viloyat va shahar tanlang</div>
+<button onclick="saveLocation()">📍 Saqlash</button>
+</div>
 
-    <select id="citySelect" onchange="loadTimes()">
-      <option value="Tashkent">Toshkent</option>
-      <option value="Samarkand">Samarqand</option>
-      <option value="Andijan">Andijon</option>
-      <option value="Fergana">Farg‘ona</option>
-      <option value="Namangan">Namangan</option>
-      <option value="Bukhara">Buxoro</option>
-      <option value="Khiva">Xorazm</option>
-      <option value="Karshi">Qashqadaryo</option>
-      <option value="Termiz">Surxondaryo</option>
-      <option value="Jizzakh">Jizzax</option>
-      <option value="Navoiy">Navoiy</option>
-    </select>
-  </div>
+<div class="card">
+<h3>⏰ Namoz vaqtlari</h3>
+<p id="times">Yuklanmoqda...</p>
+<button onclick="loadTimes()">🔄 Yangilash</button>
+</div>
 
-  <!-- TIMES -->
-  <div class="card" id="content">
-    ⏳ Yuklanmoqda...
-  </div>
-
+<div class="card">
+<button onclick="setTheme('dark')">🌙 Dark</button>
+<button onclick="setTheme('light')">☀️ Light</button>
 </div>
 
 <script>
-  let tg = window.Telegram.WebApp;
-  tg.expand();
+let tg = window.Telegram.WebApp;
+tg.expand();
 
-  // THEME
-  function setTheme(mode){
-    document.body.className = mode;
-    localStorage.setItem("theme", mode);
+const data = {
+"Toshkent shahri":["Yunusobod","Chilonzor","Mirzo Ulug‘bek"],
+"Toshkent viloyati":["Chirchiq","Angren"],
+"Andijon":["Andijon","Asaka"],
+"Farg‘ona":["Farg‘ona","Qo‘qon"],
+"Namangan":["Namangan","Chust"],
+"Samarqand":["Samarqand","Urgut"],
+"Buxoro":["Buxoro","G‘ijduvon"],
+"Navoiy":["Navoiy"],
+"Qashqadaryo":["Qarshi","Shahrisabz"],
+"Surxondaryo":["Termiz","Denov"],
+"Jizzax":["Jizzax"],
+"Sirdaryo":["Guliston"],
+"Xorazm":["Urganch","Xiva"],
+"Qoraqalpog‘iston":["Nukus"]
+};
+
+let region=document.getElementById("region");
+let district=document.getElementById("district");
+
+function init(){
+  for(let r in data){
+    let opt=document.createElement("option");
+    opt.value=r;
+    opt.innerText=r;
+    region.appendChild(opt);
   }
+  loadDistricts();
 
-  setTheme(localStorage.getItem("theme") || "dark");
-
-  // LOAD PRAYER TIMES
-  async function loadTimes() {
-    let city = document.getElementById("citySelect").value;
-
-    document.getElementById("content").innerHTML = "⏳ Yuklanmoqda...";
-
-    try {
-      const res = await fetch(
-        `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Uzbekistan&method=2`
-      );
-
-      const data = await res.json();
-      const t = data.data.timings;
-
-      document.getElementById("content").innerHTML = `
-        <div class="title">🕌 Bugungi namoz vaqtlari</div>
-
-        <div class="time"><span>Bomdod</span><b>${t.Fajr}</b></div>
-        <div class="time"><span>Quyosh</span><b>${t.Sunrise}</b></div>
-        <div class="time"><span>Peshin</span><b>${t.Dhuhr}</b></div>
-        <div class="time"><span>Asr</span><b>${t.Asr}</b></div>
-        <div class="time"><span>Shom</span><b>${t.Maghrib}</b></div>
-        <div class="time"><span>Xufton</span><b>${t.Isha}</b></div>
-      `;
-
-    } catch (e) {
-      document.getElementById("content").innerHTML = "❌ Xatolik yuz berdi";
-    }
-  }
+  let theme=localStorage.getItem("theme")||"dark";
+  setTheme(theme);
 
   loadTimes();
+}
+
+function loadDistricts(){
+  district.innerHTML="";
+  data[region.value].forEach(d=>{
+    let opt=document.createElement("option");
+    opt.innerText=d;
+    district.appendChild(opt);
+  });
+}
+
+function saveLocation(){
+  localStorage.setItem("region",region.value);
+  localStorage.setItem("district",district.value);
+  alert("Saqlanildi: "+region.value+" / "+district.value);
+  loadTimes();
+}
+
+function setTheme(mode){
+  document.body.className=mode;
+  localStorage.setItem("theme",mode);
+}
+
+async function loadTimes(){
+  document.getElementById("times").innerText="Yuklanmoqda...";
+
+  let city = district.value || "Tashkent";
+
+  try{
+    let res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Uzbekistan&method=2`);
+    let data = await res.json();
+
+    let t = data.data.timings;
+
+    document.getElementById("times").innerHTML=
+    "🌅 Bomdod: "+t.Fajr+"<br>"+
+    "☀️ Peshin: "+t.Dhuhr+"<br>"+
+    "🌤 Asr: "+t.Asr+"<br>"+
+    "🌇 Shom: "+t.Maghrib+"<br>"+
+    "🌙 Xufton: "+t.Isha;
+
+  }catch(e){
+    document.getElementById("times").innerText="Xatolik API";
+  }
+}
+
+init();
 </script>
 
 </body>
