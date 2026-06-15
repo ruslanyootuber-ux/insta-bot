@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NamozVaqti</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-light: #f8fafc;
+      --card-dark: #111c33;
+      --card-light: #ffffff;
+      --text-dark: #ffffff;
+      --text-light: #111827;
+      --accent: #22c55e;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      transition: 0.3s;
+    }
+
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    body.light {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    .container {
+      padding: 18px;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      padding: 15px;
+      border-radius: 14px;
+      margin-top: 12px;
+      transition: 0.3s;
+    }
+
+    .dark .card {
+      background: var(--card-dark);
+    }
+
+    .light .card {
+      background: var(--card-light);
+    }
+
+    button, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: white;
+      font-weight: bold;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .row select {
+      flex: 1;
+    }
+
+    .time {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="title">🕌 NamozVaqti</div>
+
+  <!-- THEME -->
+  <div class="card">
+    <button onclick="setTheme('dark')">🌙 Dark Mode</button>
+    <button onclick="setTheme('light')">☀️ Light Mode</button>
+  </div>
+
+  <!-- REGION SELECT -->
+  <div class="card">
+    <div>📍 Viloyat va shahar tanlang</div>
+
+    <select id="citySelect" onchange="loadTimes()">
+      <option value="Tashkent">Toshkent</option>
+      <option value="Samarkand">Samarqand</option>
+      <option value="Andijan">Andijon</option>
+      <option value="Fergana">Farg‘ona</option>
+      <option value="Namangan">Namangan</option>
+      <option value="Bukhara">Buxoro</option>
+      <option value="Khiva">Xorazm</option>
+      <option value="Karshi">Qashqadaryo</option>
+      <option value="Termiz">Surxondaryo</option>
+      <option value="Jizzakh">Jizzax</option>
+      <option value="Navoiy">Navoiy</option>
+    </select>
+  </div>
+
+  <!-- TIMES -->
+  <div class="card" id="content">
+    ⏳ Yuklanmoqda...
+  </div>
+
+</div>
+
+<script>
+  let tg = window.Telegram.WebApp;
+  tg.expand();
+
+  // THEME
+  function setTheme(mode){
+    document.body.className = mode;
+    localStorage.setItem("theme", mode);
+  }
+
+  setTheme(localStorage.getItem("theme") || "dark");
+
+  // LOAD PRAYER TIMES
+  async function loadTimes() {
+    let city = document.getElementById("citySelect").value;
+
+    document.getElementById("content").innerHTML = "⏳ Yuklanmoqda...";
+
+    try {
+      const res = await fetch(
+        `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Uzbekistan&method=2`
+      );
+
+      const data = await res.json();
+      const t = data.data.timings;
+
+      document.getElementById("content").innerHTML = `
+        <div class="title">🕌 Bugungi namoz vaqtlari</div>
+
+        <div class="time"><span>Bomdod</span><b>${t.Fajr}</b></div>
+        <div class="time"><span>Quyosh</span><b>${t.Sunrise}</b></div>
+        <div class="time"><span>Peshin</span><b>${t.Dhuhr}</b></div>
+        <div class="time"><span>Asr</span><b>${t.Asr}</b></div>
+        <div class="time"><span>Shom</span><b>${t.Maghrib}</b></div>
+        <div class="time"><span>Xufton</span><b>${t.Isha}</b></div>
+      `;
+
+    } catch (e) {
+      document.getElementById("content").innerHTML = "❌ Xatolik yuz berdi";
+    }
+  }
+
+  loadTimes();
+</script>
+
+</body>
+</html>
