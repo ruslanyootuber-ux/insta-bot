@@ -9,17 +9,19 @@ logger = logging.getLogger()
 
 # 30 ta namuna matn
 COMMENTS = [
-    "Zo'r yangilik!", "Har doimgidek dolzarb mavzu.", "Qiziqarli ma'lumotlar uchun rahmat.",
-    "Buni kutgan edik!", "Qalampir.uz - eng tezkor yangiliklar!", "Foydali post bo'libdi.",
-    "Juda qiziqarli, davomini kuting.", "O'zbekistondagi eng yaxshi yangiliklar kanali.",
-    "Rahmat, juda ma'lumotli post.", "Shunday yangiliklar ko'payib ketsin.",
-    "Ajoyib ma'lumot!", "Buni barchaga ulashish kerak.", "Qalampir.uz jamoasiga omad!",
-    "Ishingizga rivoj!", "Yaxshi tahlil qilibsiz.", "Juda o'rinli post.",
-    "Yangiliklar uchun rahmat.", "Menga juda yoqdi.", "Kutgan edik shuni.",
-    "Juda ham foydali.", "Doimo birinchi o'rinda!", "Ishonchli xabar.",
-    "Jamoangizga rahbarlik ishlaringizda omad.", "Sifatli kontent.", "Zo'r, davom eting!",
-    "Buni bilmagan ekanman, rahmat.", "Qoyil, tezkorlik uchun rahmat.",
-    "Eng so'nggi xabarlar faqat sizda.", "Ajoyib ish bo'libdi.", "Katta rahmat!", "Nexia2 Legenda?"
+
+    "🚀 Zo'r yangilik!", "🔥 Har doimgidek dolzarb mavzu.", "💡 Qiziqarli ma'lumotlar uchun rahmat.",
+    "🙌 Buni kutgan edik!", "⚡️ Qalampir.uz - eng tezkor yangiliklar!", "✅ Foydali post bo'libdi.",
+    "🧐 Juda qiziqarli, davomini kuting.", "🔝 O'zbekistondagi eng yaxshi yangiliklar kanali.",
+    "📚 Rahmat, juda ma'lumotli post.", "🌟 Shunday yangiliklar ko'payib ketsin.",
+    "💎 Ajoyib ma'lumot!", "📢 Buni barchaga ulashish kerak.", "🍀 Qalampir.uz jamoasiga omad!",
+    "📈 Ishingizga rivoj!", "🔍 Yaxshi tahlil qilibsiz.", "🎯 Juda o'rinli post.",
+    "📰 Yangiliklar uchun rahmat.", "❤️ Menga juda yoqdi.", "🕒 Kutgan edik shuni.",
+    "🧠 Juda ham foydali.", "🥇 Doimo birinchi o'rinda!", "🛡 Ishonchli xabar.",
+    "🤝 Jamoangizga rahbarlik ishlaringizda omad.", "🎬 Sifatli kontent.", "🚀 Zo'r, davom eting!",
+    "✨ Buni bilmagan ekanman, rahmat.", "👏 Qoyil, tezkorlik uchun rahmat.",
+    "🔔 Eng so'nggi xabarlar faqat sizda.", "🎨 Ajoyib ish bo'libdi.", "🙏 Katta rahmat!", 
+    "🚗 Nexia2 Legenda? 😎"
 ]
 
 def run_bot():
