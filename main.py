@@ -28,7 +28,7 @@ async def post_worker():
             print(f"Xatolik yuz berdi: {e}")
         
         # 10 daqiqa kutish (600 soniya)
-        await asyncio.sleep(600)
+        await asyncio.sleep(10)
 
 async def keep_alive():
     while True:
