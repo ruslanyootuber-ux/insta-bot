@@ -18,7 +18,7 @@ API_ID = int(os.getenv("API_ID"))
 API_HASH = os.getenv("API_HASH")
 STRING_SESSION = os.getenv("STRING_SESSION")
 SESSION_ID = os.getenv("SESSION_ID")
-BOT_TOKEN = os.getenv("BOT_TOKEN")
+BOT_TOKEN = "8234989129:AAFyNtKEbNnAzm_Z7tBvC1iJ79WZXKWPtnI"      # O'zingizning haqiqiy tokenni shu yerga qo'ying
 
 # Bot va Dispatcher
 bot = Bot(token=BOT_TOKEN)
