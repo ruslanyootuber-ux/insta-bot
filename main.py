@@ -1,49 +1,60 @@
 import os
-import asyncio
+import time
 import random
-from telethon import TelegramClient
-from telethon.sessions import StringSession
+from instagrapi import Client
 
-# --- ON/OFF TUGMASI ---
-# Shu yerga "OFF" deb yozsangiz, bot ishlashni to'xtatadi
-BOT_STATUS = "OFF" 
-# ----------------------
+# Environment'dan olingan ma'lumotlar
+USERNAME = os.getenv("INSTA_USERNAME")
+PASSWORD = os.getenv("INSTA_PASSWORD")
+TARGET_USERNAME = "qalampir.uz"
 
-api_id = int(os.getenv("API_ID"))
-api_hash = os.getenv("API_HASH")
-session_string = os.getenv("STRING_SESSION")
-target_user = "@Doktorgolivud"
+cl = Client()
 
-messages = [
-    "Salom, nima gaplar?",
-    "Qalaysiz?",
-    "Bugungi kun qanday o'tmoqda?",
-    "Ishlar yaxshimi?",
-    "Nimalar bilan bandsiz?"
-]
+# Sessiyani saqlash uchun fayl yo'li
+session_file = "session.json"
 
-async def sender_worker(client):
-    while True:
-        msg = random.choice(messages)
-        await client.send_message(target_user, msg)
-        print(f"Xabar yuborildi: {msg}")
-        await asyncio.sleep(120)
+def login():
+    if os.path.exists(session_file):
+        cl.load_settings(session_file)
+        try:
+            cl.login(USERNAME, PASSWORD)
+        except Exception:
+            cl.login(USERNAME, PASSWORD)
+            cl.dump_settings(session_file)
+    else:
+        cl.login(USERNAME, PASSWORD)
+        cl.dump_settings(session_file)
 
-async def heart_beat():
-    while True:
-        await asyncio.sleep(10)
-
-async def main():
-    if BOT_STATUS.upper() == "OFF":
-        print("Bot o'chirilgan (OFF holatda). Server kutish rejimida...")
-        while True:
-            await asyncio.sleep(3600) # Bot o'chirilgan bo'lsa, resurs ishlatmay uxlab turadi
-
-    client = TelegramClient(StringSession(session_string), api_id, api_hash)
-    await client.start()
-    print("Userbot ishga tushdi!")
+def run_bot():
+    login()
+    user_id = cl.user_id_from_username(TARGET_USERNAME)
+    # Oxirgi post ID sini olish
+    last_post = cl.user_medias(user_id, amount=1)[0]
+    last_post_id = last_post.id
     
-    await asyncio.gather(sender_worker(client), heart_beat())
+    print(f"Kuzatuv boshlandi: {TARGET_USERNAME}. Oxirgi post ID: {last_post_id}")
+    
+    comments = ["Ajoyib yangilik! 👍", "Doimiy kuzatib boramiz!", "Qiziqarli ma'lumot, rahmat! 😊"]
+
+    while True:
+        try:
+            current_posts = cl.user_medias(user_id, amount=1)
+            if not current_posts:
+                time.sleep(600)
+                continue
+                
+            new_post = current_posts[0]
+            
+            if new_post.id != last_post_id:
+                print("Yangi post topildi! Izoh yozilmoqda...")
+                cl.media_comment(new_post.id, random.choice(comments))
+                last_post_id = new_post.id
+            
+            time.sleep(300) # Har 5 daqiqada tekshiradi
+            
+        except Exception as e:
+            print(f"Xatolik yuz berdi: {e}")
+            time.sleep(600) # Xato bo'lsa 10 daqiqa kutadi
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    run_bot()
