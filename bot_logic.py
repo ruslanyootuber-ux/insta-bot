@@ -1,13 +1,18 @@
+import os
 import asyncio
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from telethon.sync import TelegramClient
+from telethon import TelegramClient
 from telethon.sessions import StringSession
 
-# Bot va FSM (Holatlar uchun)
-bot = Bot(token="SIZNING_BOT_TOKENINGIZ")
+# Muhit o'zgaruvchilari (Fly.io secrets'dan olinadi)
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+API_ID = int(os.getenv("API_ID"))
+API_HASH = os.getenv("API_HASH")
+
+bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 class AuthStates(StatesGroup):
@@ -25,7 +30,8 @@ async def start(message: types.Message, state: FSMContext):
 @dp.message(AuthStates.waiting_for_phone)
 async def get_phone(message: types.Message, state: FSMContext):
     phone = message.text
-    client = TelegramClient(StringSession(), int("API_ID"), "API_HASH")
+    # Asinxron klient yaratamiz
+    client = TelegramClient(StringSession(), API_ID, API_HASH)
     await client.connect()
     
     # Kod yuborish
@@ -45,7 +51,15 @@ async def get_code(message: types.Message, state: FSMContext):
         await client.sign_in(data['phone'], code, phone_code_hash=data['phone_code_hash'])
         session_string = client.session.save()
         await message.answer(f"Muvaffaqiyatli! Sizning STRING_SESSIONingiz:\n\n`{session_string}`\n\nBuni Fly.io secrets'ga qo'shib, botni qayta deploy qiling.")
+        # Klientni yopamiz
+        await client.disconnect()
     except Exception as e:
-        await message.answer(f"Xatolik: {e}")
+        await message.answer(f"Xatolik yuz berdi: {e}")
     
     await state.clear()
+
+async def main():
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    asyncio.run(main())
