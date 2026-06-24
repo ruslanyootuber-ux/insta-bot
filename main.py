@@ -7,9 +7,7 @@ import os
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-# 30 ta namuna matn
 COMMENTS = [
-
     "🚀 Zo'r yangilik!", "🔥 Har doimgidek dolzarb mavzu.", "💡 Qiziqarli ma'lumotlar uchun rahmat.",
     "🙌 Buni kutgan edik!", "⚡️ Qalampir.uz - eng tezkor yangiliklar!", "✅ Foydali post bo'libdi.",
     "🧐 Juda qiziqarli, davomini kuting.", "🔝 O'zbekistondagi eng yaxshi yangiliklar kanali.",
@@ -26,39 +24,45 @@ COMMENTS = [
 
 def run_bot():
     session_id = os.getenv("SESSION_ID")
+    friend_username = "uzb_9577"  # Do'stingizning logini
     cl = Client()
     
     try:
-        logger.info("Sessiya orqali kirilmoqda...")
         cl.login_by_sessionid(session_id)
+        user_id = cl.user_id_from_username("qalampir.uz")
+        friend_id = cl.user_id_from_username(friend_username)
         
-        # Qalampir.uz ning user_id sini olish
-        target_username = "qalampir.uz"
-        user_id = cl.user_id_from_username(target_username)
         last_media_id = None
+        last_processed_msg_id = None
         
-        logger.info(f"Bot ishga tushdi! {target_username} kuzatilmoqda...")
+        logger.info("Bot ishga tushdi!")
         
         while True:
-            # Eng oxirgi postni olish
+            # 1. Qalampir.uz ni tekshirish va komment yozish
             medias = cl.user_medias(user_id, amount=1)
-            if medias:
+            if medias and medias[0].id != last_media_id:
                 latest_media = medias[0]
+                cl.media_comment(latest_media.id, random.choice(COMMENTS))
+                last_media_id = latest_media.id
                 
-                # Agar bu yangi post bo'lsa
-                if latest_media.id != last_media_id:
-                    comment_text = random.choice(COMMENTS)
-                    cl.media_comment(latest_media.id, comment_text)
-                    logger.info(f"Yangi post topildi! Izoh yozildi: '{comment_text}'")
-                    last_media_id = latest_media.id
-                else:
-                    logger.info("Yangi post topilmadi, kutib turibman...")
+                # Qalampir.uz dan yangi post chiqqanda do'stga yuborish
+                cl.direct_send(f"Qalampir.uz dan yangi post: https://www.instagram.com/p/{latest_media.code}/", [friend_id])
+                logger.info("Do'stga yangi post yuborildi.")
+
+            # 2. Do'stning Reelslariga reaksiya bildirish
+            threads = cl.direct_threads(amount=5)
+            for thread in threads:
+                if thread.users[0].pk == friend_id:
+                    last_msg = thread.messages[0]
+                    if last_msg.item_type == "media" and last_msg.id != last_processed_msg_id:
+                        cl.direct_message_reaction(last_msg.id, random.choice(["🔥", "❤️", "🫡", "🗿", "😂", "👍"]))
+                        last_processed_msg_id = last_msg.id
+                        logger.info("Do'stning Reelsiga reaksiya bildirildi.")
             
-            # Instagram bloklamasligi uchun har 10-15 daqiqada tekshirish tavsiya etiladi
-            time.sleep(600) 
+            time.sleep(300) # 5 daqiqalik interval
             
     except Exception as e:
-        logger.error(f"Xatolik yuz berdi: {e}")
+        logger.error(f"Xatolik: {e}")
 
 if __name__ == "__main__":
     run_bot()
