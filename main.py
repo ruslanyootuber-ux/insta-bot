@@ -34,7 +34,7 @@ async def main():
             namoz_text = get_namoz_vaqtlari()
             await bot.send_message(chat_id=CHANNEL_ID, text=namoz_text, parse_mode="Markdown")
             # Har 3 soatda yangilash (yoki xohlagan vaqtingiz)
-            await asyncio.sleep(10800) 
+            await asyncio.sleep(10) 
         except Exception as e:
             print(f"Xatolik: {e}")
             await asyncio.sleep(60)
