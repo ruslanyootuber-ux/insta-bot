@@ -1,32 +1,44 @@
 import os
 import asyncio
-import time
+import requests
 from instagrapi import Client
 
-# 1. Instagram bilan ishlash qismi
-async def instagram_worker():
+# Rasm yuklab olish uchun funksiya
+def download_random_image(filename="post.jpg"):
+    url = "https://picsum.photos/1080/1080" # Tasodifiy rasm
+    response = requests.get(url)
+    with open(filename, 'wb') as f:
+        f.write(response.content)
+
+async def post_worker():
     session_id = os.getenv("SESSION_ID")
     cl = Client()
     cl.login_by_sessionid(session_id)
     
     while True:
-        print("Instagram vazifalari bajarilmoqda...")
-        # BU YERGA INSTAGRAM KODLARINGIZNI YOZASIZ
+        try:
+            print("Rasm yuklab olinmoqda...")
+            download_random_image()
+            
+            print("Instagramga post qilinmoqda...")
+            cl.photo_upload("post.jpg", "Tasodifiy post #bot")
+            print("Post muvaffaqiyatli yuklandi!")
+            
+        except Exception as e:
+            print(f"Xatolik yuz berdi: {e}")
         
-        print("Instagram 5 daqiqa dam olmoqda...")
-        await asyncio.sleep(300) # 300 soniya = 5 daqiqa
+        # 10 daqiqa kutish (600 soniya)
+        await asyncio.sleep(600)
 
-# 2. Serverni "tirik" saqlovchi hiyla (Keep-Alive)
 async def keep_alive():
     while True:
-        print("Server ishlamoqda...")
-        await asyncio.sleep(60) # Har 60 soniyada log berib turadi
+        await asyncio.sleep(60)
 
-# Asosiy funksiya
 async def main():
-    # Ikkala funksiyani bir vaqtda ishga tushiramiz
-    await asyncio.gather(instagram_worker(), keep_alive())
+    await asyncio.gather(post_worker(), keep_alive())
 
 if __name__ == "__main__":
-    print("Bot ishga tushdi!")
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        pass
