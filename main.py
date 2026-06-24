@@ -1,60 +1,37 @@
 import os
-import time
-import random
+import logging
 from instagrapi import Client
 
-# Environment'dan olingan ma'lumotlar
-USERNAME = os.getenv("INSTA_USERNAME")
-PASSWORD = os.getenv("INSTA_PASSWORD")
-TARGET_USERNAME = "qalampir.uz"
-
-cl = Client()
-
-# Sessiyani saqlash uchun fayl yo'li
-session_file = "session.json"
-
-def login():
-    if os.path.exists(session_file):
-        cl.load_settings(session_file)
-        try:
-            cl.login(USERNAME, PASSWORD)
-        except Exception:
-            cl.login(USERNAME, PASSWORD)
-            cl.dump_settings(session_file)
-    else:
-        cl.login(USERNAME, PASSWORD)
-        cl.dump_settings(session_file)
+# Loglarni ko'rish uchun sozlama
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger()
 
 def run_bot():
-    login()
-    user_id = cl.user_id_from_username(TARGET_USERNAME)
-    # Oxirgi post ID sini olish
-    last_post = cl.user_medias(user_id, amount=1)[0]
-    last_post_id = last_post.id
+    # 1. Fly.io secret'dan SESSION_ID ni o'qib olish
+    session_id = os.getenv("SESSION_ID")
     
-    print(f"Kuzatuv boshlandi: {TARGET_USERNAME}. Oxirgi post ID: {last_post_id}")
-    
-    comments = ["Ajoyib yangilik! 👍", "Doimiy kuzatib boramiz!", "Qiziqarli ma'lumot, rahmat! 😊"]
+    if not session_id:
+        logger.error("SESSION_ID topilmadi! Iltimos, fly secrets orqali o'rnating.")
+        return
 
-    while True:
-        try:
-            current_posts = cl.user_medias(user_id, amount=1)
-            if not current_posts:
-                time.sleep(600)
-                continue
-                
-            new_post = current_posts[0]
-            
-            if new_post.id != last_post_id:
-                print("Yangi post topildi! Izoh yozilmoqda...")
-                cl.media_comment(new_post.id, random.choice(comments))
-                last_post_id = new_post.id
-            
-            time.sleep(300) # Har 5 daqiqada tekshiradi
-            
-        except Exception as e:
-            print(f"Xatolik yuz berdi: {e}")
-            time.sleep(600) # Xato bo'lsa 10 daqiqa kutadi
+    cl = Client()
+    
+    try:
+        # 2. Sessiya orqali kirish
+        logger.info("Instagram'ga sessiya orqali kirilmoqda...")
+        cl.login_by_sessionid(session_id)
+        logger.info("Muvaffaqiyatli kirildi!")
+        
+        # 3. Botingizning asosiy vazifalari shu yerda bajariladi
+        # Misol: Profil ma'lumotlarini olish
+        user_info = cl.account_info()
+        logger.info(f"Salom, {user_info.username}! Bot ishga tushdi.")
+        
+        # SHU YERDA O'Z KODINGIZNI YOZING
+        # Masalan: cl.media_upload("photo.jpg", "caption")
+        
+    except Exception as e:
+        logger.error(f"Xatolik yuz berdi: {e}")
 
 if __name__ == "__main__":
     run_bot()
