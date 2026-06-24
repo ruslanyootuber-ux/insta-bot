@@ -1,4 +1,1 @@
 instagrapi
-telethon
-aiogram
-requests
