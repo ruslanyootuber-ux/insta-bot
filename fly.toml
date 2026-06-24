@@ -1,21 +1,17 @@
-app = 'insta-bot'
-primary_region = 'fra'
+app = "insta-bot" # Ilovangizning nomi (fly.io dagi loyiha nomi bilan bir xil bo'lishi kerak)
+primary_region = "fra" # Frankfurt (yoki o'zingizga yaqin mintaqa)
 
 [build]
-  dockerfile = 'Dockerfile'
+  dockerfile = "Dockerfile"
 
-[processes]
-  app = "python main.py"
-
-# HTTP service yo'q, shuning uchun "instance refused" xatosi chiqmaydi
-# Avtomatik o'chishni to'xtatish uchun maxsus sozlama:
-[experimental]
-  auto_build = true
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
 
 [[vm]]
-  size = 'shared-cpu-1x'
-  memory = '256mb'
-
-[env]
-  PYTHONUNBUFFERED = "1"
-  
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
