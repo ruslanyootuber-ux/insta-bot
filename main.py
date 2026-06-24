@@ -6,8 +6,6 @@ import requests
 from instagrapi import Client
 from telethon import TelegramClient, functions, types
 from telethon.sessions import StringSession
-from aiogram import Bot, Dispatcher, types as aiogram_types
-from aiogram.filters import Command
 
 # Logging sozlamalari
 logging.basicConfig(level=logging.INFO)
@@ -18,10 +16,18 @@ API_ID = int(os.getenv("API_ID"))
 API_HASH = os.getenv("API_HASH")
 STRING_SESSION = os.getenv("STRING_SESSION")
 SESSION_ID = os.getenv("SESSION_ID")
-BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-COMMENTS = [...] # (Sizdagi o'zgarishsiz qoldi)
-MESSAGES = [...] # (Sizdagi o'zgarishsiz qoldi)
+COMMENTS = [
+    "🚀 Zo'r yangilik!", "🔥 Har doimgidek dolzarb mavzu.", "💡 Qiziqarli ma'lumotlar uchun rahmat.",
+    "🙌 Buni kutgan edik!", "⚡️ Qalampir.uz - eng tezkor yangiliklar!", "✅ Foydali post bo'libdi.",
+    "🧐 Juda qiziqarli, davomini kuting.", "🔝 O'zbekistondagi eng yaxshi yangiliklar kanali."
+]
+
+MESSAGES = [
+    "Salom! Yangiliklarni kuzatib boring 🚀", 
+    "Foydali guruh ekan, rahmat! ✨",
+    "Eng tezkor xabarlar shu yerda! 🔔"
+]
 
 # --- Instagram Worker ---
 async def instagram_worker():
@@ -47,25 +53,24 @@ async def instagram_worker():
                 if thread.users[0].pk == friend_id:
                     msg = thread.messages[0]
                     if msg.item_type == "media" and msg.id != last_processed_msg_id:
-                        cl.direct_message_reaction(msg.id, random.choice(["🔥", "❤️", "🫡", "🗿"]))
+                        cl.direct_message_reaction(msg.id, random.choice(["🔥", "❤️", "🫡", "👍"]))
                         last_processed_msg_id = msg.id
         except Exception as e:
             logger.error(f"Instagram xatosi: {e}")
         await asyncio.sleep(300)
 
-# --- Telegram Worker & Profil Manager ---
+# --- Telegram Worker ---
 async def telegram_worker():
     client = TelegramClient(StringSession(STRING_SESSION), API_ID, API_HASH)
     await client.start()
     
-    # PROFILNI YANGILASH QISMI (Siz so'ragan qo'shimcha)
+    # Profilni yangilash
     try:
         await client(functions.account.UpdateProfileRequest(
             first_name="Test",
             about="O'zbekistondagi eng tezkor yangiliklar kanali."
         ))
-        # Internetdan rasm yuklash va o'rnatish
-        response = requests.get("https://picsum.photos/200") # Tasodifiy rasm
+        response = requests.get("https://picsum.photos/200")
         with open("avatar.jpg", "wb") as f: f.write(response.content)
         file = await client.upload_file("avatar.jpg")
         await client(functions.photos.UploadProfilePhotoRequest(file=file))
@@ -75,6 +80,7 @@ async def telegram_worker():
 
     while True:
         try:
+            # Guruh qidirish
             result = await client(functions.contacts.SearchRequest(q="O'zbekiston", limit=5))
             for chat in result.chats:
                 try:
@@ -82,15 +88,17 @@ async def telegram_worker():
                     await client.send_message(chat, random.choice(MESSAGES))
                 except: continue
             
-            async for dialog in client.iter_dialogs(limit=10):
-                if dialog.is_group:
-                    await client.send_message(dialog, random.choice(MESSAGES))
+            # Dialoglarni iteratsiya qilish (to'g'rilangan)
+            async for dialog in client.iter_dialogs():
+                if dialog.is_group or dialog.is_channel:
+                    try:
+                        await client.send_message(dialog, random.choice(MESSAGES))
+                    except: continue
         except Exception as e:
-            logger.error(f"Telegram xatosi: {e}")
+            logger.error(f"Telegram umumiy xatosi: {e}")
         await asyncio.sleep(600)
 
 async def main():
-    # Instagram va Telegram workerlarni bir vaqtda ishga tushiramiz
     await asyncio.gather(instagram_worker(), telegram_worker())
 
 if __name__ == "__main__":
