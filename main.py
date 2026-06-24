@@ -11,7 +11,7 @@ if not session_id:
     print("Xato: SESSION_ID topilmadi!")
     exit()
 
-cl.load_settings({"sessionid": session_id})
+cl.login_by_sessionid(session_id)
 cl.login_by_sessionid(session_id)
 
 def start_bot():
