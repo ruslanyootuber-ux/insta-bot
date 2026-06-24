@@ -34,8 +34,9 @@ def start_bot():
                 time.sleep(random.randint(300, 900))
                 
         except Exception as e:
-            print(f"Xatolik yuz berdi: {e}")
-            time.sleep(300) # Xato bo'lsa 30 daqiqa kutish
+            import time
+# ... sizning botingiz kodlari ...
 
-if __name__ == "__main__":
-    start_bot()
+print("Bot ishni tugatdi, lekin uxlab turibdi...")
+while True:
+    time.sleep(3600)  # Bot 1 soat davomida uxlab, serverni ushlab turadi
