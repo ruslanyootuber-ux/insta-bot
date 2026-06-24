@@ -1,11 +1,20 @@
-import time
+import asyncio
 import logging
 import random
-from instagrapi import Client
 import os
+from instagrapi import Client
+from telethon import TelegramClient, functions
+from telethon.sessions import StringSession
 
+# Logging sozlamalari
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
+
+# Konfiguratsiyalar
+API_ID = int(os.getenv("API_ID"))
+API_HASH = os.getenv("API_HASH")
+STRING_SESSION = os.getenv("STRING_SESSION")
+SESSION_ID = os.getenv("SESSION_ID")
 
 COMMENTS = [
     "🚀 Zo'r yangilik!", "🔥 Har doimgidek dolzarb mavzu.", "💡 Qiziqarli ma'lumotlar uchun rahmat.",
@@ -22,47 +31,68 @@ COMMENTS = [
     "🚗 Nexia2 Legenda? 😎"
 ]
 
-def run_bot():
-    session_id = os.getenv("SESSION_ID")
-    friend_username = "uzb_9577"  # Do'stingizning logini
+MESSAGES = [
+    "Salom! Yangiliklarni kuzatib boring 🚀", "Foydali guruh ekan, rahmat! ✨",
+    "Eng tezkor xabarlar shu yerda! 🔔", "Ajoyib post bo'libdi, davom eting! ✅",
+    "Guruh faoliyati uchun raxmat! 🤝"
+]
+
+# Instagram Worker
+async def instagram_worker():
     cl = Client()
+    cl.login_by_sessionid(SESSION_ID)
+    friend_id = cl.user_id_from_username("uzb_9577")
+    target_id = cl.user_id_from_username("qalampir.uz")
     
-    try:
-        cl.login_by_sessionid(session_id)
-        user_id = cl.user_id_from_username("qalampir.uz")
-        friend_id = cl.user_id_from_username(friend_username)
-        
-        last_media_id = None
-        last_processed_msg_id = None
-        
-        logger.info("Bot ishga tushdi!")
-        
-        while True:
-            # 1. Qalampir.uz ni tekshirish va komment yozish
-            medias = cl.user_medias(user_id, amount=1)
+    last_media_id = None
+    last_processed_msg_id = None
+    
+    while True:
+        try:
+            # 1. Instagram post tekshirish
+            medias = cl.user_medias(target_id, amount=1)
             if medias and medias[0].id != last_media_id:
                 latest_media = medias[0]
                 cl.media_comment(latest_media.id, random.choice(COMMENTS))
+                cl.direct_send(f"Qalampir.uz dan post: https://www.instagram.com/p/{latest_media.code}/", [friend_id])
                 last_media_id = latest_media.id
-                
-                # Qalampir.uz dan yangi post chiqqanda do'stga yuborish
-                cl.direct_send(f"Qalampir.uz dan yangi post: https://www.instagram.com/p/{latest_media.code}/", [friend_id])
-                logger.info("Do'stga yangi post yuborildi.")
-
-            # 2. Do'stning Reelslariga reaksiya bildirish
-            threads = cl.direct_threads(amount=5)
+            
+            # 2. Reels reaksiya
+            threads = cl.direct_threads(amount=3)
             for thread in threads:
                 if thread.users[0].pk == friend_id:
-                    last_msg = thread.messages[0]
-                    if last_msg.item_type == "media" and last_msg.id != last_processed_msg_id:
-                        cl.direct_message_reaction(last_msg.id, random.choice(["🔥", "❤️", "🫡", "🗿", "😂", "👍"]))
-                        last_processed_msg_id = last_msg.id
-                        logger.info("Do'stning Reelsiga reaksiya bildirildi.")
+                    msg = thread.messages[0]
+                    if msg.item_type == "media" and msg.id != last_processed_msg_id:
+                        cl.direct_message_reaction(msg.id, random.choice(["🔥", "❤️", "🫡", "🗿"]))
+                        last_processed_msg_id = msg.id
+        except Exception as e:
+            logger.error(f"Instagram xatosi: {e}")
+        await asyncio.sleep(300)
+
+# Telegram Worker
+async def telegram_worker():
+    client = TelegramClient(StringSession(STRING_SESSION), API_ID, API_HASH)
+    await client.start()
+    while True:
+        try:
+            # Guruh qidirish va qo'shilish
+            result = await client(functions.contacts.SearchRequest(q="O'zbekiston", limit=5))
+            for chat in result.chats:
+                try:
+                    await client(functions.channels.JoinChannelRequest(chat))
+                    await client.send_message(chat, random.choice(MESSAGES))
+                except: continue
             
-            time.sleep(300) # 5 daqiqalik interval
-            
-    except Exception as e:
-        logger.error(f"Xatolik: {e}")
+            # Mavjud guruhlarga yozish
+            async for dialog in client.iter_dialogs(limit=10):
+                if dialog.is_group:
+                    await client.send_message(dialog, random.choice(MESSAGES))
+        except Exception as e:
+            logger.error(f"Telegram xatosi: {e}")
+        await asyncio.sleep(600) # 10 daqiqada bir bajaradi
+
+async def main():
+    await asyncio.gather(instagram_worker(), telegram_worker())
 
 if __name__ == "__main__":
-    run_bot()
+    asyncio.run(main())
