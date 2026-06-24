@@ -35,7 +35,7 @@ def start_bot():
                 
         except Exception as e:
             print(f"Xatolik yuz berdi: {e}")
-            time.sleep(1800) # Xato bo'lsa 30 daqiqa kutish
+            time.sleep(300) # Xato bo'lsa 30 daqiqa kutish
 
 if __name__ == "__main__":
     start_bot()
