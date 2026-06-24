@@ -1,28 +1,21 @@
-# fly.toml app configuration file generated for insta-bot
-
 app = 'insta-bot'
 primary_region = 'fra'
 
-# Build sozlamalari
 [build]
   dockerfile = 'Dockerfile'
 
-# Asosiy jarayon (Botingiz shu yerda ishlaydi)
 [processes]
   app = "python main.py"
 
-# Serverni "uxlatib qo'ymaslik" uchun hiyla
-[http_service]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = false # Bu eng muhim qator
-  auto_start_machines = true
+# HTTP service yo'q, shuning uchun "instance refused" xatosi chiqmaydi
+# Avtomatik o'chishni to'xtatish uchun maxsus sozlama:
+[experimental]
+  auto_build = true
 
-# Resurs sozlamalari
 [[vm]]
   size = 'shared-cpu-1x'
   memory = '256mb'
 
-# Loglarni aniq ko'rish uchun
 [env]
   PYTHONUNBUFFERED = "1"
+  
