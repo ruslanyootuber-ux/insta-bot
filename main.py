@@ -2,9 +2,12 @@ import asyncio
 import logging
 import random
 import os
+import requests
 from instagrapi import Client
 from telethon import TelegramClient, functions, types
 from telethon.sessions import StringSession
+from aiogram import Bot, Dispatcher, types as aiogram_types
+from aiogram.filters import Command
 
 # Logging sozlamalari
 logging.basicConfig(level=logging.INFO)
@@ -15,28 +18,18 @@ API_ID = int(os.getenv("API_ID"))
 API_HASH = os.getenv("API_HASH")
 STRING_SESSION = os.getenv("STRING_SESSION")
 SESSION_ID = os.getenv("SESSION_ID")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-COMMENTS = ["🚀 Zo'r yangilik!", "🔥 Har doimgidek dolzarb mavzu.", "✅ Foydali post bo'libdi.", "🎯 Juda o'rinli post.", "🚀 Zo'r, davom eting!"]
-MESSAGES = ["Salom! Yangiliklarni kuzatib boring 🚀", "Foydali guruh ekan, rahmat! ✨", "Eng tezkor xabarlar shu yerda! 🔔"]
+COMMENTS = [...] # (Sizdagi o'zgarishsiz qoldi)
+MESSAGES = [...] # (Sizdagi o'zgarishsiz qoldi)
 
-async def update_telegram_profile(client):
-    """Profilni bir marta yangilash"""
-    try:
-        await client(functions.account.UpdateProfileRequest(
-            first_name="Rasmiy",
-            last_name="Yangiliklar",
-            about="O'zbekistondagi eng tezkor yangiliklar kanali. Hamkorlik uchun: @admin"
-        ))
-        # Rasm qo'shish uchun: await client.upload_file('rasm.jpg') -> photos.UploadProfilePhotoRequest
-        logger.info("Telegram profil yangilandi.")
-    except Exception as e:
-        logger.error(f"Profil yangilashda xato: {e}")
-
+# --- Instagram Worker ---
 async def instagram_worker():
     cl = Client()
     cl.login_by_sessionid(SESSION_ID)
     friend_id = cl.user_id_from_username("uzb_9577")
     target_id = cl.user_id_from_username("qalampir.uz")
+    
     last_media_id = None
     last_processed_msg_id = None
     
@@ -60,38 +53,44 @@ async def instagram_worker():
             logger.error(f"Instagram xatosi: {e}")
         await asyncio.sleep(300)
 
+# --- Telegram Worker & Profil Manager ---
 async def telegram_worker():
     client = TelegramClient(StringSession(STRING_SESSION), API_ID, API_HASH)
     await client.start()
     
-    # 1. Profilni yangilash
-    await update_telegram_profile(client)
-    
+    # PROFILNI YANGILASH QISMI (Siz so'ragan qo'shimcha)
+    try:
+        await client(functions.account.UpdateProfileRequest(
+            first_name="Test",
+            about="O'zbekistondagi eng tezkor yangiliklar kanali."
+        ))
+        # Internetdan rasm yuklash va o'rnatish
+        response = requests.get("https://picsum.photos/200") # Tasodifiy rasm
+        with open("avatar.jpg", "wb") as f: f.write(response.content)
+        file = await client.upload_file("avatar.jpg")
+        await client(functions.photos.UploadProfilePhotoRequest(file=file))
+        logger.info("Profil muvaffaqiyatli yangilandi!")
+    except Exception as e:
+        logger.error(f"Profil yangilashda xato: {e}")
+
     while True:
         try:
-            # Guruh qidirish
             result = await client(functions.contacts.SearchRequest(q="O'zbekiston", limit=5))
             for chat in result.chats:
-                if isinstance(chat, types.Channel) or isinstance(chat, types.Chat):
-                    try:
-                        # Faqat yozish imkoniyati borligini tekshirish uchun xabar yuboramiz
-                        await client.send_message(chat, random.choice(MESSAGES))
-                        logger.info(f"Yuborildi: {chat.title}")
-                    except: 
-                        # Agar yuborib bo'lmasa, demak yozish taqiqlangan
-                        continue
+                try:
+                    await client(functions.channels.JoinChannelRequest(chat))
+                    await client.send_message(chat, random.choice(MESSAGES))
+                except: continue
             
-            # Mavjud guruhlarga yozish
             async for dialog in client.iter_dialogs(limit=10):
-                if dialog.is_group or dialog.is_channel:
-                    try:
-                        await client.send_message(dialog, random.choice(MESSAGES))
-                    except: continue
+                if dialog.is_group:
+                    await client.send_message(dialog, random.choice(MESSAGES))
         except Exception as e:
             logger.error(f"Telegram xatosi: {e}")
         await asyncio.sleep(600)
 
 async def main():
+    # Instagram va Telegram workerlarni bir vaqtda ishga tushiramiz
     await asyncio.gather(instagram_worker(), telegram_worker())
 
 if __name__ == "__main__":
