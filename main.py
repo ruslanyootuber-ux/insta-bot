@@ -35,10 +35,10 @@ async def main():
         try:
             namoz_text = get_namoz_vaqtlari()
             await bot.send_message(chat_id=CHANNEL_ID, text=namoz_text, parse_mode="Markdown")
-            await asyncio.sleep(10800) # 3 soat
+            await asyncio.sleep(30) # 3 soat
         except Exception as e:
             print(f"Loop xatosi: {e}")
-            await asyncio.sleep(60)
+            await asyncio.sleep(40)
 
 if __name__ == "__main__":
     asyncio.run(main())
