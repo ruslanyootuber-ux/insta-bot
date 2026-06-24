@@ -1,5 +1,5 @@
-app = "insta-bot" # Ilovangizning nomi (fly.io dagi loyiha nomi bilan bir xil bo'lishi kerak)
-primary_region = "fra" # Frankfurt (yoki o'zingizga yaqin mintaqa)
+app = "insta-bot"
+primary_region = "fra"
 
 [build]
   dockerfile = "Dockerfile"
@@ -7,9 +7,10 @@ primary_region = "fra" # Frankfurt (yoki o'zingizga yaqin mintaqa)
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = true
-  auto_start_machines = false
-  min_machines_running = 0
+  # Bot 24/7 ishlashi uchun bularni shunday qiling:
+  auto_stop_machines = false 
+  auto_start_machines = true
+  min_machines_running = 1 
 
 [[vm]]
   memory = "512mb"
