@@ -7,11 +7,9 @@ router = Router()
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
+    print("LOG: /start komandasi muvaffaqiyatli ushlandi!") # Terminalda ko'rish uchun
     text = (
         "🕌 <b>Assalomu alaykum!</b>\n\n"
-        "Ushbu mukammal bot orqali O'zbekistonning barcha hududlari uchun "
-        "besh vaqt namoz taqvimini bilib olishingiz mumkin.\n\n"
-        "👇 <i>Iltimos, o'zingizga kerakli viloyatni tanlang:</i>"
+        "O'zingizga kerakli viloyatni tanlang:"
     )
-    # get_regions_keyboard() yordamida 12 viloyatni chiqaramiz
     await message.answer(text, reply_markup=get_regions_keyboard())
