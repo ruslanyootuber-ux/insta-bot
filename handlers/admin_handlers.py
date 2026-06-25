@@ -6,7 +6,7 @@ from loader import db, bot
 router = Router()
 
 # Admin ID sini kiriting (Telegramda @userinfobot orqali o'z IDingizni bilib oling)
-ADMIN_ID = 123456789  # O'z IDingizni yozing
+ADMIN_ID = 8727877170  # O'z IDingizni yozing
 
 @router.message(Command("admin"))
 async def admin_panel(message: Message):
