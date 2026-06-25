@@ -3,28 +3,27 @@ import os
 import requests
 from aiogram import Bot
 
-# Konfiguratsiya# Konfiguratsiya
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHANNEL_ID = "@namozvaqti1111" 
+CHANNEL_ID = "@namozvaqti1111"
 bot = Bot(token=BOT_TOKEN)
 
 def get_namoz_vaqtlari():
     try:
-        # Aladhan API: Toshkent uchun so'rov
         url = "https://api.aladhan.com/v1/timingsByCity?city=Tashkent&country=Uzbekistan&method=3"
         response = requests.get(url, timeout=10).json()
         
-        # API dan kelgan ma'lumotni olish
         data = response['data']['timings']
         date = response['data']['date']['readable']
-        text = (f"🕋 *Namoz vaqtlari ({response['date']})*\n"
-                f"📍 *Mintaqa: {response['region']}*\n\n"
-                f"🌅 Tong: {v['tong_saharlik']}\n"
-                f"☀️ Quyosh: {v['quyosh']}\n"
-                f"🏙 Peshin: {v['peshin']}\n"
-                f"🌇 Asr: {v['asr']}\n"
-                f"🌆 Shom: {v['shom_iftor']}\n"
-                f"🌙 Xufton: {v['hufton']}")
+        
+        # Markdown belgilarisiz oddiy matn
+        text = (f"🕋 Namoz vaqtlari ({date})\n"
+                f"📍 Toshkent\n\n"
+                f"🌅 Tong (Fajr): {data['Fajr']}\n"
+                f"☀️ Quyosh (Sunrise): {data['Sunrise']}\n"
+                f"🏙 Peshin (Dhuhr): {data['Dhuhr']}\n"
+                f"🌇 Asr (Asr): {data['Asr']}\n"
+                f"🌆 Shom (Maghrib): {data['Maghrib']}\n"
+                f"🌙 Xufton (Isha): {data['Isha']}")
         return text
     except Exception as e:
         return f"Xatolik yuz berdi: {str(e)}"
@@ -33,11 +32,12 @@ async def main():
     while True:
         try:
             namoz_text = get_namoz_vaqtlari()
-            await bot.send_message(chat_id=CHANNEL_ID, text=namoz_text, parse_mode="Markdown")
-            await asyncio.sleep(30) # 3 soat
+            # parse_mode ni olib tashladik, shunda xatolik bermaydi
+            await bot.send_message(chat_id=CHANNEL_ID, text=namoz_text)
+            await asyncio.sleep(10800) 
         except Exception as e:
             print(f"Loop xatosi: {e}")
-            await asyncio.sleep(40)
+            await asyncio.sleep(60)
 
 if __name__ == "__main__":
     asyncio.run(main())
