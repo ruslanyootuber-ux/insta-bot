@@ -33,6 +33,8 @@ async def process_back_to_regions(callback: CallbackQuery):
 @router.callback_query(DistrictCallback.filter())
 async def process_district_selection(callback: CallbackQuery, callback_data: DistrictCallback):
     district_name = callback_data.district_name
+  # BAZAGA YOZISH:
+db.update_district(callback.from_user.id, district_name)
     
     # Foydalanuvchiga kutib turishni aytamiz (chunki API so'rov 1-2 soniya oladi)
     await callback.message.edit_text("⏳ <i>Namoz vaqtlari yuklanmoqda...</i>")
