@@ -11,7 +11,8 @@ class Database:
             CREATE TABLE IF NOT EXISTS users (
                 user_id INTEGER PRIMARY KEY,
                 full_name TEXT,
-                district TEXT
+                district TEXT,
+                reminder_time INTEGER DEFAULT 0
             )
         """)
         self.connection.commit()
@@ -27,8 +28,7 @@ class Database:
     def update_district(self, user_id, district):
         self.cursor.execute("UPDATE users SET district = ? WHERE user_id = ?", (district, user_id))
         self.connection.commit()
-
-    def get_user_district(self, user_id):
-        self.cursor.execute("SELECT district FROM users WHERE user_id = ?", (user_id,))
-        result = self.cursor.fetchone()
-        return result[0] if result else None
+    
+    def update_reminder(self, user_id, time):
+        self.cursor.execute("UPDATE users SET reminder_time = ? WHERE user_id = ?", (time, user_id))
+        self.connection.commit()
