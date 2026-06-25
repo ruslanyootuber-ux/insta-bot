@@ -21,7 +21,10 @@ class Database:
         self.cursor.execute("INSERT OR IGNORE INTO users (user_id, full_name) VALUES (?, ?)", (user_id, full_name))
         self.connection.commit()
 
-    def update_district(self, user_id, district):
+        def get_all_users(self):
+        self.cursor.execute("SELECT * FROM users")
+        return self.cursor.fetchall()
+f, user_id, district):
         self.cursor.execute("UPDATE users SET district = ? WHERE user_id = ?", (district, user_id))
         self.connection.commit()
 
