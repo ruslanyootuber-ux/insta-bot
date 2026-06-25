@@ -10,7 +10,7 @@ bot = Bot(token=BOT_TOKEN)
 
 def get_namoz_vaqtlari():
     try:
-        url = "https://islomapi.uz/api/present/day?region=Toshkent"
+        url = "https://api.aladhan.com/v1/timingsByCity?city=Tashkent&country=Uzbekistan&method=3"
         response = requests.get(url, timeout=10).json()
         
         # Javobni tekshiramiz
