@@ -16,7 +16,7 @@ async def main():
     )
     
     # Kelajakda routerlarni bu yerda ro'yxatdan o'tkazamiz
-    # dp.include_routers(
+     dp.include_routers(
         start.router,
         menu_handlers.router
     )
