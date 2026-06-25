@@ -5,7 +5,7 @@ from aiogram import Bot
 
 # Konfiguratsiya# Konfiguratsiya
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHANNEL_ID = "@namozvaqti1111p" 
+CHANNEL_ID = "@namozvaqti1111" 
 bot = Bot(token=BOT_TOKEN)
 
 def get_namoz_vaqtlari():
