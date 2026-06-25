@@ -7,12 +7,14 @@ class Database:
         self.create_table()
 
     def create_table(self):
+        # Barcha ustunlarni bitta jadvalga birlashtirdik
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 user_id INTEGER PRIMARY KEY,
                 full_name TEXT,
                 district TEXT,
-                reminder_time INTEGER DEFAULT 0
+                reminder_time INTEGER DEFAULT 0,
+                school INTEGER DEFAULT 0
             )
         """)
         self.connection.commit()
@@ -32,3 +34,12 @@ class Database:
     def update_reminder(self, user_id, time):
         self.cursor.execute("UPDATE users SET reminder_time = ? WHERE user_id = ?", (time, user_id))
         self.connection.commit()
+
+    def update_school(self, user_id, school):
+        self.cursor.execute("UPDATE users SET school = ? WHERE user_id = ?", (school, user_id))
+        self.connection.commit()
+        
+    def get_user_data(self, user_id):
+        # Foydalanuvchining barcha sozlamalarini olish uchun
+        self.cursor.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
+        return self.cursor.fetchone()
