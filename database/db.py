@@ -7,7 +7,6 @@ class Database:
         self.create_table()
 
     def create_table(self):
-        # Foydalanuvchilar jadvali
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 user_id INTEGER PRIMARY KEY,
@@ -21,10 +20,11 @@ class Database:
         self.cursor.execute("INSERT OR IGNORE INTO users (user_id, full_name) VALUES (?, ?)", (user_id, full_name))
         self.connection.commit()
 
-        def get_all_users(self):
+    def get_all_users(self):
         self.cursor.execute("SELECT * FROM users")
         return self.cursor.fetchall()
-f, user_id, district):
+
+    def update_district(self, user_id, district):
         self.cursor.execute("UPDATE users SET district = ? WHERE user_id = ?", (district, user_id))
         self.connection.commit()
 
