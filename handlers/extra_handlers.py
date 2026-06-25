@@ -82,7 +82,7 @@ async def process_creator(callback: CallbackQuery):
     text = (
         "👨‍💻 <b>Bot Yaratuvchisi</b>\n\n"
         "Barcha viloyat va tumanlar uchun eng aniq namoz vaqtlari yetkazib berish maqsad qilingan.\n\n"
-        "📩 <i>Taklif va murojaatlar uchun pastdagi tugmadan foydalaning:</i>"
+        "📩 <i>Taklif va murojaatlar uchun pastdagi ‹Admin bilan bog'lanish› tugmasini bosing:</i>"
     )
     
     builder = InlineKeyboardBuilder()
