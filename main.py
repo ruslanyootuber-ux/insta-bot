@@ -1,7 +1,9 @@
+import os
 import asyncio
 import random
 import datetime
-from telethon import TelegramClient, functions
+from telethon import TelegramClient, events
+from telethon.sessions import StringSession
 
 # Konfiguratsiyalar
 API_ID = ... 
