@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from loader import bot, dp
-
+from handlers import start, menu_handlers
 # Kelajakda handlerlarni bu yerga ulaymiz
 # from handlers import start_handler 
 
@@ -16,7 +16,10 @@ async def main():
     )
     
     # Kelajakda routerlarni bu yerda ro'yxatdan o'tkazamiz
-    # dp.include_router(start_handler.router)
+    # dp.include_routers(
+        start.router,
+        menu_handlers.router
+    )
     
     # Bot ishga tushganda bajariladigan funksiya
     dp.startup.register(on_startup)
