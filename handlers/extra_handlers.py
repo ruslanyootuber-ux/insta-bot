@@ -73,17 +73,24 @@ async def set_school(callback: CallbackQuery):
     db.update_school(callback.from_user.id, school)
     await callback.answer("✅ Mazhab saqlandi.", show_alert=True)
 
+
 # --- 5. Yaratuvchi bo'limi ---
 @router.callback_query(F.data == "menu_creator")
 async def process_creator(callback: CallbackQuery):
     await callback.answer()
+    
     text = (
         "👨‍💻 <b>Bot Yaratuvchisi</b>\n\n"
-        "Ushbu zamonaviy va tezkor bot <b>Python</b> va <b>Aiogram 3.x</b> texnologiyalari "
-        "asosida yaratildi.\n\n"
         "Barcha viloyat va tumanlar uchun eng aniq namoz vaqtlari yetkazib berish maqsad qilingan.\n\n"
-        "📩 <b>Taklif va murojaatlar uchun:</b> @mrxruslann"
+        "📩 <i>Taklif va murojaatlar uchun pastdagi tugmadan foydalaning:</i>"
     )
+    
     builder = InlineKeyboardBuilder()
+    # Zamonaviy URL tugma (Tugma bosilsa, profilingizga olib o'tadi)
+    builder.button(text="💬 Admin bilan bog'lanish", url="https://t.me/mrxruslann")
+    # Orqaga qaytish tugmasi
     builder.button(text="⬅️ Orqaga", callback_data="back_to_menu")
+    
+    builder.adjust(1) # Tugmalarni ustma-ust joylashtirish uchun
+    
     await callback.message.edit_text(text=text, reply_markup=builder.as_markup())
