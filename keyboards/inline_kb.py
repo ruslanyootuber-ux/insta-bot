@@ -1,26 +1,54 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram.types import InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from keyboards.callbacks import RegionCallback, DistrictCallback
 from utils.locations import UZB_REGIONS
 
 def get_regions_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     
-    # Barcha viloyatlarni tugma qilib chiqaramiz
+    # 1. Viloyatlar tugmalari (2 tadan joylashadi)
     for region in UZB_REGIONS.keys():
         builder.button(
             text=f"📍 {region}",
             callback_data=RegionCallback(region_name=region)
         )
-        
-    # Tugmalarni 2 tadan qilib joylashtiramiz (chiroyli dizayn)
-    builder.adjust(2)
+    builder.adjust(2) # Viloyatlarni 2 qatorga bo'lamiz
+    
+    # 2. Rang-barang va zamonaviy qo'shimcha tugmalar
+    bot_username = "Bshsudhdhdj_bot"
+    
+    # Eslatma va Sozlamalar (1-qator)
+    builder.row(
+        InlineKeyboardButton(text="🔔 Eslatma (Tez kunda)", callback_data="menu_reminder"),
+        InlineKeyboardButton(text="⚙️ Sozlamalar", callback_data="menu_settings")
+    )
+    
+    # Yaratuvchi va Baholash (2-qator)
+    builder.row(
+        InlineKeyboardButton(text="👨‍💻 Yaratuvchi", callback_data="menu_creator"),
+        InlineKeyboardButton(text="⭐ Baholash", callback_data="menu_rate")
+    )
+    
+    # Guruhga qo'shish (3-qator, katta uzun tugma)
+    builder.row(
+        InlineKeyboardButton(
+            text="➕ Botni guruhga qo'shish", 
+            url=f"https://t.me/{bot_username}?startgroup=true"
+        )
+    )
+    
+    # Do'stlarga ulashish (4-qator, katta uzun tugma)
+    builder.row(
+        InlineKeyboardButton(
+            text="↗️ Do'stlarga ulashish", 
+            url=f"https://t.me/share/url?url=https://t.me/{bot_username}&text=🕌 Barcha viloyat va tumanlar uchun eng aniq namoz vaqtlari boti! Siz ham foydalanib ko'ring."
+        )
+    )
+    
     return builder.as_markup()
 
 def get_districts_keyboard(region_name: str) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    
-    # Tanlangan viloyatning tumanlarini olamiz
     districts = UZB_REGIONS.get(region_name, [])
     
     for district in districts:
@@ -29,11 +57,7 @@ def get_districts_keyboard(region_name: str) -> InlineKeyboardMarkup:
             callback_data=DistrictCallback(district_name=district)
         )
     
-    # Orqaga qaytish tugmasini alohida qo'shamiz
     builder.button(text="⬅️ Viloyatlarga qaytish", callback_data="back_to_regions")
-    
-    # Tumanlarni 2 tadan qilib, eng oxiridagi "Orqaga" tugmasini 1 ta qilib joylashtirish
-    # Buning uchun oxirgi qatorga 1 beramiz
     sizes = [2] * (len(districts) // 2) + ([1] if len(districts) % 2 != 0 else []) + [1]
     builder.adjust(*sizes)
     
