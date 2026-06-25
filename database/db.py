@@ -7,7 +7,6 @@ class Database:
         self.create_table()
 
     def create_table(self):
-        # Barcha ustunlarni bitta jadvalga birlashtirdik
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 user_id INTEGER PRIMARY KEY,
@@ -40,6 +39,5 @@ class Database:
         self.connection.commit()
         
     def get_user_data(self, user_id):
-        # Foydalanuvchining barcha sozlamalarini olish uchun
         self.cursor.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
         return self.cursor.fetchone()
