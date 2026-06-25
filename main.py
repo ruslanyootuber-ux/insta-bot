@@ -6,7 +6,7 @@ from telethon.sessions import StringSession
 # Konfiguratsiyalar
 API_ID = int(os.getenv("API_ID", 0))
 API_HASH = os.getenv("API_HASH", "")
-SESSION_STRING = os.getenv("SESSION_STRING", "")
+STRING_SESSION = os.getenv("STRING_SESSION", "")
 BOT_TOKEN = os.getenv("BOT_TOKEN")  # BotFatherdan olingan token
 
 # Bot client (token orqali ishlaydi)
@@ -49,7 +49,7 @@ async def main():
     # Agar SESSION_STRING bo'lsa, userbotni ishga tushir
     if SESSION_STRING:
         userbot = TelegramClient(
-            StringSession(SESSION_STRING), 
+            StringSession(STRING_SESSION), 
             API_ID, 
             API_HASH,
             device_model="PC 64-bit",
