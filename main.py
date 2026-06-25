@@ -6,9 +6,9 @@ from telethon import TelegramClient, functions
 # Konfiguratsiyalar
 API_ID = ... 
 API_HASH = '...'
-SESSION_STRING = '...'
+STRING_SESSION = '...'
 
-client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
+client = TelegramClient(StringSession(STRING_SESSION), API_ID, API_HASH)
 
 TEXTS = ["Salom hammaga! Kanalimda kutaman, u yerda hamma narsa erkinroq, kiring o‘zingiz ko‘rasiz... 🍑🔥",
 "Yolg‘izlik jonimga tegdi... Kanalim profilimda, kirsangiz pushaymon bo‘lmaysiz, kutyapman. 💦🫦",
