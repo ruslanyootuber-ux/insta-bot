@@ -1,17 +1,16 @@
 import aiohttp
 
-async def get_prayer_times(district_name: str) -> dict:
+async def get_prayer_times(district_name: str, school: int = 0) -> dict:
     """
-    Aladhan API orqali berilgan tuman uchun namoz vaqtlarini oladi.
+    Aladhan API orqali berilgan tuman va mazhab uchun namoz vaqtlarini oladi.
+    school: 0 = Hanafi, 1 = Shafi'i
     """
-    # So'rov manzili (Address): Tuman, O'zbekiston
-    address = f"{district_name}, Uzbekistan"
     url = "http://api.aladhan.com/v1/timingsByAddress"
     
-    # Method 3: Muslim World League (Aksariyat O'zbekiston vaqtlariga yaqin)
     params = {
-        "address": address,
-        "method": 3
+        "address": f"{district_name}, Uzbekistan",
+        "method": 3,   # Muslim World League
+        "school": school # Mazhabni uzatamiz
     }
     
     async with aiohttp.ClientSession() as session:
