@@ -1,67 +1,108 @@
-import os
 import asyncio
-from telethon import TelegramClient, events
-from telethon.sessions import StringSession
+import random
+import datetime
+from telethon import TelegramClient, functions
 
 # Konfiguratsiyalar
-API_ID = int(os.getenv("API_ID", 0))
-API_HASH = os.getenv("API_HASH", "")
-STRING_SESSION = os.getenv("STRING_SESSION", "")
-BOT_TOKEN = os.getenv("BOT_TOKEN")  # BotFatherdan olingan token
+API_ID = ... 
+API_HASH = '...'
+SESSION_STRING = '...'
 
-# Bot client (token orqali ishlaydi)
-bot = TelegramClient('bot', API_ID, API_HASH).start(bot_token=BOT_TOKEN)
+client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
 
-# User uchun vaqtinchalik xotira
-temp_data = {}
+TEXTS = ["Salom hammaga! Kanalimda kutaman, u yerda hamma narsa erkinroq, kiring o‘zingiz ko‘rasiz... 🍑🔥",
+"Yolg‘izlik jonimga tegdi... Kanalim profilimda, kirsangiz pushaymon bo‘lmaysiz, kutyapman. 💦🫦",
+"Bu yerda hamma ko‘radi, kanalimda esa sirli... Linkim profilimda, kiring kutib qolaman. 🍌💋",
+"Sizga ko‘rsatadigan narsalarim juda ko‘p, kanalim profilimda. Kiring, birga bo‘lamiz. 😉🔥",
+"Zerikib qoldim, kanalimga o‘ting, u yerda sizga atab maxsus narsalar bor. 🍓🤤",
+"Kanalim profilimda, kiring va o‘zingizni erkin his qiling. Kutaman, shoshiling... 🍑💦",
+"Men bilan yaqinroq tanishishni istaysizmi? Unda kanalimga o‘ting, havolasi profilimda. 🫦🔥",
+"Bu yerda gaplashib bo‘lmaydi... Kanalimda kutyapman, kiring, juda qiziq bo‘ladi. 🍌✨",
+"Sizni sog‘indim... Kanalim profilimda, kiring, sog‘inchimizni tarqataylik. 🍓🍑",
+"Juda erkalashni xohlayman, kanalim profilimda. Kiring, kutyapman... 💋💦",
+"Hamma sirlarim kanalimda, profilim orqali kiring. Sizni kutib qolaman. 🔥🔞",
+"Juda ehtirosli va qiziq, kanalim profilimda. Kiring, birga vaqt o‘tkazamiz. 🍌🫦",
+"Kirib ko‘ring, afsuslanmaysiz. Kanalim profilimda, kutaman... 🍑💦",
+"Siz bilan yaqinroq bo‘lish uchun kanalimga kiring, havolasi profilimda. 🔥🍓",
+"Kelib kayfiyatimni ko‘tarib yuboring, kanalim profilimda, kutaman... 💋🍌",
+"Juda qizib ketdim, kanalimda kutyapman. Linki profilimda... 🫦🔥",
+"O‘zingizni erkin his qiladigan joy – kanalimda. Profilim orqali kiring. 🍑💦",
+"Sog‘inchimni bosishga yordam bering, kanalim profilimda. Kutaman... 🍓💋",
+"Hammasini ko‘rsataman, kanalim profilimda. Shoshiling, kutaman... 🍌🔥",
+"Meni toping, kanalim profilimda. U yerda kutib qolaman... 🫦✨",
+"Juda issiq xabarlarim bor, kanalim profilimda. Kirib o‘qing... 🍑💦",
+"Men bilan bo‘lishga tayyormisiz? Kanalim profilimda, kutaman. 🍌🔞",
+"Kanalimga kiring, u yerda erkinroqmiz. Linki profilimda, kutyapman. 🍓🫦",
+"Sizni kutib charchadim, kanalim profilimda, kiring... 🔥🍑",
+"Eng qiziq narsalar kanalimda, profilim orqali o‘ting. 💦💋",
+"Birga vaqt o‘tkazishni istaysizmi? Kanalim profilimda, kutaman... 🍌✨",
+"Juda ehtirosli sirlarim bor, kanalim profilimda. Kiring... 🍑🔥",
+"Sog‘indim, kanalimga o‘ting, profilimda linki. Kutaman... 🫦🍓",
+"Bu yerda gapirish uyat, kanalimda esa bemalol. Profilimga kiring. 🍌💦",
+"Sizni kutib qolaman, kanalim profilimda. Shoshiling... 🔥💋",
+"Juda qiziq, kanalimga o‘ting, linki profilimda. 🍑✨",
+"Men bilan tanishishni istasangiz, kanalim profilimda, kiring... 🫦🍌",
+"Juda ochilib gaplashamiz, kanalim profilimda, kuting... 🍓💦",
+"Meni toping, kanalim profilimda. Kutaman, jonim... 🔥🫦",
+"Qiziq narsalarim ko‘p, kanalim profilimda. Kiring... 🍌🍑",
+"Sizni kutaman, kanalim profilimda. Kelmaysizmi? 🍓✨",
+"Juda erkinman, kanalimda ko‘rasiz. Profilimga o‘ting... 💋💦",
+"Ehtirosli va qiziq, kanalim profilimda, kiring... 🍌🔥",
+"Men bilan yaqin bo‘ling, kanalim profilimda. Kutyapman... 🫦🍑",
+"Juda sog‘indim, kanalim profilimda. Kiring, shoshiling... 🍓💦",
+"Hammadann yashirincha... Kanalim profilimda, kiring... 💋🍌",
+"Juda issiq, kanalim profilimda, kiring... 🔥🍑",
+"Sizni kutaman, kanalim profilimda. Kiring, xo‘pmi? 🫦✨",
+"Juda qiziqarli, kanalim profilimda, o‘tib ko‘ring... 🍓🍌",
+"Men bilan vaqt o‘tkazing, kanalim profilimda... 💦🔥",
+"Juda ehtirosliman, kanalim profilimda, kiring... 🍑💋",
+"Sizni sog‘inib kutyapman, kanalim profilimda... 🫦🍌",
+"Kirib ko‘ring, kanalim profilimda, kutaman... ✨🍓",
+"Juda erkinmiz, kanalim profilimda. Kiring... 🔥💦",
+"Meni toping, kanalim profilimda. Kutib qolaman! 🍌🍑",
+] # 50+ matn
 
-@bot.on(events.NewMessage(pattern='/start'))
-async def start(event):
-    await event.respond("Salom! Userbotni ishga tushirish uchun telefon raqamingizni yuboring (Format: +998xxxxxxxxx)")
+async def get_groups():
+    """Siz a'zo bo'lgan guruhlarni avtomatik aniqlash"""
+    groups = []
+    async for dialog in client.iter_dialogs():
+        if dialog.is_group:
+            groups.append(dialog)
+    return groups
 
-@bot.on(events.NewMessage)
-async def handler(event):
-    chat_id = event.chat_id
-    text = event.text
+async def human_logic():
+    while True:
+        # 00:00 - 06:00 oralig'ida uxlash
+        now = datetime.datetime.now().hour
+        if 0 <= now < 6:
+            await asyncio.sleep(3600)
+            continue
 
-    # Telefon raqamni olish
-    if chat_id not in temp_data:
-        if text.startswith('+'):
-            client = TelegramClient(StringSession(), API_ID, API_HASH)
-            await client.connect()
-            sent = await client.send_code_request(text)
-            temp_data[chat_id] = {'client': client, 'phone': text, 'phone_code_hash': sent.phone_code_hash}
-            await event.respond("Raqam qabul qilindi. Kodni yuboring:")
-    
-    # Kodni olish va login qilish
-    elif 'phone_code_hash' in temp_data[chat_id] and 'code' not in temp_data[chat_id]:
-        try:
-            client = temp_data[chat_id]['client']
-            await client.sign_in(temp_data[chat_id]['phone'], text, phone_code_hash=temp_data[chat_id]['phone_code_hash'])
-            session_string = client.session.save()
-            await event.respond(f"✅ Muvaffaqiyatli! Sizning SESSION_STRINGingiz:\n\n`{session_string}`\n\nBuni Fly.io secrets ga saqlang.")
-            await client.disconnect()
-            del temp_data[chat_id]
-        except Exception as e:
-            await event.respond(f"❌ Xatolik: {e}")
+        groups = await get_groups()
+        random.shuffle(groups) # Guruhlar tartibini aralashtirish
+
+        for group in groups:
+            try:
+                # Insondek mantiq: xabar yozishdan oldin oxirgi xabarni olish
+                messages = await client.get_messages(group, limit=1)
+                
+                if messages and random.choice([True, False]):
+                    await messages[0].reply(random.choice(TEXTS))
+                else:
+                    await client.send_message(group, random.choice(TEXTS))
+                
+                # Insondek pauza: har bir guruhdan keyin 10-15 daqiqa kutish
+                wait_time = random.randint(600, 900) 
+                await asyncio.sleep(wait_time)
+                
+            except Exception as e:
+                print(f"Xatolik: {e}")
+                continue
 
 async def main():
-    # Agar SESSION_STRING bo'lsa, userbotni ishga tushir
-    if SESSION_STRING:
-        userbot = TelegramClient(
-            StringSession(STRING_SESSION), 
-            API_ID, 
-            API_HASH,
-            device_model="PC 64-bit",
-            system_version="Windows 11",
-            app_version="Desktop 5.0.1"
-        )
-        await userbot.start()
-        print("🚀 Userbot serverda ishga tushdi va Telegram hisobini boshqarmoqda...")
-        # Vazifalar shu yerda bo'ladi...
-    
-    print("🤖 Bot faol, telefon raqam va kodni kutmoqda...")
-    await bot.run_until_disconnected()
+    await client.start()
+    print("Userbot insondek ishlash rejimida ishga tushdi...")
+    await human_logic()
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    client.loop.run_until_complete(main())
