@@ -3,6 +3,9 @@ from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from datetime import datetime
 
+# BAZA ni import qilamiz
+from loader import db 
+
 from keyboards.callbacks import RegionCallback, DistrictCallback
 from keyboards.inline_kb import get_regions_keyboard, get_districts_keyboard
 from utils.aladhan_api import get_prayer_times
@@ -14,7 +17,7 @@ router = Router()
 async def process_region_selection(callback: CallbackQuery, callback_data: RegionCallback):
     region_name = callback_data.region_name
     text = f"📍 <b>{region_name}</b>ni tanladingiz.\n\n🏙 Endi tumanni tanlang:"
-    
+
     await callback.message.edit_text(
         text=text,
         reply_markup=get_districts_keyboard(region_name)
@@ -33,18 +36,19 @@ async def process_back_to_regions(callback: CallbackQuery):
 @router.callback_query(DistrictCallback.filter())
 async def process_district_selection(callback: CallbackQuery, callback_data: DistrictCallback):
     district_name = callback_data.district_name
-  # BAZAGA YOZISH:
-db.update_district(callback.from_user.id, district_name)
     
-    # Foydalanuvchiga kutib turishni aytamiz (chunki API so'rov 1-2 soniya oladi)
+    # BAZAGA YOZISH (To'g'ri joylashtirildi)
+    db.update_district(callback.from_user.id, district_name)
+
+    # Foydalanuvchiga kutib turishni aytamiz
     await callback.message.edit_text("⏳ <i>Namoz vaqtlari yuklanmoqda...</i>")
-    
+
     # API ga so'rov yuboramiz
     times = await get_prayer_times(district_name)
-    
+
     builder = InlineKeyboardBuilder()
     builder.button(text="⬅️ Viloyatlarga qaytish", callback_data="back_to_regions")
-    
+
     if times:
         today = datetime.now().strftime("%d.%m.%Y")
         text = (
@@ -60,5 +64,5 @@ db.update_district(callback.from_user.id, district_name)
         )
     else:
         text = "❌ Kechirasiz, API serveri bilan bog'lanishda xatolik yuz berdi. Iltimos keyinroq urinib ko'ring."
-        
+
     await callback.message.edit_text(text, reply_markup=builder.as_markup())
