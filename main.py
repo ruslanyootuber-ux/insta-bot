@@ -1,43 +1,57 @@
-import asyncio
 import os
-import requests
-from aiogram import Bot
+import asyncio
+from telethon import TelegramClient
+from telethon.sessions import StringSession
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHANNEL_ID = "@namozvaqti1111"
-bot = Bot(token=BOT_TOKEN)
+# Konfiguratsiyalar
+API_ID = int(os.getenv("API_ID", 0)) # Default qiymat qo'shildi
+API_HASH = os.getenv("API_HASH", "")
+SESSION_STRING = os.getenv("SESSION_STRING", "")
 
-def get_namoz_vaqtlari():
-    try:
-        url = "https://api.aladhan.com/v1/timingsByCity?city=Tashkent&country=Uzbekistan&method=3"
-        response = requests.get(url, timeout=10).json()
-        
-        data = response['data']['timings']
-        date = response['data']['date']['readable']
-        
-        # Markdown belgilarisiz oddiy matn
-        text = (f"🕋 Namoz vaqtlari ({date})\n"
-                f"📍 Toshkent\n\n"
-                f"🌅 Tong (Fajr): {data['Fajr']}\n"
-                f"☀️ Quyosh (Sunrise): {data['Sunrise']}\n"
-                f"🏙 Peshin (Dhuhr): {data['Dhuhr']}\n"
-                f"🌇 Asr (Asr): {data['Asr']}\n"
-                f"🌆 Shom (Maghrib): {data['Maghrib']}\n"
-                f"🌙 Xufton (Isha): {data['Isha']}")
-        return text
-    except Exception as e:
-        return f"Xatolik yuz berdi: {str(e)}"
+async def perform_login():
+    """Raqam va kodni so'rab, sessiya kodini qaytaruvchi funksiya"""
+    print("\n--- 🔐 TELEGRAM AUTHENTICATION ---")
+    client = TelegramClient(StringSession(), API_ID, API_HASH)
+    await client.connect()
+    
+    if not await client.is_user_authorized():
+        phone = input("📱 Telefon raqamingizni kiriting (+998xxxxxxxxx): ")
+        await client.send_code_request(phone)
+        code = input("📩 Kodni kiriting: ")
+        try:
+            await client.sign_in(phone, code)
+        except Exception as e:
+            print(f"❌ Xatolik: {e}")
+            return None
+            
+        new_session = client.session.save()
+        print(f"\n✅ Muvaffaqiyatli! Sizning SESSION_STRINGingiz:")
+        print(f"\n{new_session}\n")
+        print("Buni nusxalab, Fly.io secrets ga SESSION_STRING qilib saqlang.")
+        return new_session
+    return None
 
 async def main():
-    while True:
-        try:
-            namoz_text = get_namoz_vaqtlari()
-            # parse_mode ni olib tashladik, shunda xatolik bermaydi
-            await bot.send_message(chat_id=CHANNEL_ID, text=namoz_text)
-            await asyncio.sleep(10800) 
-        except Exception as e:
-            print(f"Loop xatosi: {e}")
-            await asyncio.sleep(60)
+    # Agar sessiya string bo'lmasa, login so'raydi
+    if not SESSION_STRING:
+        await perform_login()
+        return # Yangi login bo'lsa, skriptni qayta ishga tushirish kerak
 
-if __name__ == "__main__":
+    # Asosiy client
+    client = TelegramClient(
+        StringSession(SESSION_STRING), 
+        API_ID, 
+        API_HASH,
+        device_model="PC 64-bit",
+        system_version="Windows 11",
+        app_version="Desktop 5.0.1"
+    )
+
+    await client.start()
+    print("🚀 Userbot serverda ishga tushdi va Telegram hisobini boshqarmoqda...")
+    
+    # Bu yerda o'z vazifalaringizni bajaring
+    await client.run_until_disconnected()
+
+if __name__ == '__main__':
     asyncio.run(main())
