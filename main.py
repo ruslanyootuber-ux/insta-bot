@@ -1,27 +1,32 @@
 import asyncio
-import os
-from aiogram import Bot, Dispatcher
-from dotenv import load_dotenv
-import handlers
+import logging
+from loader import bot, dp
 
-# .env fayldan o'zgaruvchilarni yuklaydi
-load_dotenv()
+# Kelajakda handlerlarni bu yerga ulaymiz
+# from handlers import start_handler 
+
+async def on_startup():
+    print("Bot muvaffaqiyatli ishga tushdi va namoz vaqtlarini olishga tayyor!")
 
 async def main():
-    # Tokenni muhit o'zgaruvchisidan olish
-    token = os.getenv("BOT_TOKEN")
+    # Loglarni ekranga chiqarish (xatoliklarni ko'rib turish uchun)
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s"
+    )
     
-    if not token:
-        raise ValueError("BOT_TOKEN topilmadi! .env faylni tekshiring.")
-
-    bot = Bot(token=token)
-    dp = Dispatcher()
+    # Kelajakda routerlarni bu yerda ro'yxatdan o'tkazamiz
+    # dp.include_router(start_handler.router)
     
-    # Handlerlarni ulash
-    dp.include_router(handlers.router)
+    # Bot ishga tushganda bajariladigan funksiya
+    dp.startup.register(on_startup)
     
-    print("Bot muvaffaqiyatli ishga tushdi...")
+    # Pollingni boshlash (bot doimiy ishlab turishi uchun)
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Bot to'xtatildi.")
