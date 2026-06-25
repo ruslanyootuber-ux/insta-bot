@@ -3,6 +3,7 @@ import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from loader import bot, dp
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
+from handlers.extra_handlers import check_and_send_reminders # Importni qo'shdik
 
 async def on_startup():
     print("Bot muvaffaqiyatli ishga tushdi!")
@@ -10,11 +11,15 @@ async def on_startup():
 async def main():
     logging.basicConfig(level=logging.INFO)
 
-    # Scheduler - har kuni ertalab 05:00 da tekshiruv (yoki boshqa vaqt)
+    # Scheduler'ni bir marta sozlaymiz
     scheduler = AsyncIOScheduler()
-    # scheduler.add_job(send_daily_reminders, 'cron', hour=5, minute=0) # Kerak bo'lsa yoqing
+    
+    # Har 1 daqiqada tekshirib turadigan eslatma tizimi
+    scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
+    
     scheduler.start()
 
+    # Routerlar
     dp.include_routers(
         start.router,
         menu_handlers.router,
@@ -23,6 +28,7 @@ async def main():
     )
 
     dp.startup.register(on_startup)
+    
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
