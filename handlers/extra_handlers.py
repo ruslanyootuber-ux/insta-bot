@@ -72,3 +72,18 @@ async def set_school(callback: CallbackQuery):
     school = int(callback.data.split("_")[2])
     db.update_school(callback.from_user.id, school)
     await callback.answer("✅ Mazhab saqlandi.", show_alert=True)
+
+# --- 5. Yaratuvchi bo'limi ---
+@router.callback_query(F.data == "menu_creator")
+async def process_creator(callback: CallbackQuery):
+    await callback.answer()
+    text = (
+        "👨‍💻 <b>Bot Yaratuvchisi</b>\n\n"
+        "Ushbu zamonaviy va tezkor bot <b>Python</b> va <b>Aiogram 3.x</b> texnologiyalari "
+        "asosida yaratildi.\n\n"
+        "Barcha viloyat va tumanlar uchun eng aniq namoz vaqtlari yetkazib berish maqsad qilingan.\n\n"
+        "📩 <b>Taklif va murojaatlar uchun:</b> @mrxruslann"
+    )
+    builder = InlineKeyboardBuilder()
+    builder.button(text="⬅️ Orqaga", callback_data="back_to_menu")
+    await callback.message.edit_text(text=text, reply_markup=builder.as_markup())
