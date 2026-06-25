@@ -3,21 +3,20 @@ import os
 import requests
 from aiogram import Bot
 
-# Konfiguratsiya
+# Konfiguratsiya# Konfiguratsiya
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHANNEL_ID = "@namozvaqti1111"
+CHANNEL_ID = "@namozvaqti1111p" 
 bot = Bot(token=BOT_TOKEN)
 
 def get_namoz_vaqtlari():
     try:
+        # Aladhan API: Toshkent uchun so'rov
         url = "https://api.aladhan.com/v1/timingsByCity?city=Tashkent&country=Uzbekistan&method=3"
         response = requests.get(url, timeout=10).json()
         
-        # Javobni tekshiramiz
-        if 'times' not in response:
-            return f"API dan ma'lumot noto'g'ri keldi: {response}"
-            
-        v = response['times']
+        # API dan kelgan ma'lumotni olish
+        data = response['data']['timings']
+        date = response['data']['date']['readable']
         text = (f"🕋 *Namoz vaqtlari ({response['date']})*\n"
                 f"📍 *Mintaqa: {response['region']}*\n\n"
                 f"🌅 Tong: {v['tong_saharlik']}\n"
