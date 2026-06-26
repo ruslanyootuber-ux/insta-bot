@@ -1,17 +1,10 @@
-import sys
-import os
-
-# Loyihaning asosiy papkasini (root) ishonchli tarzda tizimga qo'shamiz
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if BASE_DIR not in sys.path:
-    sys.path.insert(0, BASE_DIR)
-
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import InlineKeyboardButton
-# Ma'lumotlar endi muammosiz topiladi
-from duo_data import DUOLAR 
+
+# E'tibor bering: endi nuqta (.) orqali xuddi shu papkadagi faylni chaqiryapmiz
+from .duo_data import DUOLAR 
 
 router = Router()
 
@@ -34,7 +27,6 @@ def get_duo_navigation(category, index, total):
 async def show_duo_content(callback: CallbackQuery):
     data = callback.data.split("_")
     
-    # Xatolikni oldini olish (agar data qisqa kelsa)
     if len(data) < 3:
         return
         
