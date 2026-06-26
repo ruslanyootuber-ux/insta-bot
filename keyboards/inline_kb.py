@@ -18,7 +18,7 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
     bot_username = "Bshsudhdhdj_bot"
 
 (#Hadis hikmatlar tugmasi
-builder.row(
+    builder.row(
     InlineKeyboardButton(text="📖 Kun hadisi", callback_data="menu_hadis")
 )
 
