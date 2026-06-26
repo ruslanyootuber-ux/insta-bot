@@ -3,7 +3,9 @@ import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from loader import bot, dp
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
-from handlers.extra_handlers import check_and_send_reminders # Importni qo'shdik
+from handlers.extra_handlers import check_and_send_reminders
+from handlers.zikr_handlers import router as zikr_router
+ # Importni qo'shdik
 
 async def on_startup():
     print("Bot muvaffaqiyatli ishga tushdi!")
@@ -24,7 +26,7 @@ async def main():
         start.router,
         menu_handlers.router,
         extra_handlers.router,
-        admin_handlers.router
+        dp.include_router(zikr_router)
     )
 
     dp.startup.register(on_startup)
