@@ -20,7 +20,7 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
     
     # Yangi Zikrlar tugmasi (Katta, alohida qatorda)
     builder.row(
-        InlineKeyboardButton(text="🤲 Tonggi va Kechki zikrlar", callback_data="menu_zikr_main")
+        InlineKeyboardButton(text="🤲 Tonggi va Kechki zikrlar", callback_data="menu_zikr_main"
     )
     
     # Eslatma va Sozlamalar (1-qator)
