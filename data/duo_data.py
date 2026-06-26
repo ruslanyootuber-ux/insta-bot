@@ -1,128 +1,19 @@
+# data/duo_data.py
 DUOLAR = {
-    "tong": [
-        {"title": "Tonggi duo 1", "ar": "اللَّهُمَّ بِكَ أَصْبَحْنَا...", "lat": "Allohumma bika asbahna...", "uz": "Allohim, Sening noming bilan tong otdi..."},
-        {"title": "Tonggi duo 2", "ar": "أَصْبَحْنَا عَلَى فِطْرَةِ الْإِسْلَامِ", "lat": "Asbahna 'ala fitrotil-Islam...", "uz": "Islom fitrati, ixlos kalimasi... ustida tong otdi."},
-        {"title": "Tonggi duo 3", "ar": "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ", "lat": "Ya Hayyu ya Qoyyum, birohmatika astaghiis...", "uz": "Ey Tirik va Qoyyum Zot, rahmating ila madad so'rayman..."},
-        {"title": "Tonggi duo 4", "ar": "اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ", "lat": "Allohumma ma asbaha bi min ni'matin...", "uz": "Allohim, menga tongda yetgan har qanday ne'mat Sendandir..."},
-        {"title": "Tonggi duo 5", "ar": "سُبْحَانَ اللهِ وَبِحَمْدِهِ", "lat": "Subhanallohi va bihamdihi", "uz": "Allohni hamd aytish bilan poklayman (100 marta)."},
-        {"title": "Tonggi duo 6", "ar": "لاَ إِلَهَ إِلاَّ اللهُ وَحْدَهُ لاَ شَرِيكَ لَهُ", "lat": "La ilaha illallohu vahdahu la shariyka lah...", "uz": "Allohdan o'zga ibodatga loyiq zot yo'q, U yolg'izdir..."},
-        {"title": "Tonggi duo 7", "ar": "اللَّهُمَّ عَافِنِي فِي بَدَنِي", "lat": "Allohumma 'afini fi badani...", "uz": "Allohim, badanimni ofiyatda qil..."},
-        {"title": "Tonggi duo 8", "ar": "بِسْمِ اللهِ الَّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ", "lat": "Bismillahillaziy la yadurru ma'asmihi shay-un...", "uz": "Allohning ismi bilan boshlayman, Uning ismi bilan bo'lganda yeru osmondagi hech narsa zarar bermaydi."},
+    "namoz": [
+        {
+            "title": "Namoz duosi",
+            "arabic": "اَللَّهُمَّ إِنِّي أَسْأَلُكَ",
+            "latin": "Allohumma inni as'aluka...",
+            "uzbek": "Ey Allohim, Sendan so'rayman..."
+        }
     ],
-    "kech": [
-        {"title": "Kechki duo 1", "ar": "اللَّهُمَّ بِكَ أَمْسَيْنَا...", "lat": "Allohumma bika amsayna...", "uz": "Allohim, Sening noming bilan kech kirdi..."},
-        {"title": "Kechki duo 2", "ar": "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ", "lat": "Amsayna va amsal-mulku lillah...", "uz": "Kech kirdi va mulk Allohnikidir..."},
-        {"title": "Kechki duo 3", "ar": "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ", "lat": "Allohumma inni as-alukal-'afva val-'afiyah...", "uz": "Allohim, Sening afving va ofiyatingni so'rayman..."},
-        {"title": "Kechki duo 4", "ar": "اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ", "lat": "Allohumma qini 'azabaka yavma tab'asu 'ibadak...", "uz": "Allohim, bandalaringni qayta tiriltiradigan kuni azobingdan meni saqla."},
-        {"title": "Kechki duo 5", "ar": "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ", "lat": "A'uzu bikalimatillahit-tammati min sharri ma xolaq...", "uz": "Allohning mukammal kalimalari bilan yaratgan narsalarining yomonligidan panoh so'rayman."},
-        {"title": "Kechki duo 6", "ar": "رَضِيتُ بِاللهِ رَبًّا وَبِالْإِسْلَامِ دِينًا", "lat": "Roditu billahi Robban, va bil-Islami diinan...", "uz": "Robb sifatida Allohga, din sifatida Islomga rozi bo'ldim."},
-    ],
-    "safar": [
-        {"title": "Safar duosi", "ar": "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا", "lat": "Subhanallaziy saxxoro lana haza...", "uz": "Bizga buni bo'ysundirib qo'ygan Zot pokdir..."},
-        {"title": "Safar duosi 2", "ar": "اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا", "lat": "Allohumma havvin 'alayna safarona haza...", "uz": "Allohim, bu safarimizni bizga oson qil..."},
-    ],
-    "uyqu": [
-        {"title": "Uyqu duosi 1", "ar": "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", "lat": "Bismikallohumma amutu va ahya", "uz": "Allohim, Sening noming bilan o'laman va tirilaman."},
-        {"title": "Uyqu duosi 2", "ar": "بِاسْمِكَ رَبِّ وَضَعْتُ جَنْبِي", "lat": "Bismika Robbi vado'tu janbi...", "uz": "Robbim, Sening noming bilan yonboshladim..."},
-        {"title": "Uyqu duosi 3", "ar": "اللَّهُمَّ إِنَّكَ خَلَقْتَ نَفْسِي وَأَنْتَ تَوَفَّاهَا", "lat": "Allohumma innaka xolaqta nafsi va anta tavaffaha...", "uz": "Allohim, nafsimni Sen yaratding, uni vafot ettiradigan ham Sensan..."},
-        {"title": "Uyqudan uyg'onganda", "ar": "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَمَا أَمَاتَنَا", "lat": "Alhamdulillahillaziy ahyana ba'dama amatana...", "uz": "Bizni o'ldirgandan so'ng tiriltirgan Allohga hamd bo'lsin."},
-    ],
-    "kundalik": [
-        {"title": "Uyga kirish duosi", "ar": "بِسْمِ اللهِ وَلَجْنَا وَبِسْمِ اللهِ خَرَجْنَا", "lat": "Bismillahil-vajna va bismillahil-xorojna...", "uz": "Allohning nomi bilan kirdik, Allohning nomi bilan chiqdik..."},
-        {"title": "Uyga kirganda salom", "ar": "السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللهِ الصَّالِحِينَ", "lat": "Assalamu 'alayna va 'ala 'ibadillahis-solihiin.", "uz": "Bizga va Allohning solih bandalariga salom bo'lsin."},
-        {"title": "Masjidga kirish", "ar": "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", "lat": "Allohummaftah li abvaba rohmatik.", "uz": "Allohim, menga rahmat eshiklarini och."},
-        {"title": "Masjiddan chiqish", "ar": "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", "lat": "Allohumma inni as-aluka min fodlik.", "uz": "Allohim, Sening fazlingdan so'rayman."},
-        {"title": "Dasturxon duosi", "ar": "اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا", "lat": "Allohumma barik lana fima rozaqtana...", "uz": "Allohim, bizga rizq qilib bergan narsangni barakali qil."},
-        {"title": "Hojatxonaga kirish", "ar": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", "lat": "Allohumma inni a'uzu bika minal-xubusi val-xobais.", "uz": "Allohim, jirkanch va iflos narsalardan Sendan panoh so'rayman."},
-        {"title": "Hojatxonadan chiqish", "ar": "غُفْرَانَكَ", "lat": "Ghufronaka.", "uz": "Mag'firatingni so'rayman."},
-        {"title": "Oyna qarshisida", "ar": "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي", "lat": "Allohumma kama hassanta xolqi, fahassin xuluqi.", "uz": "Allohim, xalqimni (tashqi ko'rinishimni) go'zal qilganingdek, xulqimni ham go'zal qil."},
-    ],
-    "shifo": [
-        {"title": "Shifo duosi 1", "ar": "أَذْهِبِ الْبَأْسَ رَبَّ النَّاسِ", "lat": "Azhibil-ba'sa Robban-nas, ishfi antash-shafi...", "uz": "Ey insonlar Robbi, dardni ketkaz va shifo ber, Sen Shifokorsan."},
-        {"title": "Shifo duosi 2", "ar": "بِسْمِ اللهِ أَرْقِيكَ", "lat": "Bismillah arqika min kulli shay-in yu'ziika...", "uz": "Allohning nomi bilan seni har bir aziyat beruvchi narsadan himoyalayman."},
-    ],
-    "qiyinchilik": [
-        {"title": "G'am-tashvish duosi", "ar": "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ", "lat": "La ilaha illa anta subhanaka inni kuntu minaz-zoolimiin.", "uz": "Sendan o'zga iloh yo'q, Sen poksan. Men albatta zolim kishilardan bo'ldim."},
-        {"title": "Qiyinchilik duosi", "ar": "اللَّهُمَّ لاَ سَهْلَ إِلاَّ مَا جَعَلْتَهُ سَهْلاً", "lat": "Allohumma la sahla illa ma ja'altahu sahlan...", "uz": "Allohim, Sen oson qilgan narsangdan boshqa oson narsa yo'q."},
-        {"title": "Qarzdan qutulish", "ar": "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ", "lat": "Allohummak-fini bihalalika 'an haromik...", "uz": "Allohim, menga haloling bilan haromingdan kifoya qil..."},
-    ],
-    "ilm": [
-        {"title": "Ilm ziyoda bo'lishi", "ar": "رَبِّ زِدْنِي عِلْمًا", "lat": "Robbi zidni 'ilma.", "uz": "Robbim, ilmimni ziyoda qil."},
-        {"title": "Tushunish duosi", "ar": "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي", "lat": "Robbish-rohli sodriy va yassirliy amriy.", "uz": "Robbim, qalbimni keng qil va ishimni oson qil."},
-    ],
-    "iftorlik": [
-        {"title": "Iftorlik duosi", "ar": "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ", "lat": "Zahabaz-zoma-u vabtallatil-'uruuq...", "uz": "Chanqoq ketdi, tomirlar namlandi va inshaalloh ajr sobit bo'ldi."},
-    ],
-    "istigfor": [
-        {"title": "Sayyidul istig'for", "ar": "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ", "lat": "Allohumma anta Robbi la ilaha illa anta...", "uz": "Allohim, Sen Rabbimsan, Sendan o'zga iloh yo'q... (juda fazilatli duo)."},
-    ],
-    "boshqalar": [
-        {"title": "Yomg'ir so'rash", "ar": "اللَّهُمَّ أَغِثْنَا", "lat": "Allohumma aghisna.", "uz": "Allohim, bizga yomg'ir berib madad qil."},
-        {"title": "Musibatda aytiladigan", "ar": "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ", "lat": "Inna lillahi va inna ilayhi roji'uun.", "uz": "Albatta, biz Allohnikimiz va albatta Unga qaytuvchimiz."},
-        {"title": "Dushmandan himoya", "ar": "اللَّهُمَّ إِنَّا نَجْعَلُكَ فِي نُحُورِهِمْ", "lat": "Allohumma inna naj'aluka fi nuhurihim...", "uz": "Allohim, Senni ularning qarshisida qilyapmiz va ularning yomonligidan panoh so'raymiz."},
-        {"title": "Qo'rqqanda", "ar": "حَسْبُنَا اللهُ وَنِعْمَ الْوَكِيلُ", "lat": "Hasbunallohu va ni'mal-vakiil.", "uz": "Alloh bizga kifoya qiladi, U ne'matli vakildir."},
-        {"title": "Yaxshilik ko'rganda", "ar": "جَزَاكَ اللهُ خَيْرًا", "lat": "Jazakallohu xoyro.", "uz": "Alloh seni yaxshilik bilan mukofotlasin."},
-        {"title": "Aksirganda (alhamd)", "ar": "الْحَمْدُ لِلَّهِ", "lat": "Alhamdulillah.", "uz": "Allohga hamd bo'lsin."},
-        {"title": "Aksirganga javob", "ar": "يَرْحَمُكَ اللهُ", "lat": "Yarhamukalloh.", "uz": "Alloh senga rahm qilsin."},
-        {"title": "Hojat ravo bo'lganda", "ar": "شُكْرًا", "lat": "Shukron.", "uz": "Rahmat (shukr)."},
-        {"title": "G'azablanganda", "ar": "أَعُوذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ", "lat": "A'uzu billahi minash-shaytonir-rojiim.", "uz": "Allohdan quvilgan shayton yomonligidan panoh so'rayman."},
-        {"title": "Yangi kiyim kiyganda", "ar": "اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ كَسَوْتَنِيهِ", "lat": "Allohumma lakal-hamdu anta kasavtanih...", "uz": "Allohim, hamd Sengadir, uni menga Sen kiydirding."},
-        {"title": "Ota-ona haqqiga", "ar": "رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", "lat": "Robbir-hamhuma kama robbayani sog'iira.", "uz": "Robbim, ularni (ota-onamni) yoshligimda meni tarbiya qilganlaridek rahm qil."},
-        {"title": "Musulmonlar haqqiga", "ar": "رَبَّنَا اغْفِرْ لَنَا وَلِإِخْوَانِنَا", "lat": "Robbanagh-fir lana va li-ixvaninallazina sabaquna bil-iiman.", "uz": "Robbimiz, bizni va bizdan oldin iymon bilan o'tgan birodarlarimizni mag'firat qil."},
-        {"title": "Sadaqa berganda", "ar": "اللَّهُمَّ اجْعَلْهَا مَغْنَمًا وَلَا تَجْعَلْهَا مَغْرَمًا", "lat": "Allohummaj-'alha maghnaman va la taj-'alha maghroman.", "uz": "Allohim, buni (sadaqani) foyda qil, ziyon qilma."},
-        {"title": "Xatoga yo'l qo'yganda", "ar": "رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَسِينَا أَوْ أَخْطَأْنَا", "lat": "Robbana la tu-axizna in nasiina av ax-to-na.", "uz": "Robbimiz, agar unutgan yoki xato qilgan bo'lsak, bizni jazolama."},
-        {"title": "Imon mustahkamligi", "ar": "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", "lat": "Ya muqollibal-quluub, sabbit qolbi 'ala diinik.", "uz": "Ey qalblarni aylantiruvchi Zot, qalbimni diningda sobit qil."},
-        {"title": "Nafsni tiyish", "ar": "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى", "lat": "Allohumma inni as-alukal-huda vat-tuqo val-'afafa val-ghina.", "uz": "Allohim, Sendan hidoyat, taqvo, iffat va boylik so'rayman."},
-        {"title": "Shukr duosi", "ar": "رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ", "lat": "Robbi avzi'ni an ash-kuro ni'matakallati an-'amta 'alayya.", "uz": "Robbim, menga va ota-onamga bergan ne'matingga shukr qilishga ilhom ber."},
-        {"title": "Uxlashdan oldin 2", "ar": "قُلْ هُوَ اللهُ أَحَدٌ...", "lat": "Qul huvallohu ahad... (Ixlos, Falaq, Nas suralari)", "uz": "Qo'llarini kaft qilib, dam solib badanga surtish."},
-        {"title": "Tavba duosi", "ar": "أَسْتَغْفِرُ اللهَ وَأَتُوبُ إِلَيْهِ", "lat": "Astaghfirulloha va atubu ilayh.", "uz": "Allohdan mag'firat so'rayman va Unga tavba qilaman."},
-        {"title": "Hojatxona duosi (to'liq)", "ar": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", "lat": "Allohumma inni a'uzu bika minal-xubusi val-xobais.", "uz": "Allohim, iflosliklardan va ifloslardan Sendan panoh so'rayman."},
-    ],
-    "quroni_karim": [
-        {"title": "Robbana duosi", "ar": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً", "lat": "Robbana atina fid-dunya hasanatan va fil-axirati hasanatan va qina 'azaban-naar.", "uz": "Robbimiz, bizga dunyoda ham, oxiratda ham yaxshilikni ber va bizni do'zax azobidan saqla."},
-        {"title": "Mag'firat duosi", "ar": "رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ", "lat": "Robbanagh-fir li va li-validayya va lil-mu'miniina yavma yaquumul-hisaab.", "uz": "Robbimiz, hisob kitob kunida meni, ota-onamni va mo'minlarni mag'firat qil."},
-        {"title": "Dildan chiqqan duo", "ar": "رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي", "lat": "Robbij-'alni muqiimas-solati va min zurriyyatii, robbana va taqobbal du'aa'.", "uz": "Robbim, meni va zurriyotimni namozni to'kis ado etuvchilardan qil. Robbimiz, duoyimni qabul qil."},
-        {"title": "Sabr duosi", "ar": "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَثَبِّتْ أَقْدَامَنَا", "lat": "Robbana afrigh 'alayna sobron va sabbit aqdamana...", "uz": "Robbimiz, ustimizdan sabr yog'dir va qadamlarimizni sobit qil..."},
-        {"title": "Hidayat duosi", "ar": "رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا", "lat": "Robbana la tuzigh quluubana ba'da iz hadaytana va hab lana min ladunka rohmatan.", "uz": "Robbimiz, bizni hidoyat qilganingdan so'ng qalblarimizni og'dirma va bizga huzuringdan rahmat ato et."},
-    ],
-    "hayotiy": [
-        {"title": "Yaxshi ishlar uchun", "ar": "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا", "lat": "Allohumma inni as-aluka 'ilman nafi'an, va rizqon toyyiban, va 'amalan mutaqobbalan.", "uz": "Allohim, Sendan manfaatli ilm, pok rizq va qabul bo'ladigan amal so'rayman."},
-        {"title": "Yomonlikdan himoya", "ar": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ", "lat": "Allohumma inni a'uzu bika minal-hammi val-hazani, va a'uzu bika minal-'ajzi val-kasali.", "uz": "Allohim, g'am va mahzunlikdan, ojizlik va dangasalikdan Sendan panoh so'rayman."},
-        {"title": "Qiyin vaziyatda", "ar": "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ", "lat": "La ilaha illa anta subhanaka inni kuntu minaz-zoolimiin.", "uz": "Sendan o'zga iloh yo'q, poksan, men albatta zolimlardan bo'ldim (Yunus a.s. duosi)."},
-        {"title": "Yaxshi yakun uchun", "ar": "اللَّهُمَّ أَحْسِنْ عَاقِبَتَنَا فِي الْأُمُورِ كُلِّهَا", "lat": "Allohumma ahsin 'aqibatana fil-umuri kulliha...", "uz": "Allohim, barcha ishlarimizning oqibatini go'zal qil..."},
-        {"title": "Xatoga yo'l qo'yganda", "ar": "رَبَّنَا ظَلَمْنَا أَنْفُسَنَا", "lat": "Robbana zolamna anfusana va illam taghfir lana va tarhamna lanakuunanna minal-xosiriin.", "uz": "Robbimiz, biz o'zimizga zulm qildik. Agar bizni mag'firat qilmasang, biz albatta ziyon ko'ruvchilardan bo'lamiz."},
-    ],
-    "fazilatli": [
-        {"title": "Allohga hamd", "ar": "الْحَمْدُ لِلَّهِ حَمْدًا كَثِيرًا طَيِّبًا مُبَارَكًا فِيهِ", "lat": "Alhamdulillah hamdan kasiiron toyyiban mubarokan fiih.", "uz": "Allohga ko'p, pok va muborak hamdlar bo'lsin."},
-        {"title": "Shifo (shartli)", "ar": "يَا مُعَافِي، عَافِنِي", "lat": "Ya Mu'afi, 'afini, Ya Shafi, ishfini.", "uz": "Ey Ofiyat beruvchi, ofiyat ber. Ey Shifokor, shifo ber."},
-        {"title": "Baraka duosi", "ar": "اللَّهُمَّ بَارِكْ لَنَا فِي مَا رَزَقْتَنَا", "lat": "Allohumma barik lana fima rozaqtana va qina 'azaban-naar.", "uz": "Allohim, bizga rizq qilib berganlaringda baraka ber va bizni do'zax azobidan saqla."},
-        {"title": "Kech kurganda", "ar": "يَا رَبِّ لَكَ الْحَمْدُ كَمَا يَنْبَغِي لِجَلَالِ وَجْهِكَ", "lat": "Ya Robbi lakal-hamdu kama yanbaghii lijalali vajhika va 'azimi sultonik.", "uz": "Robbim, sening yuzingning jaloliga va sultonligingning ulug'ligiga munosib hamdlar bo'lsin."},
-        {"title": "Do'st haqqiga", "ar": "اللَّهُمَّ اجْعَلْهُ مِنَ الصَّالِحِينَ", "lat": "Allohummaj-'alhu minas-solihiin.", "uz": "Allohim, uni solihlardan qil."},
-    ],
-    "qiyomat_va_oxirat": [
-        {"title": "Qiyomat kunida", "ar": "رَبَّنَا لَا تُزِغْ قُلُوبَنَا", "lat": "Robbana la tuzigh quluubana ba'da iz hadaytana...", "uz": "Robbimiz, hidoyat qilganingdan so'ng qalblarimizni og'dirma..."},
-        {"title": "Mag'firat surish", "ar": "رَبَّنَا اغْفِرْ لَنَا ذُنُوبَنَا", "lat": "Robbanagh-fir lana zunuubana va isrofana fi amrina.", "uz": "Robbimiz, gunohlarimizni va ishlarimizdagi haddan oshishliklarimizni mag'firat qil."},
-    ],
-    "kundalik_2": [
-        {"title": "Uyqudan oldin", "ar": "سُبْحَانَ اللهِ (33), الْحَمْدُ لِلَّهِ (33), اللهُ أَكْبَرُ (34)", "lat": "Subhanalloh (33), Alhamdulillah (33), Allohu Akbar (34).", "uz": "Tasbehlar (Fatimiy tasbeh)."},
-        {"title": "Qo'rquv paytida", "ar": "اللَّهُمَّ اكْفِنِيهِمْ بِمَا شِئْتَ", "lat": "Allohummak-finihim bima shi't.", "uz": "Allohim, ularning yomonligidan O'zing xohlaganingdek meni himoya qil."},
-        {"title": "G'azablanganda 2", "ar": "يَا حَلِيمُ", "lat": "Ya Haliim.", "uz": "Ey Haliim (yuvosh, sabrli Zot)."},
-        {"title": "Yaxshilikka erishganda", "ar": "مَا شَاءَ اللهُ", "lat": "Ma sha'alloh.", "uz": "Alloh xohlagani bo'ladi."},
-        {"title": "Qo'rqqanda 2", "ar": "يَا حَيُّ يَا قَيُّومُ", "lat": "Ya Hayyu ya Qoyyum.", "uz": "Ey Tirik va Qoyyum Zot (yordam so'rash)."},
-        {"title": "Yangi oy ko'rganda", "ar": "اللهُ أَكْبَرُ، أَهِلَّهُ عَلَيْنَا بِالْأَمْنِ وَالْإِيمَانِ", "lat": "Allohu Akbar, ahillahu 'alayna bil-amni val-iiman.", "uz": "Alloh buyukdir, buni bizga tinchlik va iymon bilan kirit."},
-        {"title": "Shamolda", "ar": "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَهَا", "lat": "Allohumma inni as-aluka xoyroha va xoyro ma fiha.", "uz": "Allohim, Sendan shamolning yaxshiligini va u olib kelgan narsaning yaxshiligini so'rayman."},
-        {"title": "Yomg'irda", "ar": "اللَّهُمَّ صَيِّبًا نَافِعًا", "lat": "Allohumma soyyiban nafi'an.", "uz": "Allohim, foydali yomg'ir yog'dir."},
-        {"title": "Qabr ziyoratida", "ar": "السَّلَامُ عَلَيْكُمْ دَارَ قَوْمٍ مُؤْمِنِينَ", "lat": "Assalamu 'alaykum daaro qavmin mu'miniin...", "uz": "Mo'minlar diyori ahliga salom bo'lsin..."},
-        {"title": "Xursandchilikda", "ar": "الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ", "lat": "Alhamdulillahillaziy bini'matihi tatimmus-solihat.", "uz": "O'z ne'mati bilan solih amallar mukammal bo'ladigan Allohga hamd bo'lsin."},
-    ],
-    "ruhiy_xotirjamlik": [
-        {"title": "Qalbdagi xotirjamlik", "ar": "اللَّهُمَّ آتِ نَفْسِي تَقْوَاهَا", "lat": "Allohumma ati nafsi taq vaha va zakkiha anta xoyru man zakkaha.", "uz": "Allohim, nafsimga taqvosini ber va uni pokla, Sen uni poklaguvchilarning eng yaxshisisan."},
-        {"title": "Dildan duo", "ar": "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", "lat": "Ya muqollibal-quluubi sabbit qolbi 'ala diinik.", "uz": "Ey qalblarni aylantiruvchi Zot, qalbimni diningda sobit qil."},
-        {"title": "Nur so'rash", "ar": "اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا", "lat": "Allohummaj-'al fi qolbi nuuro...", "uz": "Allohim, qalbimda, ko'zimda, qulog'imda nur qil."},
-        {"title": "Istixora duosi (qisqa)", "ar": "اللَّهُمَّ خِرْ لِي وَاخْتَرْ لِي", "lat": "Allohumma xir li vaxtar li.", "uz": "Allohim, men uchun eng yaxshisini tanla va menga yaxshilikni nasib et."},
-        {"title": "Yomonlikdan himoya 2", "ar": "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّةِ مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ", "lat": "A'uzu bikalimatillahit-tammati min kulli shaytonin va haammah.", "uz": "Allohning mukammal kalimalari bilan har bir shayton va zararli narsadan panoh so'rayman."},
-        {"title": "Musibatda sabr", "ar": "اللَّهُمَّ أْجُرْنِي فِي مُصِيبَتِي", "lat": "Allohumma-jurni fi musibati va axlifli xoyron minha.", "uz": "Allohim, musibatimda menga ajr ber va uning o'rniga yaxshirog'ini ato et."},
-        {"title": "Sog'lik so'rash", "ar": "اللَّهُمَّ عَافِنِي فِي سَمْعِي", "lat": "Allohumma 'afini fi sam'i, Allohumma 'afini fi basori.", "uz": "Allohim, qulog'imni ofiyatda qil, ko'zimni ofiyatda qil."},
-        {"title": "Yaxshi qabr", "ar": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ", "lat": "Allohumma inni a'uzu bika min 'azabil-qobri va min 'azabin-naar.", "uz": "Allohim, men Sendan qabr azobidan va jahannam azobidan panoh so'rayman."}
+    "taom": [
+        {
+            "title": "Taom duosi",
+            "arabic": "اَلْحَمْدُ لِلَّهِ",
+            "latin": "Alhamdulillah...",
+            "uzbek": "Allohga hamdlar bo'lsin..."
+        }
     ]
 }
