@@ -1,3 +1,8 @@
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from keyboards.callbacks import RegionCallback, DistrictCallback
+from utils.locations import UZB_REGIONS
+
 def get_regions_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
@@ -23,7 +28,7 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
     builder.button(text="👨‍💻 Yaratuvchi", callback_data="menu_creator")
     builder.button(text="⭐ Baholash", callback_data="menu_rate")
 
-    # 3. Tashqi havolalar (alohida qatorlarda)
+    # 3. Tashqi havolalar
     builder.row(InlineKeyboardButton(
         text="➕ Botni guruhga qo'shish", 
         url=f"https://t.me/{bot_username}?startgroup=true"
@@ -33,8 +38,22 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
         url=f"https://t.me/share/url?url=https://t.me/{bot_username}&text=🕌 Barcha viloyat va tumanlar uchun eng aniq namoz vaqtlari boti!"
     ))
 
-    # Tugmalarni tartiblash: 
-    # Viloyatlar 2 tadan, qolgan menyu tugmalari ham 2 tadan bo'ladi
+    # Barcha tugmalarni 2 tadan qilib tartiblaydi
+    builder.adjust(2) 
+
+    return builder.as_markup()
+
+def get_districts_keyboard(region_name: str) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    districts = UZB_REGIONS.get(region_name, [])
+
+    for district in districts:
+        builder.button(
+            text=f"🏢 {district}",
+            callback_data=DistrictCallback(district_name=district)
+        )
+
+    builder.button(text="⬅️ Viloyatlarga qaytish", callback_data="back_to_regions")
     builder.adjust(2) 
 
     return builder.as_markup()
