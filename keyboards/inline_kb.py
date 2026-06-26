@@ -20,7 +20,8 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
     builder.row(InlineKeyboardButton(text="✨ Asmaul Husna", callback_data="menu_asmaul"))
     # Tasbeh tugmasi (Mana bu qator to'g'rilandi!)
     builder.row(InlineKeyboardButton(text="📿 Elektron Tasbeh", callback_data="menu_tasbeh"))
-
+# "🤲 Duolar" tugmasini ham xuddi shu usulda qo'shamiz:
+    builder.row(InlineKeyboardButton(text="🤲 Duolar", callback_data="menu_duo"))
     # Hadis hikmatlar tugmasi
     builder.row(InlineKeyboardButton(text="📖 Kun hadisi", callback_data="menu_hadis"))
     
