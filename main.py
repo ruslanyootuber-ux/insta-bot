@@ -26,7 +26,7 @@ async def main():
         start.router,
         menu_handlers.router,
         extra_handlers.router,
-        (zikr_router)
+        zikr_router
     )
 
     dp.startup.register(on_startup)
