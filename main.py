@@ -12,6 +12,7 @@ from handlers.hadis_handlers import router as hadis_router
 from handlers.tasbeh_handlers import router as tasbeh_router
 from handlers.asmaul_handlers import router as asmaul_router
 from handlers.duo_handlers import router as duo_router
+
 async def on_startup():
     print("Bot muvaffaqiyatli ishga tushdi!")
 
