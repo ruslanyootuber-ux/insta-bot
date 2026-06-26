@@ -34,7 +34,7 @@ async def main():
         qibla_router,
         ramadan_router,
         hadis_router, 
-        tasbeh_router' 
+        tasbeh_router, 
         asmaul_router         
     )
 
