@@ -21,7 +21,10 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
     builder.row(
         InlineKeyboardButton(text="🤲 Tonggi va Kechki zikrlar", callback_data="menu_zikr_main")
     )
-    
+    #  Ramazon taqvimi tugmasi
+    builder.row(
+        InlineKeyboardButton(text="🌙 Ramazon taqvimi", callback_data="ramadan_today")
+    )
     # Eslatma va Sozlamalar
     builder.row(
         InlineKeyboardButton(text="🔔 Eslatma", callback_data="menu_reminder"),
