@@ -8,14 +8,21 @@ router = Router()
 
 @router.callback_query(F.data == "menu_hadis")
 async def show_random_hadis(callback: CallbackQuery):
+    # 1. Callback'ni yopib qo'yamiz (soat aylanishi to'xtaydi)
+    await callback.answer() 
+    
     index = random.randint(0, len(HADISLAR) - 1)
     hadis = HADISLAR[index]
     
     text = f"📖 <b>Kun hadisi:</b>\n\n<i>{hadis['uzbek']}</i>\n\nQuyidagi tugmalardan birini tanlab matnni o'qing:"
+    
+    # edit_text ishlatamiz
     await callback.message.edit_text(text, reply_markup=get_hadis_keyboard(index))
 
 @router.callback_query(F.data.startswith("h_"))
 async def show_hadis_text(callback: CallbackQuery):
+    await callback.answer() # Bu qator qotib qolmaslik uchun eng muhimi
+    
     parts = callback.data.split("_")
     mode = parts[1] # ar, lat, kir
     index = int(parts[2])
