@@ -8,6 +8,7 @@ from handlers.extra_handlers import check_and_send_reminders
 from handlers.zikr_handlers import router as zikr_router
 from handlers.ramadan_handlers import router as ramadan_router
 from handlers.qibla_handlers import router as qibla_router
+from handlers.hadis_handlers import router as hadis_router
 
 async def on_startup():
     print("Bot muvaffaqiyatli ishga tushdi!")
@@ -29,7 +30,7 @@ async def main():
         admin_handlers.router, # Bu yerda admin_handlers qo'shildi
         zikr_router,
         qibla_router,
-        ramadan_router           
+        ramadan_router, hadis_router          
     )
 
     dp.startup.register(on_startup)
