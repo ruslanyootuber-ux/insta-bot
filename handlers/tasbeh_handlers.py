@@ -22,20 +22,43 @@ async def count_tasbeh(callback: CallbackQuery):
     user_id = callback.from_user.id
     now = time.time()
     
-    # Tez bosishdan himoya (0.5 soniya cheklov)
-    if user_id in user_tasbeh and (now - user_tasbeh[user_id].get("last_click", 0) < 0.5):
+    if user_id in user_tasbeh and (now - user_tasbeh[user_id].get("last_click", 0) < 0.3):
         await callback.answer("❗ Juda tez bosmang!", show_alert=True)
         return
 
     user_tasbeh[user_id]["last_click"] = now
     
-    # 33 marta bosilganda zikrni almashtirish
     user_tasbeh[user_id]["count"] += 1
     if user_tasbeh[user_id]["count"] >= 33:
         user_tasbeh[user_id]["count"] = 0
         user_tasbeh[user_id]["index"] = (user_tasbeh[user_id]["index"] + 1) % len(TASBEH_ZIKRLARI)
-        await callback.answer("✅ Zikr almashtirildi!", show_alert=True)
+        await callback.answer("✅ 33 ga yetdi, zikr almashtirildi!", show_alert=True)
 
     data = user_tasbeh[user_id]
-    await callback.message.edit_reply_markup(reply_markup=get_tasbeh_keyboard(data["count"], data["index"]))
-    await callback.answer(str(data["count"]))
+    await callback.message.edit_text(
+        f"📿 <b>Elektron Tasbeh</b>\n\nZikr: <b>{TASBEH_ZIKRLARI[data['index']]['name']}</b>",
+        reply_markup=get_tasbeh_keyboard(data["count"], data["index"])
+    )
+
+@router.callback_query(F.data == "reset_tasbeh")
+async def reset_tasbeh(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    if user_id in user_tasbeh:
+        user_tasbeh[user_id]["count"] = 0
+        await callback.message.edit_text(
+            f"📿 <b>Elektron Tasbeh</b>\n\nZikr: <b>{TASBEH_ZIKRLARI[user_tasbeh[user_id]['index']]['name']}</b>",
+            reply_markup=get_tasbeh_keyboard(0, user_tasbeh[user_id]["index"])
+        )
+    await callback.answer("🔄 Sanoq nollandi!", show_alert=False)
+
+@router.callback_query(F.data == "change_zikr")
+async def change_zikr_manual(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    if user_id in user_tasbeh:
+        user_tasbeh[user_id]["index"] = (user_tasbeh[user_id]["index"] + 1) % len(TASBEH_ZIKRLARI)
+        user_tasbeh[user_id]["count"] = 0
+        await callback.message.edit_text(
+            f"📿 <b>Elektron Tasbeh</b>\n\nZikr: <b>{TASBEH_ZIKRLARI[user_tasbeh[user_id]['index']]['name']}</b>",
+            reply_markup=get_tasbeh_keyboard(0, user_tasbeh[user_id]["index"])
+        )
+    await callback.answer("Zikr o'zgardi")
