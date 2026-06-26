@@ -23,8 +23,7 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
 
     # Hadis hikmatlar tugmasi
     builder.row(InlineKeyboardButton(text="📖 Kun hadisi", callback_data="menu_hadis"))
-    #duo tugmasi
-    builder.row(InlineKeyboardButton(text="🤲 Duolar", callback_data="menu_duo"))
+    
     # Qibla tugmasi
     builder.row(InlineKeyboardButton(text="🕋 Qibla yo'nalishi", callback_data="menu_qibla"))
 
