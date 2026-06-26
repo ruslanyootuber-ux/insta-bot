@@ -1,17 +1,23 @@
+import sys
+import os
+
+# Python'ga loyihaning asosiy papkasini (root) ko'rishga yordam beramiz
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import InlineKeyboardButton
-# Ma'lumotlar bazasini import qiling (fayl nomingizga qarab to'g'rilang)
+# Endi duo_data fayli topiladi
 from duo_data import DUOLAR 
 
-# 1. Router obyektini yaratish (XATOLIK SHU YERDA EDI)
+# 1. Router obyektini yaratish
 router = Router()
 
 def get_duo_navigation(category, index, total):
     builder = InlineKeyboardBuilder()
     
-    # ⬅️ Oldingi / Keyingi tugmalari mantiqini to'g'rilash (index chegarasi)
+    # ⬅️ Oldingi / Keyingi tugmalari mantiqini to'g'rilash
     prev_index = index - 1 if index > 0 else total - 1
     next_index = index + 1 if index < total - 1 else 0
     
