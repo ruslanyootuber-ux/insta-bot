@@ -28,7 +28,7 @@ async def main():
         extra_handlers.router,
         admin_handlers.router, # Bu yerda admin_handlers qo'shildi
         zikr_router,
-qibla_router
+qibla_router,
 ramadan_router           # Bu yerda qavs keraksiz, shunchaki vergul bilan qo'yiladi
     )
 
