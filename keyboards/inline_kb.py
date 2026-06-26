@@ -16,7 +16,18 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
     
     # 2. Rang-barang va zamonaviy qo'shimcha tugmalar
     bot_username = "Bshsudhdhdj_bot"
+        # ... viloyatlar tsiklidan keyin
     
+    # Yangi Zikrlar tugmasi (Katta, alohida qatorda)
+    builder.row(
+        InlineKeyboardButton(text="🤲 Tonggi va Kechki zikrlar", callback_data="menu_zikr_main")
+    )
+    
+    # Eslatma va Sozlamalar (1-qator)
+    builder.row(
+        InlineKeyboardButton(text="🔔 Eslatma", callback_data="menu_reminder"),
+        # ... qolgan kodlar o'zgarishsiz
+
     # Eslatma va Sozlamalar (1-qator)
     builder.row(
         InlineKeyboardButton(text="🔔 Eslatma (Tez kunda)", callback_data="menu_reminder"),
