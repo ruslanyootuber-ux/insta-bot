@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
-from data.duo_data import DUOLAR # Hadis kabi to'g'ridan-to'g'ri import
+from data.duo_data import # Hadis kabi to'g'ridan-to'g'ri import
 
 router = Router()
 
