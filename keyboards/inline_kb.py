@@ -17,38 +17,30 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
     # 2. Asosiy menyu tugmalari
     bot_username = "Bshsudhdhdj_bot"
 
-(#Hadis hikmatlar tugmasi
-    builder.row(
-    InlineKeyboardButton(text="📖 Kun hadisi", callback_data="menu_hadis")
-)
+    # Hadis hikmatlar tugmasi
+    builder.row(InlineKeyboardButton(text="📖 Kun hadisi", callback_data="menu_hadis"))
 
-#Qibla tugmasi
-    builder.row(
-    InlineKeyboardButton(text="🕋 Qibla yo'nalishi", callback_data="menu_qibla")
-)
+    # Qibla tugmasi
+    builder.row(InlineKeyboardButton(text="🕋 Qibla yo'nalishi", callback_data="menu_qibla"))
 
     # Zikrlar tugmasi
-    builder.row(
-        InlineKeyboardButton(text="🤲 Tonggi va Kechki zikrlar", callback_data="menu_zikr_main")
-    )
-        # Ramazon taqvimi tugmasi
-    builder.row(
-        InlineKeyboardButton(text="🌙 Ramazon taqvimi", callback_data="menu_ramadan")
-    )
-
+    builder.row(InlineKeyboardButton(text="🤲 Tonggi va Kechki zikrlar", callback_data="menu_zikr_main"))
     
+    # Ramazon taqvimi tugmasi
+    builder.row(InlineKeyboardButton(text="🌙 Ramazon taqvimi", callback_data="menu_ramadan"))
+
     # Eslatma va Sozlamalar
     builder.row(
         InlineKeyboardButton(text="🔔 Eslatma", callback_data="menu_reminder"),
         InlineKeyboardButton(text="⚙️ Sozlamalar", callback_data="menu_settings")
     )
-    
+
     # Yaratuvchi va Baholash
     builder.row(
         InlineKeyboardButton(text="👨‍💻 Yaratuvchi", callback_data="menu_creator"),
         InlineKeyboardButton(text="⭐ Baholash", callback_data="menu_rate")
     )
-    
+
     # Guruhga qo'shish
     builder.row(
         InlineKeyboardButton(
@@ -56,7 +48,7 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
             url=f"https://t.me/{bot_username}?startgroup=true"
         )
     )
-    
+
     # Do'stlarga ulashish
     builder.row(
         InlineKeyboardButton(
@@ -78,9 +70,9 @@ def get_districts_keyboard(region_name: str) -> InlineKeyboardMarkup:
         )
 
     builder.button(text="⬅️ Viloyatlarga qaytish", callback_data="back_to_regions")
-    
+
     # Tugmalarni tartiblash
-    sizes = [2] * (len(districts) // 2) + ([1] if len(districts) % 2 != 0 else []) + [1]
-    builder.adjust(*sizes)
+    # sizes ro'yxatini to'g'ri hisoblash
+    builder.adjust(2) 
 
     return builder.as_markup()
