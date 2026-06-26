@@ -27,7 +27,7 @@ async def main():
         start.router,
         menu_handlers.router,
         extra_handlers.router,
-        admin_handlers.router, # Bu yerda admin_handlers qo'shildi
+        admin_handlers.router,  
         zikr_router,
         qibla_router,
         ramadan_router,
