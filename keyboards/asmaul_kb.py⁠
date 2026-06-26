@@ -1,0 +1,17 @@
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import InlineKeyboardButton
+
+def get_asmaul_keyboard(index: int, total: int):
+    builder = InlineKeyboardBuilder()
+    
+    # Navigatsiya hisobi
+    prev_index = index - 1 if index > 0 else total - 1
+    next_index = index + 1 if index < total - 1 else 0
+    
+    builder.row(
+        InlineKeyboardButton(text="⬅️ Oldingi", callback_data=f"asma_{prev_index}"),
+        InlineKeyboardButton(text="Keyingi ➡️", callback_data=f"asma_{next_index}")
+    )
+    builder.row(InlineKeyboardButton(text="⬅️ Asosiy menyu", callback_data="back_to_menu"))
+    
+    return builder.as_markup()
