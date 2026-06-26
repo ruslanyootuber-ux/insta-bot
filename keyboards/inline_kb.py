@@ -14,18 +14,18 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
         )
     builder.adjust(2) 
 
-    # 2. Asosiy menyu tugmalari
+        # 2. Asosiy menyu tugmalari
     bot_username = "Bshsudhdhdj_bot"
 
-     #Tasbeh tugmasi
-builder.row
-(InlineKeyboardButton(text="📿 Elektron Tasbeh", callback_data="menu_tasbeh"))
+    # Tasbeh tugmasi (Mana bu qator to'g'rilandi!)
+    builder.row(InlineKeyboardButton(text="📿 Elektron Tasbeh", callback_data="menu_tasbeh"))
 
     # Hadis hikmatlar tugmasi
     builder.row(InlineKeyboardButton(text="📖 Kun hadisi", callback_data="menu_hadis"))
 
     # Qibla tugmasi
     builder.row(InlineKeyboardButton(text="🕋 Qibla yo'nalishi", callback_data="menu_qibla"))
+
 
     # Zikrlar tugmasi
     builder.row(InlineKeyboardButton(text="🤲 Tonggi va Kechki zikrlar", callback_data="menu_zikr_main"))
