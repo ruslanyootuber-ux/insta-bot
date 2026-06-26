@@ -16,7 +16,9 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
 
         # 2. Asosiy menyu tugmalari
     bot_username = "Bshsudhdhdj_bot"
-
+    #99 ism tugmasi
+    builder.row(InlineKeyboardButton(text="✨ Asmaul Husna", callback_data="menu_asmaul"))
+    
     # Tasbeh tugmasi (Mana bu qator to'g'rilandi!)
     builder.row(InlineKeyboardButton(text="📿 Elektron Tasbeh", callback_data="menu_tasbeh"))
 
