@@ -1,8 +1,16 @@
+import sys
+import os
+
+# MUHIM: Bu qator Python'ga botning asosiy papkasini (app/) ko'rsatadi.
+# Natijada duo_data.py har qanday joydan (handlers ichidan ham) topiladi.
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
 import asyncio
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from loader import bot, dp
-# admin_handlers ni import qilgan ekansiz, uni ham qo'shamiz
+
+# Importlar
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
 from handlers.extra_handlers import check_and_send_reminders
 from handlers.zikr_handlers import router as zikr_router
@@ -25,7 +33,6 @@ async def main():
     scheduler.start()
 
     # Routerlar
-    # Eslatma: admin_handlers.router ni qo'shishni unutmang!
     dp.include_routers(
         start.router,
         menu_handlers.router,
