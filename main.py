@@ -30,7 +30,8 @@ async def main():
         admin_handlers.router, # Bu yerda admin_handlers qo'shildi
         zikr_router,
         qibla_router,
-        ramadan_router, hadis_router          
+        ramadan_router,
+        hadis_router          
     )
 
     dp.startup.register(on_startup)
