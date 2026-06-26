@@ -1,5 +1,6 @@
 from aiogram import Router, F
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import CallbackQuery, Message, InlineKeyboardButton
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 from math import sin, cos, atan2, degrees, radians
 
 router = Router()
@@ -20,10 +21,14 @@ def calculate_qibla(lat, lon):
 
 @router.callback_query(F.data == "menu_qibla")
 async def process_qibla(callback: CallbackQuery):
+    builder = InlineKeyboardBuilder()
+    builder.button(text="⬅️ Orqaga", callback_data="back_to_menu")
+    
     await callback.message.edit_text(
         "📍 <b>Qibla yo'nalishini aniqlash</b>\n\n"
         "Iltimos, joylashuvingizni (location) yuboring, shunda men sizga "
         "Qibla tomonini aniqlab beraman.",
+        reply_markup=builder.as_markup()
     )
 
 @router.message(F.location)
@@ -33,7 +38,12 @@ async def handle_location(message: Message):
     
     qibla_angle = calculate_qibla(lat, lon)
     
+    # Orqaga qaytish tugmasi
+    builder = InlineKeyboardBuilder()
+    builder.button(text="⬅️ Asosiy menyuga", callback_data="back_to_menu")
+    
     await message.answer(
         f"🕋 <b>Qibla yo'nalishi:</b> {qibla_angle:.2f}°\n\n"
-        f"Kompas yordamida telefoningizni ushbu gradusga to'g'rilang."
+        f"Kompas yordamida telefoningizni ushbu gradusga to'g'rilang.",
+        reply_markup=builder.as_markup()
     )
