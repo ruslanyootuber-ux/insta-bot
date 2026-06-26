@@ -13,9 +13,15 @@ class Database:
                 full_name TEXT,
                 district TEXT,
                 reminder_time INTEGER DEFAULT 0,
-                school INTEGER DEFAULT 0
+                school INTEGER DEFAULT 0,
+                rating INTEGER DEFAULT 0
             )
         """)
+        # Agar oldindan jadval yaratilgan bo'lsa, xato bermasligi uchun try-except ishlatamiz
+        try:
+            self.cursor.execute("ALTER TABLE users ADD COLUMN rating INTEGER DEFAULT 0")
+        except:
+            pass
         self.connection.commit()
 
     def add_user(self, user_id, full_name):
@@ -41,3 +47,22 @@ class Database:
     def get_user_data(self, user_id):
         self.cursor.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
         return self.cursor.fetchone()
+
+    # Yangi: Foydalanuvchi bahosini saqlash
+    def update_rating(self, user_id, rating):
+        self.cursor.execute("UPDATE users SET rating = ? WHERE user_id = ?", (rating, user_id))
+        self.connection.commit()
+
+    # Yangi: Umumiy reytingni hisoblash
+    def get_rating_stats(self):
+        self.cursor.execute("SELECT rating FROM users WHERE rating > 0")
+        ratings = self.cursor.fetchall()
+        
+        if not ratings:
+            return 0.0, 0  # O'rtacha baho, Odamlar soni
+            
+        total_voters = len(ratings)
+        total_score = sum([r[0] for r in ratings])
+        average = total_score / total_voters
+        
+        return round(average, 1), total_voters
