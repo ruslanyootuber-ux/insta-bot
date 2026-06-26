@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from datetime import datetime, timedelta
 from loader import bot, db
@@ -73,24 +73,62 @@ async def set_school(callback: CallbackQuery):
     db.update_school(callback.from_user.id, school)
     await callback.answer("✅ Mazhab saqlandi.", show_alert=True)
 
-
 # --- 5. Yaratuvchi bo'limi ---
 @router.callback_query(F.data == "menu_creator")
 async def process_creator(callback: CallbackQuery):
     await callback.answer()
-    
     text = (
         "👨‍💻 <b>Bot Yaratuvchisi</b>\n\n"
         "Barcha viloyat va tumanlar uchun eng aniq namoz vaqtlari yetkazib berish maqsad qilingan.\n\n"
         "📩 <i>Taklif va murojaatlar uchun pastdagi ‹Admin bilan bog'lanish› tugmasini bosing:</i>"
     )
+    builder = InlineKeyboardBuilder()
+    builder.button(text="💬 Admin bilan bog'lanish", url="https://t.me/mrxruslann")
+    builder.button(text="⬅️ Orqaga", callback_data="back_to_menu")
+    builder.adjust(1) 
+    await callback.message.edit_text(text=text, reply_markup=builder.as_markup())
+
+# --- 6. Baholash (Reyting) bo'limi ---
+async def show_rating_menu(message):
+    avg_rating, total_voters = db.get_rating_stats()
+    
+    full_stars_count = int(avg_rating)
+    empty_stars_count = 5 - full_stars_count
+    star_visual = "⭐" * full_stars_count + "🤍" * empty_stars_count
+    
+    percentage = int((avg_rating / 5) * 100) if total_voters > 0 else 0
+    
+    text = (
+        "⭐ <b>Botni baholash</b>\n\n"
+        f"📊 <b>Umumiy reyting:</b> {avg_rating} / 5.0\n"
+        f"🌟 <b>Ko'rsatkich:</b> {star_visual} ({percentage}%)\n"
+        f"👥 <b>Ovoz berganlar:</b> {total_voters} ta\n\n"
+        "<i>Sizning fikringiz biz uchun muhim! Iltimos, quyidagi yulduzchalardan birini tanlab botga baho bering:</i>"
+    )
     
     builder = InlineKeyboardBuilder()
-    # Zamonaviy URL tugma (Tugma bosilsa, profilingizga olib o'tadi)
-    builder.button(text="💬 Admin bilan bog'lanish", url="https://t.me/mrxruslann")
-    # Orqaga qaytish tugmasi
-    builder.button(text="⬅️ Orqaga", callback_data="back_to_menu")
+    builder.button(text="1 ⭐", callback_data="rate_1")
+    builder.button(text="2 ⭐", callback_data="rate_2")
+    builder.button(text="3 ⭐", callback_data="rate_3")
+    builder.button(text="4 ⭐", callback_data="rate_4")
+    builder.button(text="5 ⭐", callback_data="rate_5")
+    builder.adjust(5) 
     
-    builder.adjust(1) # Tugmalarni ustma-ust joylashtirish uchun
+    builder.row(InlineKeyboardButton(text="⬅️ Orqaga", callback_data="back_to_menu"))
     
-    await callback.message.edit_text(text=text, reply_markup=builder.as_markup())
+    try:
+        await message.edit_text(text=text, reply_markup=builder.as_markup())
+    except Exception:
+        pass
+
+@router.callback_query(F.data == "menu_rate")
+async def process_rate_menu(callback: CallbackQuery):
+    await callback.answer()
+    await show_rating_menu(callback.message)
+
+@router.callback_query(F.data.startswith("rate_"))
+async def process_rating_vote(callback: CallbackQuery):
+    rating = int(callback.data.split("_")[1])
+    db.update_rating(callback.from_user.id, rating)
+    await callback.answer(f"🎉 Siz botga {rating} yulduz baho berdingiz. Rahmat!", show_alert=True)
+    await show_rating_menu(callback.message)
