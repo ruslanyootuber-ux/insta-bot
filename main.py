@@ -11,7 +11,7 @@ from handlers.qibla_handlers import router as qibla_router
 from handlers.hadis_handlers import router as hadis_router
 from handlers.tasbeh_handlers import router as tasbeh_router
 from handlers.asmaul_handlers import router as asmaul_router
-
+from handlers.duo_handlers import router as duo_router
 async def on_startup():
     print("Bot muvaffaqiyatli ishga tushdi!")
 
@@ -35,7 +35,8 @@ async def main():
         ramadan_router,
         hadis_router, 
         tasbeh_router, 
-        asmaul_router         
+        asmaul_router, 
+        duo_router       
     )
 
     dp.startup.register(on_startup)
