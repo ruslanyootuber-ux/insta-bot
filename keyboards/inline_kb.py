@@ -26,7 +26,6 @@ def get_regions_keyboard() -> InlineKeyboardMarkup:
     #duo tugmasi
         #duo tugmasi
     builder.row(InlineKeyboardButton(text="🤲 Duolar", callback_data="menu_duo"))
-InlineKeyboardButton(text="🤲 Duolar", callback_data="menu_duo")
     # Qibla tugmasi
     builder.row(InlineKeyboardButton(text="🕋 Qibla yo'nalishi", callback_data="menu_qibla"))
 
