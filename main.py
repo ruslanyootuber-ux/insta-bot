@@ -23,27 +23,22 @@ from handlers.asmaul_handlers import router as asmaul_router
 from handlers.duo_handlers import router as duo_router
 
 # --- 1. API uchun maxsus funksiya (Mobil ilova uchun) ---
-async def api_namoz_vaqtlari(request):
-    # Hozircha namunaviy ma'lumot jo'natamiz. Keyin buni bazaga ulaymiz.
-    data = {
-        "mintaqa": "Yakkabog'",
-        "sana": "28 Iyun, Yakshanba",
-        "vaqtlar": {
-            "bomdod": "03:32",
-            "quyosh": "05:10",
-            "peshin": "13:00",
-            "asr": "17:45",
-            "shom": "20:05",
-            "xufton": "21:40"
-        }
-    }
+async def api_handler(request):
+    # Foydalanuvchi qaysi funksiyani so'rayapti? (Masalan: /api/hadis)
+    path = request.path
     
-    # CORS (Muhim!) - HTML ilovadan so'rov kelishiga ruxsat berish
-    headers = {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET",
-    }
-    return web.json_response(data, headers=headers)
+    if path == '/api/namoz':
+        data = {"mintaqa": "Yakkabog'", "vaqtlar": {"bomdod": "03:32", "peshin": "13:00"}}
+    elif path == '/api/hadis':
+        data = {"matn": "Hadislar juda muhim..."}
+    else:
+        data = {"error": "Bunday funksiya yo'q"}
+        
+    return web.json_response(data, headers={"Access-Control-Allow-Origin": "*"})
+
+# Veb-serverga hamma yo'lni qo'shamiz
+app.router.add_get('/api/{func}', api_handler)
+
 
 # --- 2. Veb-serverni sozlash (Ilova ulanishi uchun) ---
 async def start_web_server():
