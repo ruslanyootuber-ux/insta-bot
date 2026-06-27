@@ -18,4 +18,4 @@ async def show_regions(callback: CallbackQuery):
 # "Bosh menyuga qaytish"
 @router.callback_query(F.data == "back_to_main")
 async def back_to_main(callback: CallbackQuery):
-    await callback.message.edit_text("Bosh menyu:", reply_markup=get_main_menu_kb())
+    await callback.message.edit_text("Assalomu alaykum! Kerakli bo'limni tanlang 👇", reply_markup=get_main_menu_kb())
