@@ -3,10 +3,16 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from keyboards.callbacks import RegionCallback, DistrictCallback
 from utils.locations import UZB_REGIONS
 
+# !!! DIQQAT !!!
+# BU YERGA O'Z BOTINGIZNING USERNAME'INI "@" BELGISISIZ YOZING
+# Masalan: BOT_USERNAME = "NamozTaqvimi_Uz_Bot"
+BOT_USERNAME = "NamozTaqvimi_Uz_Bot" 
+
 # ASOSIY MENYU (Ekranning yarmini egallaydi)
 def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     
+    # Eskidan bor tugmalar
     builder.button(text="🕌 Namoz vaqtlari", callback_data="menu_regions")
     builder.button(text="✨ Asmaul Husna", callback_data="menu_asmaul")
     builder.button(text="📿 Elektron tasbeh", callback_data="menu_tasbeh")
@@ -20,7 +26,22 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder.button(text="👨‍💻 Bog'lanish", callback_data="menu_creator")
     builder.button(text="⭐ Botni baholash", callback_data="menu_rate")
 
-    builder.adjust(2) # 2 ta ustun, ixcham va chiroyli
+    # ----- YANGI QO'SHILGAN TUGMALAR -----
+    
+    # 1. Guruhga qo'shish tugmasi (bu maxsus link orqali ishlaydi)
+    add_to_group_url = f"https://t.me/{BOT_USERNAME}?startgroup=true"
+    builder.row(InlineKeyboardButton(text="➕ Guruhga qo'shish", url=add_to_group_url))
+    
+    # 2. Do'stlarga ulashish tugmasi (bu ham maxsus link)
+    # Ulashiladigan matnni ham shu yerda o'zgartirishingiz mumkin
+    share_text = "Foydali Namoz Vaqtlari botini sizga ham tavsiya qilaman!"
+    share_url = f"https://t.me/share/url?url=https://t.me/{BOT_USERNAME}&text={share_text}"
+    builder.row(InlineKeyboardButton(text="📲 Do'stlarga ulashish", url=share_url))
+
+    # -------------------------------------
+
+    # Asosiy tugmalarni 2 ustun qilamiz, yangi qo'shilganlar alohida qatorda turadi
+    builder.adjust(2, 2, 2, 2, 2, 2, 1, 1) 
     return builder.as_markup()
 
 # VILOYATLAR MENYUSI (Faqat Namoz vaqtini bosganda chiqadi)
