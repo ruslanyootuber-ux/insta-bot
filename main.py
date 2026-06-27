@@ -28,7 +28,8 @@ async def api_handler(request):
     if func == 'asmaul':
         return web.json_response(asmaul_husna_data.data, headers={"Access-Control-Allow-Origin": "*"})
     elif func == 'hadis':
-        return web.json_response(hadis_data.data, headers={"Access-Control-Allow-Origin": "*"})
+        # HADISLAR o'zgaruvchisini jo'natamiz
+        return web.json_response(hadis_data.HADISLAR, headers={"Access-Control-Allow-Origin": "*"})
     elif func == 'zikr':
         return web.json_response(zikr_data.data, headers={"Access-Control-Allow-Origin": "*"})
     else:
