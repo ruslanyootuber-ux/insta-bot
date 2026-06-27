@@ -7,6 +7,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 import asyncio
 import logging
+from aiohttp import web  # <-- Veb server uchun yangi import
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from loader import bot, dp
 
@@ -21,8 +22,43 @@ from handlers.tasbeh_handlers import router as tasbeh_router
 from handlers.asmaul_handlers import router as asmaul_router
 from handlers.duo_handlers import router as duo_router
 
+# --- 1. API uchun maxsus funksiya (Mobil ilova uchun) ---
+async def api_namoz_vaqtlari(request):
+    # Hozircha namunaviy ma'lumot jo'natamiz. Keyin buni bazaga ulaymiz.
+    data = {
+        "mintaqa": "Yakkabog'",
+        "sana": "28 Iyun, Yakshanba",
+        "vaqtlar": {
+            "bomdod": "03:32",
+            "quyosh": "05:10",
+            "peshin": "13:00",
+            "asr": "17:45",
+            "shom": "20:05",
+            "xufton": "21:40"
+        }
+    }
+    
+    # CORS (Muhim!) - HTML ilovadan so'rov kelishiga ruxsat berish
+    headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET",
+    }
+    return web.json_response(data, headers=headers)
+
+# --- 2. Veb-serverni sozlash (Ilova ulanishi uchun) ---
+async def start_web_server():
+    app = web.Application()
+    app.router.add_get('/api/namoz', api_namoz_vaqtlari)
+    
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, '0.0.0.0', 8080)
+    await site.start()
+    logging.info("API server 8080-portda ishga tushdi...")
+
+# --- 3. Botning ishlash jarayoni ---
 async def on_startup():
-    print("Bot muvaffaqiyatli ishga tushdi!")
+    logging.info("Bot muvaffaqiyatli ishga tushdi!")
 
 async def main():
     logging.basicConfig(level=logging.INFO)
@@ -50,10 +86,15 @@ async def main():
     dp.startup.register(on_startup)
 
     await bot.delete_webhook(drop_pending_updates=True)
+    
+    # ---> VEB SERVERNI ISHGA TUSHIRISH (Pollingdan oldin) <---
+    await start_web_server()
+    
+    # ---> BOTNI ISHGA TUSHIRISH <---
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("Bot to'xtatildi.")
+        print("Dastur to'xtatildi.")
