@@ -1,6 +1,6 @@
 // Server manzili (Fly.io dagi ilovangiz manzili)
 // Eslatma: Fly.io da ilovangiz nomi qanday bo'lsa, o'shani yozing
-const API_BASE_URL = "https://insta-bot.fly.dev/";
+const API_BASE_URL = "https://insta-bot.fly.dev";
 
 async function handleMenuClick(action) {
     try {
