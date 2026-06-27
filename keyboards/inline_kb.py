@@ -30,7 +30,7 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder.row(InlineKeyboardButton(text="➕ Guruhga qo'shish", url=add_to_group_url))
     
     # Do'stlarga ulashish (URL kodlangan)
-    share_text = "🕌 «Foydali Namoz Vaqtlari» zikrlar va islomiy ibodatlar uchun shaxsiy yordamchingiz. 🕋📿"
+    share_text = "🕌 «Namoz Vaqtlari» zikrlar va islomiy ibodatlar uchun shaxsiy yordamchingiz. 🕋📿"
     encoded_text = quote(share_text)
     share_url = f"https://t.me/share/url?url=https://t.me/{BOT_USERNAME}&text={encoded_text}"
     builder.row(InlineKeyboardButton(text="📲 Do'stlarga ulashish", url=share_url))
