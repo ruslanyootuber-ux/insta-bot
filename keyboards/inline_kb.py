@@ -34,7 +34,7 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     
     # 2. Do'stlarga ulashish tugmasi (bu ham maxsus link)
     # Ulashiladigan matnni ham shu yerda o'zgartirishingiz mumkin
-    share_text = "🕌«Foydali Namoz Vaqtlari» boti — cho‘ntagingizdagi ishonchli yordamchi!📱📿"
+    share_text = "🕌Foydali Namoz Vaqtlari boti — cho‘ntagingizdagi ishonchli yordamchi!📱📿"
     share_url = f"https://t.me/share/url?url=https://t.me/{BOT_USERNAME}&text={share_text}"
     builder.row(InlineKeyboardButton(text="📲 Do'stlarga ulashish", url=share_url))
 
