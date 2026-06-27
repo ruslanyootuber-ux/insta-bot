@@ -94,7 +94,12 @@ async def main():
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        print("Dastur to'xtatildi.")
+    logging.basicConfig(level=logging.INFO)
+    while True:
+        try:
+            asyncio.run(main())
+        except Exception as e:
+            logging.error(f"Kutilmagan xatolik yuz berdi: {e}")
+            logging.info("Bot 5 soniyadan keyin qayta ishga tushiriladi...")
+            import time
+            time.sleep(5) # Xatolik bo'lsa, 5 soniya kutib qaytadan urinadi
