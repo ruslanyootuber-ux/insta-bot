@@ -24,7 +24,9 @@ from handlers.taxorat_handlers import router as taxorat_router
 from handlers.erkaklar_namozi_handlers import router as erkaklar_namozi_router
 from handlers.ayollar_namozi_handlers import router as ayollar_namozi_router
 from handlers.suralar_handlers import router as suralar_router
-from handlers.audio_id_handler import router as audio_id_router  # <-- Янги аудио ИД роутери
+from handlers.audio_id_handler import router as audio_id_router
+from handlers.under_construction_handlers import router as under_construction_router
+
 
 async def main():
     logging.basicConfig(level=logging.INFO)
@@ -50,7 +52,8 @@ async def main():
         taxorat_router,
         erkaklar_namozi_router,
         ayollar_namozi_router,
-        suralar_router
+        suralar_router,
+        under_construction_router
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
