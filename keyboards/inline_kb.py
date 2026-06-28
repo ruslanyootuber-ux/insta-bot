@@ -1,13 +1,13 @@
+# keyboards/inline_kb.py
+
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from keyboards.callbacks import RegionCallback, DistrictCallback
 from utils.locations import UZB_REGIONS
 from urllib.parse import quote
 
-# Бот юзернеймини шу ерга ёзиб қўямиз, пастдаги тугмалар хато бермаслиги учун
 BOT_USERNAME = "NamozTaqvimi_Uz_Bot" 
 
-# 1. АСОСИЙ МЕНЮ (Фақат Кирилл алифбосида)
 def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
@@ -15,7 +15,7 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder.button(text="💧 Таҳорат", callback_data="taxorat_0")
     builder.button(text="🚿 Ғусл", callback_data="ghusl")
     builder.button(text="🏜 Таяммум", callback_data="tayammum")
-    builder.button(text="🧎 Эркаклар намози", callback_data="erkaklar_namozi")
+    builder.button(text="🧎 Эркаклар намози", callback_data="erkaklar_namozi_0")  # <-- Мана шу ер ўзгарди!
     builder.button(text="🧎‍♀️ Аёллар намози", callback_data="ayollar_namozi")
     builder.button(text="📖 Суралар", callback_data="suralar")
     builder.button(text="🤲 Дуолар", callback_data="duolar")
@@ -34,7 +34,6 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
 
     builder.adjust(2)
 
-    # Пастки қисмдаги ҳаволали (URL) тугмалар
     add_to_group_url = f"https://t.me/{BOT_USERNAME}?startgroup=true"
     builder.row(InlineKeyboardButton(text="➕ Гуруҳга қўшиш", url=add_to_group_url))
 
@@ -45,7 +44,6 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
 
     return builder.as_markup()
 
-# 2. ВИЛОЯТЛАР ВА ТУМАНЛАР КЛАВИАТУРАЛАРИ
 def get_regions_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for region in UZB_REGIONS.keys():
