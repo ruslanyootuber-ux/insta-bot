@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from loader import bot, dp
 # Data papkasidagi fayllarni import qilish
 from data import asmaul_husna_data, hadis_data, zikr_data, tasbeh_data, duo_data
-from handlers import start, menu_handlers, extra_handlers, admin_handlers
+from handlers import start, menu_handlers, extra_handlers, admin_handlers, savol_handlers
 from handlers.extra_handlers import check_and_send_reminders
 from handlers.zikr_handlers import router as zikr_router
 from handlers.ramadan_handlers import router as ramadan_router
@@ -41,7 +41,8 @@ async def main():
         tasbeh_router, 
         asmaul_router, 
         duo_router, 
-        faq_router
+        faq_router, 
+        savol_handlers.router
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
