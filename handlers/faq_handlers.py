@@ -5,6 +5,7 @@ from data.data_savol_javob import SAVOL_JAVOBLAR
 # Klaviaturalarni bitta joydan chaqiring (inline_kb.py yoki savol_kb.py)
 from keyboards.inline_kb import get_faq_menu_kb 
 from database import get_language, set_language
+from cyrtranslit import to_cyrillic
 
 router = Router()
 
