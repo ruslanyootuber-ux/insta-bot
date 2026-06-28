@@ -1,3 +1,5 @@
+# handlers/qibla_handlers.py
+
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
@@ -12,38 +14,42 @@ MAKKAH_LON = 39.826206
 def calculate_qibla(lat, lon):
     phi1, lambda1 = radians(lat), radians(lon)
     phi2, lambda2 = radians(MAKKAH_LAT), radians(MAKKAH_LON)
-    
+
     y = sin(lambda2 - lambda1) * cos(phi2)
     x = cos(phi1) * sin(phi2) - sin(phi1) * cos(phi2) * cos(lambda2 - lambda1)
-    
+
     qibla = degrees(atan2(y, x))
     return (qibla + 360) % 360
 
 @router.callback_query(F.data == "menu_qibla")
 async def process_qibla(callback: CallbackQuery):
-    builder = InlineKeyboardBuilder()
-    builder.button(text="⬅️ Orqaga", callback_data="back_to_menu")
+    await callback.answer() # Соат айланиб қотишини олдини олиш учун
     
+    builder = InlineKeyboardBuilder()
+    builder.button(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main") # <-- back_to_main га ўзгартирилди
+
     await callback.message.edit_text(
         "📍 <b>Qibla yo'nalishini aniqlash</b>\n\n"
         "Iltimos, joylashuvingizni (location) yuboring, shunda men sizga "
         "Qibla tomonini aniqlab beraman.",
-        reply_markup=builder.as_markup()
+        reply_markup=builder.as_markup(),
+        parse_mode="HTML"
     )
 
 @router.message(F.location)
 async def handle_location(message: Message):
     lat = message.location.latitude
     lon = message.location.longitude
-    
+
     qibla_angle = calculate_qibla(lat, lon)
-    
+
     # Orqaga qaytish tugmasi
     builder = InlineKeyboardBuilder()
-    builder.button(text="⬅️ Asosiy menyuga", callback_data="back_to_menu")
-    
+    builder.button(text="⬅️ Асосий менюга", callback_data="back_to_main") # <-- back_to_main га ўзгартирилди
+
     await message.answer(
         f"🕋 <b>Qibla yo'nalishi:</b> {qibla_angle:.2f}°\n\n"
         f"Kompas yordamida telefoningizni ushbu gradusga to'g'rilang.",
-        reply_markup=builder.as_markup()
+        reply_markup=builder.as_markup(),
+        parse_mode="HTML"
     )
