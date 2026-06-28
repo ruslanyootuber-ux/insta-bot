@@ -1,3 +1,5 @@
+# handlers/zikr_handlers.py
+
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from keyboards.zikr_kb import get_zikr_main_keyboard, get_zikr_pagination_keyboard
@@ -11,7 +13,8 @@ async def process_zikr_menu(callback: CallbackQuery):
     await callback.answer()
     await callback.message.edit_text(
         "🤲 <b>Tonggi va Kechki zikrlar</b>\n\nQaysi vaqt zikrlarini o'qishni xohlaysiz?",
-        reply_markup=get_zikr_main_keyboard()
+        reply_markup=get_zikr_main_keyboard(),
+        parse_mode="HTML"
     )
 
 # Tonggi yoki Kechki zikrlarni boshlash (har doim 0-indeksdan boshlanadi)
@@ -39,18 +42,19 @@ async def ignore_callback(callback: CallbackQuery):
 async def show_zikr_page(callback: CallbackQuery, z_type: str, index: int):
     zikrs = MORNING_ZIKRS if z_type == "morning" else EVENING_ZIKRS
     total = len(zikrs)
-    
+
     current_zikr = zikrs[index]
     title = "🌅 Tonggi zikrlar" if z_type == "morning" else "🌇 Kechki zikrlar"
-    
+
     text = (
         f"<b>{title}</b>\n\n"
         f"🔤 <b>Arabcha:</b>\n{current_zikr['arabic']}\n\n"
         f"🗣 <b>O'qilishi:</b>\n<i>{current_zikr['translit']}</i>\n\n"
         f"🇺🇿 <b>Ma'nosi:</b>\n{current_zikr['uzbek']}"
     )
-    
+
     await callback.message.edit_text(
         text=text,
-        reply_markup=get_zikr_pagination_keyboard(z_type, index, total)
+        reply_markup=get_zikr_pagination_keyboard(z_type, index, total),
+        parse_mode="HTML"
     )
