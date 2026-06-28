@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, Message
 from data.taxorat_data import TAHORAT_STEPS
 from keyboards.taxorat_kb import get_taxorat_step_kb
 
