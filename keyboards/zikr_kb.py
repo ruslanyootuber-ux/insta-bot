@@ -6,7 +6,7 @@ def get_zikr_main_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(text="🌅 Tonggi zikrlar", callback_data="zikr_start_morning")
     builder.button(text="🌇 Kechki zikrlar", callback_data="zikr_start_evening")
-    builder.button(text="⬅️ Asosiy menyuga qaytish", callback_data="back_to_menu")
+    builder.button(text="⬅️ Asosiy menyuga qaytish", callback_data="back_to_main")
     builder.adjust(1)
     return builder.as_markup()
 
