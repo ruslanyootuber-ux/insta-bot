@@ -21,7 +21,7 @@ from handlers.hadis_handlers import router as hadis_router
 from handlers.tasbeh_handlers import router as tasbeh_router
 from handlers.asmaul_handlers import router as asmaul_router
 from handlers.duo_handlers import router as duo_router
-
+from handlers.taxorat_handlers import router as taxorat_router
 async def main():
     logging.basicConfig(level=logging.INFO)
     
@@ -42,7 +42,8 @@ async def main():
         hadis_router,
         tasbeh_router, 
         asmaul_router, 
-        duo_router,
+        duo_router, 
+        taxorat_router
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
