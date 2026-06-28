@@ -14,7 +14,7 @@ SURALAR_LIST = [
                 "5. Фақат Сенгагина ибодат қиламиз ва фақат Сендангина ёрдам сўраймиз.\n"
                 "6. Бизни тўғри йўлга ҳидоят қилгин.\n"
                 "7. Ўзинг неъмат берганларнинг йўлига: ғазабга қолганларникига ҳам эмас, адашганларникига ҳам эмас.",
-        "audio_id": "SURA_AUDIO_0"
+        "audio_id": "CQACAgIAAxkBAAIBpmpBeyYT1xL7WUUrr-lUJQ7CB2jgAALRoAAC6NQRSrA5sXgHxmlPPAQ"
     },
     {
         "id": 1,
@@ -62,7 +62,7 @@ SURALAR_LIST = [
                 "38. Ўша Кунда Руҳ ва фаришталар саф бўлиб турарлар. Роҳман изн берганлар ва тўғри сўзлаганлардан ўзгалар ҳеч гапира олмаслар.\n"
                 "39. У ҳақ Кундир. Ким хоҳласа, ўз Роббига қайтар йўл оладир.\n"
                 "40. Албатта, Биз сизларни яқин келажакдаги азобдан қўрқитдик. У Кунда киши ўз қўли тақдим қилган нарсага назар соладир. Ва кофир: «Қани эди, тупроқ бўлиб кетсам», – дейдир.",
-        "audio_id": "SURA_AUDIO_1"
+        "audio_id": "CQACAgIAAxkBAAIBympBf9i4qB965JB-CD4Mjrkq2XcmAALqoAAC6NQRShiH8S9EGNabPAQ"
     },
     {
         "id": 2,
@@ -116,7 +116,7 @@ SURALAR_LIST = [
                 "44. Унинг интиҳоси Роббинггагина хос.\n"
                 "45. Албатта, сен қўрқувчиларни ундан огоҳлантирувчисан, холос.\n"
                 "46. Уни кўрган кунлари худди дунёда кечки пайт ёки чошгоҳдан бошқа турмаганга ўхшарлар.",
-        "audio_id": "SURA_AUDIO_2"
+        "audio_id": "CQACAgIAAxkBAAIBzGpBgDWs-Cwzy0sperZ_HxL0c7noAALsoAAC6NQRSgAB6SE7KGJDlTwE"
     },
     {
         "id": 3,
@@ -166,7 +166,7 @@ SURALAR_LIST = [
                 "40. Ва у кунда баъзи юзлар устини ғубор босган,\n"
                 "41. зулмат қоплаган бўлур.\n"
                 "42. Ана ўшалар кофирлар ва фожирлардир.",
-        "audio_id": "SURA_AUDIO_3"
+        "audio_id": "CQACAgIAAxkBAAIBzmpBgIpjJbzSz73LNizZZtrOiAmxAALuoAAC6NQRSsUXXWEjUTIePAQ"
     },
     {
         "id": 4,
@@ -203,7 +203,7 @@ SURALAR_LIST = [
                 "27. У (Қуръон) оламларга эслатмадан бошқа нарса эмасдир…\n"
                 "28. сизлардан мустақим бўлишни хоҳловчилар учун.\n"
                 "29. Оламларнинг Робби Аллоҳ хоҳласагина, сизлар хоҳлайсизлар.",
-        "audio_id": "SURA_AUDIO_4"
+        "audio_id": "CQACAgIAAxkBAAIB0GpBgOAkN7whLCtxpq8jVc9dmr8ZAALvoAAC6NQRSnKmNHKQChG4PAQ"
     },
     {
         "id": 5,
@@ -230,7 +230,7 @@ SURALAR_LIST = [
                 "17. Ва жазо мукофот куни нима эканини сенга нима билдирди?\n"
                 "18. Сўнг жазо мукофот куни нима эканини сенга нима билдирди?\n"
                 "19. Ўша Кунда ҳеч бир жон бошқа бир жон учун бирор нарса қилиш имконига молик эмас. У Кунда иш Аллоҳнинг Ўзига хосдир.",
-        "audio_id": "SURA_AUDIO_5"
+        "audio_id": "CQACAgIAAxkBAAIB0mpBgS1-3fEQd_s7JmfcQ3KKyGPWAALxoAAC6NQRSlhxL8BUUUf_PAQ"
     },
     {
         "id": 6,
@@ -274,7 +274,7 @@ SURALAR_LIST = [
                 "34. Энди бу Кунда иймон келтирганлар кофирлар устидан куларлар.\n"
                 "35. Пардали, баланд сўрилар устида назар солиб турарлар.\n"
                 "36. Кофирлар қилган ишларининг «савоби»ни олдилармикан?!",
-        "audio_id": "SURA_AUDIO_6"
+        "audio_id": "CQACAgIAAxkBAAIB1GpBgW5EWYpNUCxzbqRuiMsYCtAfAALyoAAC6NQRSo6urBCDUuyfPAQ"
     },
     {
         "id": 7,
@@ -307,7 +307,7 @@ SURALAR_LIST = [
                 "23. Ҳолбуки, Аллоҳ (қалбларида) нимани сақлаётганларини яхши билувчидир.\n"
                 "24. Уларга аламли азобнинг «хушхабар»ини бер.\n"
                 "25. Иймон келтирганлар ва яхши амаллар қилганлар мустасно. Уларга миннатсиз, битмас-туганмас ажрлар бор.",
-        "audio_id": "SURA_AUDIO_7"
+        "audio_id": "CQACAgIAAxkBAAIB1mpBganDuabIpxc-ikD0ry6Kb_tlAAL0oAAC6NQRSl0erI0UjO_6PAQ"
     },
     {
         "id": 8,
@@ -336,7 +336,7 @@ SURALAR_LIST = [
                 "19. Ҳолбуки, Аллоҳ уларнинг ортидан иҳота қилиб турувчидир.\n"
                 "20. Йўқ!!! У Қуръони Мажиддир.\n"
                 "21. Лавҳул Маҳфуздадир.",
-        "audio_id": "SURA_AUDIO_8"
+        "audio_id": "CQACAgIAAxkBAAIB2GpBgfOnjw17pSPBxFRHP2W_al-4AAL2oAAC6NQRSl_p8yG0UdK3PAQ"
     },
     {
         "id": 9,
@@ -361,7 +361,7 @@ SURALAR_LIST = [
                 "15. Албатта, улар ҳийла қилурлар.\n"
                 "16. Ва Мен ҳам «ҳийла» қилурман.\n"
                 "17. Бас, кофирларга муҳлат бер. Ҳа, уларга озгина муҳлат бер.",
-        "audio_id": "SURA_AUDIO_9"
+        "audio_id": "CQACAgIAAxkBAAIB2mpBgjcG0jm9EJux-pkuhRpkhUNGAAL5oAAC6NQRSqxkkI7JRbdVPAQ"
     },
     {
         "id": 10,
@@ -388,7 +388,7 @@ SURALAR_LIST = [
                 "17. Ҳолбуки, охират яхшироқ ва боқийроқдир.\n"
                 "18. Албатта, бу аввалги саҳифаларда бордир…\n"
                 "19. Иброҳим ва Мусо саҳифаларидадир.",
-        "audio_id": "SURA_AUDIO_10"
+        "audio_id": "CQACAgIAAxkBAAIB3GpBgo7J7JIJ4ply8WYgK8ZYm9phAAL7oAAC6NQRSnhy_v1iF6-6PAQ"
     },
     {
         "id": 11,
@@ -422,7 +422,7 @@ SURALAR_LIST = [
                 "24. бас, уни Аллоҳ катта азоб билан азоблайдир.\n"
                 "25. Албатта, уларнинг қайтиши Бизгадир.\n"
                 "26. Сўнгра, албатта, уларнинг ҳисоб-китоби ҳам Бизда бўладир.",
-        "audio_id": "SURA_AUDIO_11"
+        "audio_id": "CQACAgIAAxkBAAIB3mpBguJl6fr6ODne5txiP6XNI2vcAAL8oAAC6NQRSgW-CKJQBUc-PAQ"
     },
     {
         "id": 12,
@@ -443,6 +443,6 @@ SURALAR_LIST = [
                 "11. Улар ўлкаларда туғёнга кетган эдилар.\n"
                 "12. Уларда бузғунчиликни кўпайтирган эдилар.\n"
                 "13. Бас, Роббинг уларнинг устига азоб қамчисини ёғдирди.",
-        "audio_id": "SURA_AUDIO_12"
+        "audio_id": "CQACAgIAAxkBAAIB4GpBgxHyZPE08A_1V_Smk9vEWOp3AAL-oAAC6NQRSt6KaX838OMwPAQ"
     }
 ]
