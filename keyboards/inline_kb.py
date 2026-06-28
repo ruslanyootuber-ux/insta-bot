@@ -18,7 +18,7 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder.button(text="🧎 Эркаклар намози", callback_data="erkaklar_namozi_0")
     builder.button(text="🧎‍♀️ Аёллар намози", callback_data="ayollar_namozi_0")
     builder.button(text="📖 Суралар", callback_data="suralar")  # <-- Суралар тугмаси шу ерга қўшилди
-    builder.button(text="🤲 Дуолар", callback_data="duo")
+    builder.button(text="🤲 Дуолар", callback_data="duolar")
 
     # ⚙️ Қўшимча хизматлар
     builder.button(text="🕌 Намоз вақтлари", callback_data="menu_regions")
