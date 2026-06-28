@@ -15,7 +15,7 @@ def get_asmaul_keyboard(index: int, total: int):
         InlineKeyboardButton(text="⬅️ Oldingi", callback_data=f"asma_{prev_index}"),
         InlineKeyboardButton(text="Keyingi ➡️", callback_data=f"asma_{next_index}")
     )
-    builder.row(InlineKeyboardButton(text="⬅️ Asosiy menyu", callback_data="back_to_menu"))
+    builder.row(InlineKeyboardButton(text="⬅️ Asosiy menyu", callback_data="back_to_main"))
     return builder.as_markup()
 
 async def send_asmaul_page(callback: CallbackQuery, index: int):
