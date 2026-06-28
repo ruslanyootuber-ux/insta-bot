@@ -21,6 +21,7 @@ from handlers.asmaul_handlers import router as asmaul_router
 from handlers.duo_handlers import router as duo_router
 from handlers.faq_handlers import router as faq_router
 async def main():
+from handlers import savol_handlers
     logging.basicConfig(level=logging.INFO)
     
     # Scheduler'ni sozlash
@@ -42,7 +43,7 @@ async def main():
         asmaul_router, 
         duo_router, 
         faq_router, 
-        savol_handlers_router
+        savol_handlers.router
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
