@@ -11,7 +11,7 @@ def get_hadis_keyboard(index: int):
     
     # row() ichida builder.button() ni chaqirmang, shunchaki tugma qo'shing
     builder.row(InlineKeyboardButton(text="🔄 Yangi hadis", callback_data="menu_hadis"))
-    builder.row(InlineKeyboardButton(text="⬅️ Asosiy menyu", callback_data="back_to_menu"))
+    builder.row(InlineKeyboardButton(text="⬅️ Asosiy menyu", callback_data="back_to_main"))
     
     builder.adjust(3, 1, 1)
     return builder.as_markup()
