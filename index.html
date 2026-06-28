@@ -2,25 +2,26 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Premium Qibla Compass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Ultra Premium Qibla Compass</title>
     <!-- Telegram WebApp JS -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: #0d1117;
-            --premium-gold: #d4af37;
-            --islamic-green: #00e676;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --bg-dark: #070a13;
+            --gold-metallic: linear-gradient(135deg, #ffe082 0%, #d4af37 50%, #aa7c11 100%);
+            --gold-solid: #d4af37;
+            --emerald-neon: #00f5d4;
+            --glass-panel: rgba(255, 255, 255, 0.02);
+            --border-glow: 0 0 20px rgba(212, 175, 55, 0.1);
         }
 
         body {
             margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
+            padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom) 20px;
+            background-color: var(--bg-dark);
             color: #ffffff;
-            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -32,257 +33,321 @@
             user-select: none;
         }
 
-        /* Юқори қисм */
+        /* Телефон экранига мосланувчи премиум рамка */
+        .phone-frame {
+            position: absolute;
+            top: 10px; bottom: 10px; left: 10px; right: 10px;
+            border: 2px solid rgba(212, 175, 55, 0.15);
+            border-radius: 40px;
+            pointer-events: none;
+            z-index: 100;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        /* Юқори ташқи кўриниш */
         .header {
             text-align: center;
-            margin-top: 25px;
-            width: 100%;
-        }
-
-        .header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin: 0 0 5px 0;
-            background: linear-gradient(135deg, #ffffff 0%, #b0bec5 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header p {
-            font-size: 13px;
-            color: #8b949e;
-            margin: 0;
-        }
-
-        /* Компас контейнери */
-        .compass-wrapper {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--glass-bg);
-            border-radius: 50%;
-            box-shadow: var(--card-shadow), inset 0 0 20px rgba(255,255,255,0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        /* Асосий айланувчи диск */
-        .compass-disc {
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            position: relative;
-            border: 2px dashed rgba(255, 255, 255, 0.1);
-            transition: transform 0.1s ease-out;
-        }
-
-        /* Дунё томонлари ҳарфлари (N, E, S, W) */
-        .direction {
-            position: absolute;
-            font-weight: 900;
-            font-size: 16px;
-            color: #8b949e;
-            transform: translateX(-50%);
-        }
-        .dir-n { top: 10px; left: 50%; color: #ff5252; }
-        .dir-e { top: 50%; right: 10px; transform: translateY(-50%); }
-        .dir-s { bottom: 10px; left: 50%; }
-        .dir-w { top: 50%; left: 25px; transform: translateY(-50%); }
-
-        /* Каъбанинг премиум стрелкаси */
-        .qibla-pointer {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            pointer-events: none;
-        }
-
-        .kaaba-icon {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 28px;
-            filter: drop-shadow(0 0 8px var(--premium-gold));
+            margin-top: 40px;
             z-index: 10;
         }
 
-        .gold-line {
+        .header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin: 0 0 8px 0;
+            background: var(--gold-metallic);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .header p {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0;
+        }
+
+        /* Марказий компас блоки */
+        .compass-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Тепа марказдаги асосий нишон кўрсаткичи */
+        .top-selector {
             position: absolute;
-            top: 15px;
+            top: -10px;
             left: 50%;
-            width: 3px;
-            height: 135px;
-            background: linear-gradient(to bottom, var(--premium-gold), transparent);
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid var(--gold-solid);
+            z-index: 50;
+            filter: drop-shadow(0 0 5px var(--gold-solid));
+        }
+
+        /* Ташқи ҳашаматли ҳалқа */
+        .outer-ring {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            position: absolute;
+            box-shadow: var(--border-glow), inset 0 0 40px rgba(0,0,0,0.9);
+            background: radial-gradient(circle, rgba(13,18,35,0.2) 0%, rgba(7,10,19,1) 100%);
+        }
+
+        /* Айланувчи ички циферблат */
+        .compass-disc {
+            width: 270px;
+            height: 270px;
+            border-radius: 50%;
+            position: relative;
+            will-change: transform;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Соат чизиқчалари эффекти (Градуслар учун) */
+        .compass-disc::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%;
+            background: repeating-conic-gradient(from 0deg, rgba(255,255,255,0.1) 0deg 1deg, transparent 1deg 10deg);
+            -webkit-mask: radial-gradient(circle, transparent 92%, black 93%);
+            mask: radial-gradient(circle, transparent 92%, black 93%);
+        }
+
+        /* Дунё томонлари ҳарфлари */
+        .direction {
+            position: absolute;
+            font-weight: 800;
+            font-size: 18px;
+            color: #475569;
+            transform: translateX(-50%);
+        }
+        .dir-n { top: 15px; left: 50%; color: #ff4757; text-shadow: 0 0 10px rgba(255,71,87,0.4); }
+        .dir-e { top: 50%; right: 15px; transform: translateY(-50%); }
+        .dir-s { bottom: 15px; left: 50%; }
+        .dir-w { top: 50%; left: 30px; transform: translateY(-50%); }
+
+        /* Қибла Олтин Мили */
+        .qibla-pointer {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+        }
+
+        .kaaba-box {
+            position: absolute;
+            top: -20px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 32px;
+            filter: drop-shadow(0 0 10px var(--gold-solid));
+            z-index: 40;
+        }
+
+        .luxury-line {
+            position: absolute;
+            top: 20px; left: 50%;
+            width: 2px; height: 115px;
+            background: linear-gradient(to bottom, var(--gold-solid), transparent);
             transform: translateX(-50%);
         }
 
-        /* Марказий рақамли кўрсаткич */
-        .center-display {
+        /* Ички Рақамли Монитор */
+        .digital-core {
             position: absolute;
-            width: 100px;
-            height: 100px;
-            background: #161b22;
+            width: 110px;
+            height: 110px;
+            background: #090d16;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            border: 2px solid rgba(255,255,255,0.05);
-            z-index: 5;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            z-index: 60;
         }
 
-        .degree-num {
-            font-size: 26px;
-            font-weight: 800;
+        .dig-num {
+            font-size: 28px;
+            font-weight: 900;
             color: #ffffff;
+            font-variant-numeric: tabular-nums;
         }
 
-        .degree-unit {
-            font-size: 11px;
-            color: var(--premium-gold);
-            font-weight: 600;
+        .dig-lbl {
+            font-size: 10px;
+            color: var(--gold-solid);
+            letter-spacing: 2px;
             text-transform: uppercase;
             margin-top: 2px;
         }
 
-        /* Пастки статус қисми */
-        .footer-status {
-            width: 85%;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 30px;
+        /* Пастки маълумотлар панели */
+        .status-panel {
+            width: 90%;
+            background: var(--glass-panel);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 18px;
+            margin-bottom: 40px;
             text-align: center;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            z-index: 10;
         }
 
-        .status-title {
-            font-size: 14px;
-            color: #8b949e;
-            margin-bottom: 5px;
+        .panel-title {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
         }
 
-        .status-value {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--islamic-green);
+        .panel-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            transition: color 0.3s ease;
         }
 
-        .matched {
-            color: var(--islamic-green) !important;
-            animation: pulse 1.5s infinite;
+        /* Тўғри келгандаги премиум эффект */
+        .perfect-match {
+            color: var(--emerald-neon) !important;
+            animation: goldGlow 1.5s infinite ease-in-out;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--islamic-green)); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 0 10px var(--islamic-green)); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--islamic-green)); }
+        @keyframes goldGlow {
+            0% { filter: drop-shadow(0 0 5px var(--emerald-neon)); }
+            50% { filter: drop-shadow(0 0 20px var(--emerald-neon)); }
+            100% { filter: drop-shadow(0 0 5px var(--emerald-neon)); }
         }
     </style>
 </head>
 <body>
 
+    <!-- Экран чек рамкаси -->
+    <div class="phone-frame"></div>
+
     <div class="header">
-        <h1>ҚИБЛА КОМПАСИ</h1>
-        <p>Реал вақт режимидаги аниқ йўналиш</p>
+        <h1>QIBLA COMPASS</h1>
+        <p>Ultra Luxury Edition</p>
     </div>
 
-    <!-- Компас визуал қисми -->
-    <div class="compass-wrapper">
-        <div class="center-display">
-            <span class="degree-num" id="degText">0°</span>
-            <span class="degree-unit">Бурчак</span>
+    <!-- Компас Блоки -->
+    <div class="compass-container">
+        <div class="top-selector"></div>
+        <div class="outer-ring"></div>
+        
+        <div class="digital-core">
+            <span class="dig-num" id="liveDegree">0°</span>
+            <span class="dig-lbl">Qibla</span>
         </div>
         
-        <!-- Айланувчи асосий диск -->
-        <div class="compass-disc" id="compassDisc">
+        <!-- Айланувчи Диск -->
+        <div class="compass-disc" id="mainDisc">
             <div class="direction dir-n">N</div>
             <div class="direction dir-e">E</div>
             <div class="direction dir-s">S</div>
             <div class="direction dir-w">W</div>
             
-            <!-- Диск ичидаги Каъба кўрсаткичи -->
-            <!-- Ўзбекистон учун ўртача Қибла бурчаги 240° га созланган -->
+            <!-- Диск ичидаги Каъба кўрсаткичи (Ўзбекистон учун 240 градусга бурчилган) -->
             <div class="qibla-pointer" style="transform: rotate(240deg);">
-                <div class="kaaba-icon" id="kaabaIcon">🕋</div>
-                <div class="gold-line"></div>
+                <div class="kaaba-box" id="kaabaBox">🕋</div>
+                <div class="luxury-line"></div>
             </div>
         </div>
     </div>
 
-    <!-- Пастки маълумотлар панели -->
-    <div class="footer-status">
-        <div class="status-title" id="statusTitle">Қурилма ҳолати</div>
-        <div class="status-value" id="statusDesc">Датчик кутилмоқда...</div>
+    <!-- Пастки статус панел -->
+    <div class="status-panel">
+        <div class="panel-title">Қурилма йўналиши</div>
+        <div class="panel-value" id="statusText">Компас датчиги кутилмоқда...</div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
-        tg.expand(); // Экранни максимал катталикда очиш
+        tg.expand();
 
-        const compassDisc = document.getElementById('compassDisc');
-        const degText = document.getElementById('degText');
-        const statusDesc = document.getElementById('statusDesc');
-        const kaabaIcon = document.getElementById('kaabaIcon');
+        const mainDisc = document.getElementById('mainDisc');
+        const liveDegree = document.getElementById('liveDegree');
+        const statusText = document.getElementById('statusText');
+        const kaabaBox = document.getElementById('kaabaBox');
 
-        // Ўзбекистон учун стандарт Қибла йўналиши бурчаги (Шимолдан бошлаб)
-        const QIBLA_ANGLE = 240; 
-        let lastVibrated = 0;
+        const TARGET_QIBLA = 240; // Ўзбекистон учун Қибла градуси
+        
+        // Сезгирликни камайтириш учун Лоу-пасс Фильтр ўзгарувчилари
+        let currentHeading = 0;
+        const kFilteringFactor = 0.15; // Рақам қанча кичик бўлса, ҳаракат шунчалик оҳиста ва силлиқ бўлади (қалтирамайди)
+        let lastVibeTime = 0;
 
-        // Датчикларни текшириш ва уланиш
         if (window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientationabsolute', handleOrientation, true);
-            window.addEventListener('deviceorientation', handleOrientation, true);
+            window.addEventListener('deviceorientationabsolute', onOrientationChange, true);
+            window.addEventListener('deviceorientation', onOrientationChange, true);
         } else {
-            statusDesc.style.color = '#ff5252';
-            statusDesc.innerText = "Қурилмада компас датчиги топилмади.";
+            statusText.innerText = "Датчик топилмади.";
+            statusText.style.color = "#ff4757";
         }
 
-        function handleOrientation(event) {
-            // Android ва iOS учун градусни тўғри ушлаб олиш
-            let heading = event.alpha;
-            
+        function onOrientationChange(event) {
+            let rawHeading = event.alpha;
             if (event.webkitCompassHeading) {
-                heading = event.webkitCompassHeading; // iOS (iPhone) учун махсус
+                rawHeading = event.webkitCompassHeading; // iOS учун
             }
 
-            if (heading !== null && heading !== undefined) {
-                let roundedHeading = Math.round(heading);
-                degText.innerText = `${roundedHeading}°`;
+            if (rawHeading !== null && rawHeading !== undefined) {
+                // Математик силлиқлаш (Low-pass filter)
+                // Агар бурчак 0 дан 360 га ўтаётганда кескин сакраш бўлса, фильтрни тўғрилаймиз
+                if (Math.abs(rawHeading - currentHeading) > 180) {
+                    if (rawHeading > currentHeading) currentHeading += 360;
+                    else currentHeading -= 360;
+                }
 
-                // Дискни телефон бурилишига тескари йўналишда айлантирамиз
-                compassDisc.style.transform = `rotate(${-heading}deg)`;
+                currentHeading = currentHeading + kFilteringFactor * (rawHeading - currentHeading);
+                
+                // Градусни чиройли нормаллаштириш (0-360 оралиғида)
+                let finalHeading = (currentHeading + 360) % 360;
+                let displayHeading = Math.round(finalHeading);
 
-                // Каъба айнан тепага (тўғрига) келган ҳолатини ҳисоблаш
-                // Телефоннинг тепаси Қиблага қараганда (heading + 120) % 360 тахминан QIBLA_ANGLE га тенг бўлади
-                let difference = Math.abs(roundedHeading - QIBLA_ANGLE);
+                // Рақамни экранга чиқариш
+                liveDegree.innerText = `${displayHeading}°`;
 
-                if (difference <= 3 || difference >= 357) {
-                    statusDesc.innerText = "🕋 Каъба тўғрида! (Намоз ўқиш мумкин)";
-                    statusDesc.style.color = "#00e676";
-                    kaabaIcon.classList.add('matched');
+                // Дискни силлиқ буриш
+                mainDisc.style.transform = `rotate(${-finalHeading}deg)`;
+
+                // Каъба тепа нишонга келганлигини текшириш
+                let diff = Math.abs(displayHeading - TARGET_QIBLA);
+
+                if (diff <= 3 || diff >= 357) {
+                    statusText.innerText = "🕋 КАЪБА ТЎҒРИДА! НАМОЗ ВАҚТИ";
+                    statusText.classList.add('perfect-match');
+                    kaabaBox.classList.add('perfect-match');
                     
-                    // Тўғри келганда енгил титраш (Vibration/Haptic) - ҳар 1 сонияда бир марта
+                    // Тўғри келганда енгил ва сифатли Haptic бериш
                     let now = Date.now();
-                    if (now - lastVibrated > 1000) {
-                        if (navigator.vibrate) navigator.vibrate(80);
-                        if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-                        lastVibrated = now;
+                    if (now - lastVibeTime > 1200) {
+                        if (navigator.vibrate) navigator.vibrate(60);
+                        if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+                        lastVibeTime = now;
                     }
                 } else {
-                    statusDesc.innerText = `Қибла чап ёки ўнгда (Телефонни буринг)`;
-                    statusDesc.style.color = "#ffffff";
-                    kaabaIcon.classList.remove('matched');
+                    statusText.innerText = "Қиблани топиш учун телефонни буринг";
+                    statusText.classList.remove('perfect-match');
+                    statusText.style.color = "#ffffff";
+                    kaabaBox.classList.remove('perfect-match');
                 }
-            } else {
-                statusDesc.innerText = "Компас калибровка қилинмоқда...";
             }
         }
     </script>
