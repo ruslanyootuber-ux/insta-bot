@@ -22,7 +22,8 @@ from handlers.asmaul_handlers import router as asmaul_router
 from handlers.duo_handlers import router as duo_router
 from handlers.taxorat_handlers import router as taxorat_router
 from handlers.erkaklar_namozi_handlers import router as erkaklar_namozi_router
-from handlers.media_handlers import router as media_router  # <-- ЯНГИ ИМПОРТ
+from handlers.ayollar_namozi_handlers import router as ayollar_namozi_router  # <-- ЯНГИ ИМПОРТ
+from handlers.media_handlers import router as media_router
 
 async def main():
     logging.basicConfig(level=logging.INFO)
@@ -31,9 +32,8 @@ async def main():
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
     scheduler.start()
 
-    # Жуда муҳим: media_router рўйхатнинг энг бошида туриши керак!
     dp.include_routers(
-        media_router,  # <-- ЭНГ БЕРИНЧИ ШУ ЕРГА ҚЎШИЛДИ
+        media_router,
         start.router, 
         menu_handlers.router, 
         extra_handlers.router, 
@@ -46,7 +46,8 @@ async def main():
         asmaul_router, 
         duo_router, 
         taxorat_router,
-        erkaklar_namozi_router
+        erkaklar_namozi_router,
+        ayollar_namozi_router  # <-- РОУТЕРГА УЛАНДИ!
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
