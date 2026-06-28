@@ -23,8 +23,8 @@ from handlers.duo_handlers import router as duo_router
 from handlers.taxorat_handlers import router as taxorat_router
 from handlers.erkaklar_namozi_handlers import router as erkaklar_namozi_router
 from handlers.ayollar_namozi_handlers import router as ayollar_namozi_router
-from handlers.suralar_handlers import router as suralar_router  # <-- ЯНГИ ИМПОРТ
-from handlers.media_handlers import router as media_router
+from handlers.suralar_handlers import router as suralar_router
+from handlers.audio_id_handler import router as audio_id_router  # <-- Янги аудио ИД роутери
 
 async def main():
     logging.basicConfig(level=logging.INFO)
@@ -33,8 +33,9 @@ async def main():
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
     scheduler.start()
 
+    # Ортиқча media_router олиб ташланди ва янги аудио роутер қўшилди
     dp.include_routers(
-        media_router,
+        audio_id_router,  # Текширув тез ишлаши учун энг тепага қўйдик
         start.router, 
         menu_handlers.router, 
         extra_handlers.router, 
@@ -49,7 +50,7 @@ async def main():
         taxorat_router,
         erkaklar_namozi_router,
         ayollar_namozi_router,
-        suralar_router  # <-- РОУТЕРГА УЛАНДИ!
+        suralar_router
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
