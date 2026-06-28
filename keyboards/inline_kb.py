@@ -3,7 +3,8 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from keyboards.callbacks import RegionCallback, DistrictCallback
 from utils.locations import UZB_REGIONS
 from urllib.parse import quote
-from data import savol_javoblar # Savol-javoblar joylashgan fayl
+# FAYL NOMI VA O'ZGARUVCHI NOMI BIR XIL BO'LISHI SHART!
+from data.data_savol_javob import SAVOL_JAVOBLAR 
 
 BOT_USERNAME = "NamozTaqvimi_Uz_Bot" 
 
@@ -12,7 +13,7 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     
     builder.button(text="🕌 Namoz vaqtlari", callback_data="menu_regions")
-    builder.button(text="❓ Savol-Javob", callback_data="faq_page_0") # Yangi tugma
+    builder.button(text="❓ Savol-Javob", callback_data="faq_page_0")
     builder.button(text="✨ Allohning 99 ismi", callback_data="menu_asmaul")
     builder.button(text="📿 Elektron tasbeh", callback_data="menu_tasbeh")
     builder.button(text="🤲 Kunlik duolar", callback_data="menu_duo")
@@ -24,7 +25,6 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder.button(text="☪️ Mazhabni tanlash", callback_data="menu_settings")
     builder.button(text="👨‍💻 Bog'lanish", callback_data="menu_creator")
 
-    # Guruhga qo'shish va Ulashish
     add_to_group_url = f"https://t.me/{BOT_USERNAME}?startgroup=true"
     builder.row(InlineKeyboardButton(text="➕ Guruhga qo'shish", url=add_to_group_url))
     
@@ -44,12 +44,11 @@ def get_faq_menu_kb(page: int = 0) -> InlineKeyboardMarkup:
     start = page * items_per_page
     end = start + items_per_page
     
-    # Savollar tugmalari
-    for i, item in enumerate(SAVOL_JAVOBLAR[start:end]):
-        # index orqali callback yaratamiz (keyinchalik handlersda ishlatish uchun)
-        builder.button(text=f"{start + i + 1}. {item['savol'][:20]}...", callback_data=f"faq_ans_{start + i}")
+    # Savollar tugmalari (SAVOL_JAVOBLAR o'zgaruvchisidan foydalandik)
+    for i in range(start, min(end, len(SAVOL_JAVOBLAR))):
+        builder.button(text=f"{i + 1}. {SAVOL_JAVOBLAR[i]['savol'][:20]}...", callback_data=f"faq_ans_{i}")
     
-    # Navigatsiya tugmalari
+    # Navigatsiya
     nav_buttons = []
     if page > 0:
         nav_buttons.append(InlineKeyboardButton(text="⬅️ Orqaga", callback_data=f"faq_page_{page-1}"))
