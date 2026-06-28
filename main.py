@@ -10,7 +10,9 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from loader import bot, dp
 # Data papkasidagi fayllarni import qilish
 from data import asmaul_husna_data, hadis_data, zikr_data, tasbeh_data, duo_data
-from handlers import start, menu_handlers, extra_handlers, admin_handlers, savol_handlers
+
+# Handlerlarni import qilish
+from handlers import start, menu_handlers, extra_handlers, admin_handlers, savol_handlers, faq_handlers
 from handlers.extra_handlers import check_and_send_reminders
 from handlers.zikr_handlers import router as zikr_router
 from handlers.ramadan_handlers import router as ramadan_router
@@ -19,9 +21,8 @@ from handlers.hadis_handlers import router as hadis_router
 from handlers.tasbeh_handlers import router as tasbeh_router
 from handlers.asmaul_handlers import router as asmaul_router
 from handlers.duo_handlers import router as duo_router
-from handlers.faq_handlers import router as faq_router
+
 async def main():
-from handlers import savol_handlers
     logging.basicConfig(level=logging.INFO)
     
     # Scheduler'ni sozlash
@@ -42,7 +43,7 @@ from handlers import savol_handlers
         tasbeh_router, 
         asmaul_router, 
         duo_router, 
-        faq_router, 
+        faq_handlers.router, # faq_router o'rniga faq_handlers.router 
         savol_handlers.router
     )
 
