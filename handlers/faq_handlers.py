@@ -1,6 +1,6 @@
 from aiogram import Router, F, types
 from aiogram.types import CallbackQuery
-from transliterate import to_cyrillic
+from transliterate import translit
 from data.data_savol_javob import SAVOL_JAVOBLAR
 # Klaviaturalarni bitta joydan chaqiring (inline_kb.py yoki savol_kb.py)
 from keyboards.inline_kb import get_faq_menu_kb 
@@ -25,8 +25,9 @@ async def show_faq_answer(callback: CallbackQuery):
     javob = item['javob']
     
     if user_lang == "cyrillic":
-        savol = to_cyrillic(savol)
-        javob = to_cyrillic(javob)
+    # 'ru' parametri orqali kirillchaga o'girish (uzbek tili uchun ham ishlaydi)
+    savol = translit(savol, 'ru')
+    javob = translit(javob, 'ru')
         
     text = f"❓ <b>{savol}</b>\n\n<blockquote>{javob}</blockquote>"
     
