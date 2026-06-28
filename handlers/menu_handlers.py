@@ -11,27 +11,34 @@ from utils.aladhan_api import get_prayer_times
 
 router = Router()
 
-# 1. Асосий менюга батамом қайтиш (Ботнинг бош менюсига)
+# =====================================================================
+# 1. АСОСИЙ МЕНЮГА БАТАМОМ ҚАЙТИШ (Ҳамма бўлимлар учун ягона ва тўғри йўл)
+# =====================================================================
 @router.callback_query(F.data == "back_to_main")
 async def process_back_to_main(callback: CallbackQuery):
-    await callback.answer()  # Энг муҳим қатор! Тугма соати айланиб қотиб қолишини тўхтатади.
+    await callback.answer()  # Соат айланиб қотишини тўхтатади
     text = "Assalomu alaykum! Kerakli bo'limni tanlang 👇"
+    
     try:
-        # Агар хабар оддий матнли бўлса, шунчаки ўзгартирамиз
+        # Биринчи навбатда оддий матн сифатида таҳрирлайди
         await callback.message.edit_text(text=text, reply_markup=get_main_menu_kb(), parse_mode="HTML")
     except Exception:
-        # Агар аудио ёки ГИФ юборилган бўлимдан (масалан Суралар/Намоз) қайтаётган бўлса, эскисини ўчириб янгисини юборади
+        # Агар хабар тури бошқача бўлса (Расм, Аудио ва ҳ.к.), эскисини ўчириб янги тоза меню очиб беради
         try:
             await callback.message.delete()
         except Exception:
             pass
         await callback.message.answer(text=text, reply_markup=get_main_menu_kb(), parse_mode="HTML")
 
-# 2. Намоз вақтлари ичидан Вилоятлар рўйхатига қайтиш
-@router.callback_query(F.data.in_(["back_to_regions", "back_to_menu"]))
+
+# =====================================================================
+# 2. ФАҚАТ НАМОЗ ВАҚТЛАРИ ИЧИДАН ВИЛОЯТЛАР РЎЙХАТИГА ҚАЙТИШ
+# =====================================================================
+@router.callback_query(F.data == "back_to_regions")
 async def back_to_menu_regions(callback: CallbackQuery):
     await callback.answer()
     text = "👇 <i>Iltimos, o'zingizga kerakli viloyatni tanlang:</i>"
+    
     try:
         await callback.message.edit_text(text=text, reply_markup=get_regions_keyboard(), parse_mode="HTML")
     except Exception:
@@ -41,7 +48,10 @@ async def back_to_menu_regions(callback: CallbackQuery):
             pass
         await callback.message.answer(text=text, reply_markup=get_regions_keyboard(), parse_mode="HTML")
 
-# 3. Вилоят танланганда (Туманлар рўйхати чиқади)
+
+# =====================================================================
+# 3. ВИЛОЯТ ТАНЛАНГАНДА (Туманлар рўйхати чиқади)
+# =====================================================================
 @router.callback_query(RegionCallback.filter())
 async def process_region_selection(callback: CallbackQuery, callback_data: RegionCallback):
     await callback.answer()
@@ -49,7 +59,10 @@ async def process_region_selection(callback: CallbackQuery, callback_data: Regio
     text = f"📍 <b>{region_name}</b>ni tanladingiz.\n\n🏙 Endi tumanni tanlang:"
     await callback.message.edit_text(text=text, reply_markup=get_districts_keyboard(region_name), parse_mode="HTML")
 
-# 4. Туман танланганда (Намоз вақтлари чиқади)
+
+# =====================================================================
+# 4. ТУМАН ТАНЛАНГАНДА (Намоз вақтлари чиқади)
+# =====================================================================
 @router.callback_query(DistrictCallback.filter())
 async def process_district_selection(callback: CallbackQuery, callback_data: DistrictCallback):
     await callback.answer()
@@ -65,8 +78,9 @@ async def process_district_selection(callback: CallbackQuery, callback_data: Dis
     times = await get_prayer_times(district_name, school=school)
 
     builder = InlineKeyboardBuilder()
-    builder.button(text="⬅️ Viloyatlarga qaytish", callback_data="back_to_menu")
-    builder.button(text="🏠 Asosiy menu", callback_data="back_to_main")
+    # Сиз айтган тугмалар мантиғи шу ерда ажратилди:
+    builder.button(text="⬅️ Viloyatlarga qaytish", callback_data="back_to_regions") # <-- back_to_regions бўлди
+    builder.button(text="🏠 Asosiy menu", callback_data="back_to_main")        # <-- Бош менюга тўғри йўл
     builder.adjust(1)
 
     if times:
@@ -87,7 +101,10 @@ async def process_district_selection(callback: CallbackQuery, callback_data: Dis
 
     await callback.message.edit_text(text, reply_markup=builder.as_markup(), parse_mode="HTML")
 
-# 5. Ғусл, Таяммум ва Дуолар бўлимлари учун расмий огоҳлантириш (ЯНГИ ҚЎШИЛДИ)
+
+# =====================================================================
+# 5. ҒУСЛ, ТАЯММУМ ВА ДУОЛАР УЧУН ОГОҲЛАНТИРИШ БЎЛИМИ
+# =====================================================================
 @router.callback_query(F.data.in_({"ghusl", "tayammum", "duolar"}))
 async def process_under_construction(callback: CallbackQuery):
     await callback.answer()
