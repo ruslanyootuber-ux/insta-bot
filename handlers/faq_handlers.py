@@ -26,9 +26,9 @@ async def show_faq_answer(callback: CallbackQuery):
     javob = item['javob']
     
     if user_lang == "cyrillic":
-    # 'ru' parametri orqali kirillchaga o'girish (uzbek tili uchun ham ishlaydi)
-    savol = translit(savol, 'ru')
-    javob = translit(javob, 'ru')
+        savol = to_cyrillic(savol)  # TO'G'RI: ichkariga kirgan
+        javob = to_cyrillic(javob)
+
     text = f"❓ <b>{savol}</b>\n\n<blockquote>{javob}</blockquote>"
     
     from aiogram.utils.keyboard import InlineKeyboardBuilder
