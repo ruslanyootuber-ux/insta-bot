@@ -1,3 +1,5 @@
+# handlers/taxorat_handlers.py
+
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from data.taxorat_data import TAHORAT_STEPS
@@ -9,7 +11,7 @@ router = Router()
 async def show_taxorat_step(callback: CallbackQuery):
     # Фақат қадам индексини оламиз (масалан: taxorat_0)
     step_idx = int(callback.data.split("_")[1])
-    
+
     if step_idx >= len(TAHORAT_STEPS) or step_idx < 0:
         await callback.answer("Бошқа қадам йўқ", show_alert=True)
         return
@@ -17,11 +19,11 @@ async def show_taxorat_step(callback: CallbackQuery):
     step_data = TAHORAT_STEPS[step_idx]
     text = step_data["text"]
     gif_id = step_data["gif_id"]
-    
+
     kb = get_taxorat_step_kb(step_idx, len(TAHORAT_STEPS))
 
     await callback.message.delete()
-    
+
     try:
         await callback.message.answer_animation(
             animation=gif_id, 
@@ -35,5 +37,5 @@ async def show_taxorat_step(callback: CallbackQuery):
             reply_markup=kb, 
             parse_mode="HTML"
         )
-        
+
     await callback.answer()
