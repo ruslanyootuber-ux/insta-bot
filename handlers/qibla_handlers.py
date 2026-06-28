@@ -15,7 +15,7 @@ async def process_qibla(callback: CallbackQuery):
     # Жонли компас очиш тугмаси (Ҳавола жойига ўз сайтингизни қўясиз)
     builder.button(
         text="🧭 Жонли Компасни очиш", 
-        web_app=WebAppInfo(url="https://ruslanyootuber-ux.github.io/insta-bot/") 
+        web_app=WebAppInfo(url="ruslanyootuber-ux.github.io") 
     )
     builder.button(text="⬅️ Асосий меню", callback_data="back_to_main")
     builder.adjust(1)
