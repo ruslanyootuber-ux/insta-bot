@@ -1,7 +1,7 @@
 # handlers/erkaklar_namozi_handlers.py
 
 from aiogram import Router, F
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, Message
 from data.erkaklar_namozi_data import ERKAKLAR_NAMOZI_STEPS
 from keyboards.erkaklar_namozi_kb import get_erkaklar_namozi_step_kb
 
