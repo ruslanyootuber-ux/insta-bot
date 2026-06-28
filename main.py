@@ -25,8 +25,6 @@ from handlers.erkaklar_namozi_handlers import router as erkaklar_namozi_router
 from handlers.ayollar_namozi_handlers import router as ayollar_namozi_router
 from handlers.suralar_handlers import router as suralar_router
 from handlers.audio_id_handler import router as audio_id_router
-from handlers.under_construction_handlers import router as under_construction_router
-
 
 async def main():
     logging.basicConfig(level=logging.INFO)
@@ -35,9 +33,9 @@ async def main():
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
     scheduler.start()
 
-    # Ортиқча media_router олиб ташланди ва янги аудио роутер қўшилди
+    # Роутерлар кетма-кетлиги тўғриланди. Глобал тугмалар тепада туради
     dp.include_routers(
-        audio_id_router,  # Текширув тез ишлаши учун энг тепага қўйдик
+        audio_id_router,
         start.router, 
         menu_handlers.router, 
         extra_handlers.router, 
@@ -52,8 +50,7 @@ async def main():
         taxorat_router,
         erkaklar_namozi_router,
         ayollar_namozi_router,
-        suralar_router,
-        under_construction_router
+        suralar_router
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
