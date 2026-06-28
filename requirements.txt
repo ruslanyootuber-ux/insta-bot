@@ -4,3 +4,4 @@ aiohttp==3.9.5
 pydantic==2.7.1
 apscheduler
 transliterate
+cyrtranslit
