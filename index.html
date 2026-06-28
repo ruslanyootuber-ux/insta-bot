@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jonli Qibla Kompasi</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            margin: 0;
+            background-color: #1a1a1a;
+            color: white;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .compass-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+        }
+        .compass {
+            width: 100%;
+            height: 100%;
+            background: url('https://i.imgur.com/vXof7Xm.png') no-repeat center; /* Компас расми */
+            background-size: contain;
+            transition: transform 0.1s ease-out;
+        }
+        .kaaba-needle {
+            position: absolute;
+            top: 0; left: 50%;
+            width: 4px; height: 50%;
+            background-color: #gold;
+            transform-origin: bottom center;
+            transform: translateX(-50%);
+        }
+        .status { margin-top: 20px; font-size: 18px; text-align: center; padding: 0 10px;}
+    </style>
+</head>
+<body>
+
+    <h2>Qibla Yo'nalishi (Jonli)</h2>
+    <div class="compass-container">
+        <div class="compass" id="compass"></div>
+        <div class="kaaba-needle" id="needle"></div>
+    </div>
+    <div class="status" id="status">Joylashuv aniqlanmoqda...</div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand(); // Экранни тўлиқ ёйиш
+
+        const compass = document.getElementById('compass');
+        const status = document.getElementById('status');
+
+        // Телефон датчигидан маълумот олиш
+        window.addEventListener('deviceorientationabsolute', handler, true);
+        window.addEventListener('deviceorientation', handler, true);
+
+        function handler(e) {
+            let heading = e.alpha || e.webkitCompassHeading;
+            if (heading !== undefined) {
+                // Масалан, Ўзбекистон учун тахминий Қибла бурчаги 240°
+                let qiblaAngle = 240; 
+                
+                // Компасни телефон айланишига қараб бурамиз
+                compass.style.transform = `rotate(${-heading}deg)`;
+                
+                // Каъба кўрсаткичини тўғрилаймиз
+                let finalNeedleAngle = qiblaAngle - heading;
+                
+                status.innerHTML = `Компас: ${Math.round(heading)}°<br>Қибла: ${qiblaAngle}°`;
+            } else {
+                status.innerText = "Илтимос, қурилма компасини созланг ёки бошқа браузердан киринг.";
+            }
+        }
+    </script>
+</body>
+</html>
