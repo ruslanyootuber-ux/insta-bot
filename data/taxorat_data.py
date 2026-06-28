@@ -4,57 +4,51 @@ TAHORAT_STEPS = [
     {
         "step": 1,
         "text": "<b>1. Ният қилиш</b>\n\nТаҳорат олиш учун, иложи бўлса, қиблага юзланилади. Сўнг: <i>«Навайту ан атарфаъал ҳадаса ва астабиҳас-солата тақоррубан илаллоҳу таъала»</i> (Маъноси: Намоз ўқиш учун таҳоратсизликни кетказишни ҳамда Аллоҳ таолога яқинлик ҳосил қилишни ният қилдим) деб, ичда ният қилинади ва «Бисмиллаҳир роҳманир роҳийм» айтилади.",
-        "CgACAgIAAxkBAAOuakErs8Pd5eRCmvCGs0rwOuXdJkwAAtieAALo1AlKMklJT5BORiw8BA": "FILE_ID_1" 
+        "gif_id": "CgACAgIAAxkBAAOuakErs8Pd5eRCmvCGs0rwOuXdJkwAAtieAALo1AlKMklJT5BORiw8BA" 
     },
     {
         "step": 2,
-        "text": "<b>2. Қўлларни ювиш</b>\n\nҚўллар бандигача (билаклари билан бирга) уч марта яхшилаб ювилади. Бармоқ ораларига сув етказилади. Агар бармоқда узук бўлса, уни қимирлатиб остига сув югуртирилади.",
-        "CgACAgIAAxkBAAO0akEsHjUOXAc3AssDGQxiOUCu86UAAtmeAALo1AlKOLdmAXcRr6s8BA": "FILE_ID_2"
+        "text": "<b>2. Қўлларни ювиш</b>\n\nҚўллар бандигача (билаклари билан бирга) уч марта яхшилаб ювилади. Бармоқ ораларига сув етказилади. Агар бармоқда узук бўлса, увини қимирлатиб остига сув югуртирилади.",
+        "gif_id": "CgACAgIAAxkBAAO0akEsHjUOXAc3AssDGQxiOUCu86UAAtmeAALo1AlKOLdmAXcRr6s8BA"
     },
     {
         "step": 3,
         "text": "<b>3. Оғизни чайиш (Мазмаза)</b>\n\nЎнг қўлга сув олиб, оғиз уч марта чайилади. Бунда томоқни ғарғара қилиш (рўзадор бўлмаса) суннатдир.",
-        "CgACAgIAAxkBAAO2akEsMocKv1Rphs0qAx01kqcKv_IAAtueAALo1AlKLDTydHgIlsM8BA": "FILE_ID_3"
+        "gif_id": "CgACAgIAAxkBAAO2akEsMocKv1Rphs0qAx01kqcKv_IAAtueAALo1AlKLDTydHgIlsM8BA"
     },
     {
         "step": 4,
         "text": "<b>4. Бурунни чайиш (Истиншоқ)</b>\n\nЎнг қўл билан бурунга уч марта сув тортилади ва чап қўл билан қоқилиб, бурун ичи яхшилаб тозаланади.",
-        "gif_id": "FILE_ID_4"
+        "gif_id": "FILE_ID_4"  # Бу қадам учун ҳали ГИФ ИД бермагансиз, ўзингиз кейин қўйиб оласиз
     },
     {
         "step": 5,
         "text": "<b>5. Юзни ювиш</b>\n\nЮз уч марта тўлиқ ювилади. Юзнинг чегараси: соч чиққан жойдан бошлаб ияқнинг остигача, ва икки қулоқ юмшоғининг оралиғидир.",
-        "CgACAgIAAxkBAAO4akEsyJuK0KcYj9gGxZH6UYDP_zkAAuCeAALo1AlKyTUcl958zI48BA": "FILE_ID_5"
+        "gif_id": "CgACAgIAAxkBAAO4akEsyJuK0KcYj9gGxZH6UYDP_zkAAuCeAALo1AlKyTUcl958zI48BA"
     },
     {
         "step": 6,
         "text": "<b>6. Қўлларни чинтак билан ювиш</b>\n\nАввал ўнг қўл, сўнгра чап қўл тирсаклари билан қўшиб уч марта ювилади. Сувни бармоқ утидан бошлаб тирсакка қараб оқизиш суннатдир.",
-        "CgACAgIAAxkBAAO6akEs7Alr20zFkY1AU7_pKDnAc5oAAuKeAALo1AlKHfdnSc-rjQo8BA": "FILE_ID_6"
+        "gif_id": "CgACAgIAAxkBAAO6akEs7Alr20zFkY1AU7_pKDnAc5oAAuKeAALo1AlKHfdnSc-rjQo8BA"
     },
     {
         "step": 7,
         "text": "<b>7. Бошга масҳ тортиш</b>\n\nҚўллар янгидан ҳўлланиб, бошнинг тўртдан бир қисмига ёки ҳаммасига бир марта масҳ тортилади.",
-        "CgACAgIAAxkBAAO8akEs_9XozonPDAWp6UXOu6B1zwUAAuOeAALo1AlKVW_y1QJaLk48BA": "FILE_ID_7"
+        "gif_id": "CgACAgIAAxkBAAO8akEs_9XozonPDAWp6UXOu6B1zwUAAuOeAALo1AlKVW_y1QJaLk48BA"
     },
     {
         "step": 8,
         "text": "<b>8. Қулоқ ва бўйинга масҳ тортиш</b>\n\nБошга масҳ тортилган қўлнинг ҳўллиги билан кўрсаткич бармоқлар билан қулоқ ичи, бош бармоқлар билан эса қулоқ орқаси арзилади. Қўл орқаси билан эса бўйинга масҳ тортилади (томоққа тортилмайди).",
-        "CgACAgIAAxkBAAO8akEs_9XozonPDAWp6UXOu6B1zwUAAuOeAALo1AlKVW_y1QJaLk48BA": "FILE_ID_8"
+        "gif_id": "CgACAgIAAxkBAAO8akEs_9XozonPDAWp6UXOu6B1zwUAAuOeAALo1AlKVW_y1QJaLk48BA"
     },
     {
         "step": 9,
         "text": "<b>9. Оёқларни ювиш</b>\n\nАввал ўнг оёқ, кейин чап оёқ тўпиқлари (ошиқлари) билан қўшиб уч марта ювилади. Бармоқ ораларини чап қўл кичик бармоғи билан хилол қилиб (орасига сув етказиб) ювиш лозим.",
-        "CgACAgIAAxkBAAO-akEtC7XQTyppxm7_PyMO3CRUlRwAAuWeAALo1AlKF34SPvs2vQY8BA": "FILE_ID_9"
-   },
-   {
+        "gif_id": "CgACAgIAAxkBAAO-akEtC7XQTyppxm7_PyMO3CRUlRwAAuWeAALo1AlKF34SPvs2vQY8BA"
+    },
+    {
         "step": 10,
-        "text": "<b>10. Таҳорат қилиб бўлгандан кейин шаҳодат калимасини ва ривоятда келган дуо ўқилади:</b>\n\nАшҳаду аллаа илааҳа иллаллоҳу ваҳдаҳу лаа шарийка лаҳу. Ва ашҳаду анна Муҳаммадан абдуҳу ва Расулуҳу.
-
-Маъноси: Гувоҳлик бераманки, Аллоҳдан бошқа илоҳ (ибодатга сазовор зот) йўқ. У ёлғиздир, Унинг шериги йўқ. Яна гувоҳлик бераманки, Муҳаммад (соллаллоҳу алайҳи васаллам) Унинг бандаси ва Расулидир.
-
-Дуо: Аллоҳуммажъалнии минат-таввабийна важъалнии минал мутатоҳҳирийн.
-
-Дуонинг маъноси: Аллоҳим, мени тавба қилувчилардан ва покланувчилардан қилгин».",
-        "CgACAgIAAxkBAAO-akEtC7XQTyppxm7_PyMO3CRUlRwAAuWeAALo1AlKF34SPvs2vQY8BA": "FILE_ID_9"
+        "text": "<b>10. Таҳорат қилиб бўлгандан кейин шаҳодат калимасини ва ривоятда келган дуо ўқилади:</b>\n\n<i>«Ашҳаду аллаа илааҳа иллаллоҳу ваҳдаҳу лаа шарийка лаҳу. Ва ашҳаду анна Муҳаммадан абдуҳу ва Расулуҳу»</i>.\n\n<b>Маъноси:</b> Гувоҳлик бераманки, Аллоҳдан бошқа илоҳ (ибодатга сазовор зот) йўқ. У ёлғиздир, Унинг шериги йўқ. Яна гувоҳлик бераманки, Муҳаммад (соллаллоҳу алайҳи васаллам) Унинг бандаси ва Расулидир.\n\n<b>Дуо:</b> <i>«Аллоҳуммажъалнии минат-таввабийна важъалнии минал мутатоҳҳирийн»</i>.\n\n<b>Дуонинг маъноси:</b> Аллоҳим, мени тавба қилувчилардан ва покланувчилардан қилгин.",
+        "gif_id": "CgACAgIAAxkBAAO-akEtC7XQTyppxm7_PyMO3CRUlRwAAuWeAALo1AlKF34SPvs2vQY8BA"
     }
 ]
