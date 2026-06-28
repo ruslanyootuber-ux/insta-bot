@@ -3,7 +3,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from keyboards.callbacks import RegionCallback, DistrictCallback
 from utils.locations import UZB_REGIONS
 from urllib.parse import quote
-from data import SAVOL_JAVOBLAR # Savol-javoblar joylashgan fayl
+from data import savol_javoblar # Savol-javoblar joylashgan fayl
 
 BOT_USERNAME = "NamozTaqvimi_Uz_Bot" 
 
