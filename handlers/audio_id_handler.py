@@ -6,7 +6,7 @@ from aiogram.types import Message
 router = Router()
 
 # АДМИН ИД рақамингизни шу ерга ёзиб қўйинг (масалан: 12345678)
-ADMIN_ID = 12345678  
+ADMIN_ID = 8727877170  
 
 @router.message(F.audio)
 async def get_audio_file_id(message: Message):
