@@ -42,7 +42,7 @@ async def main():
         asmaul_router, 
         duo_router, 
         faq_router, 
-        savol_handlers.router
+        savol_handlers_router
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
