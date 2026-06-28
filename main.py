@@ -1,17 +1,16 @@
+# main.py
+
 import sys
 import os
 import asyncio
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-# Asosiy yo'lni qo'shish
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from loader import bot, dp
-# Data papkasidagi fayllarni import qilish
 from data import asmaul_husna_data, hadis_data, zikr_data, tasbeh_data, duo_data
 
-# Handlerlarni import qilish (savol_handlers o'chirildi)
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
 from handlers.extra_handlers import check_and_send_reminders
 from handlers.zikr_handlers import router as zikr_router
@@ -22,15 +21,15 @@ from handlers.tasbeh_handlers import router as tasbeh_router
 from handlers.asmaul_handlers import router as asmaul_router
 from handlers.duo_handlers import router as duo_router
 from handlers.taxorat_handlers import router as taxorat_router
+from handlers.erkaklar_namozi_handlers import router as erkaklar_namozi_router  # <-- Янги импорт!
+
 async def main():
     logging.basicConfig(level=logging.INFO)
-    
-    # Scheduler'ni sozlash
+
     scheduler = AsyncIOScheduler()
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
     scheduler.start()
 
-    # Routerlar (faq_handlers qoldirildi, savol_handlers o'chirildi)
     dp.include_routers(
         start.router, 
         menu_handlers.router, 
@@ -43,12 +42,11 @@ async def main():
         tasbeh_router, 
         asmaul_router, 
         duo_router, 
-        taxorat_router
+        taxorat_router,
+        erkaklar_namozi_router  # <-- Роутерга уланди!
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
-    
-    # Botni ishga tushirish
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
