@@ -16,8 +16,8 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder.button(text="🚿 Ғусл", callback_data="ghusl")
     builder.button(text="🏜 Таяммум", callback_data="tayammum")
     builder.button(text="🧎 Эркаклар намози", callback_data="erkaklar_namozi_0")
-    builder.button(text="🧎‍♀️ Аёллар намози", callback_data="ayollar_namozi_0")  # <-- Бу ер тўғирланди!
-    builder.button(text="📖 Суралар", callback_data="suralar")
+    builder.button(text="🧎‍♀️ Аёллар намози", callback_data="ayollar_namozi_0")
+    builder.button(text="📖 Суралар", callback_data="suralar")  # <-- Суралар тугмаси шу ерга қўшилди
     builder.button(text="🤲 Дуолар", callback_data="duolar")
 
     # ⚙️ Қўшимча хизматлар
@@ -32,8 +32,9 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder.button(text="☪️ Мазҳабни танлаш", callback_data="menu_settings")
     builder.button(text="👨‍💻 Боғланиш", callback_data="menu_creator")
 
-    builder.adjust(2)
+    builder.adjust(2)  # Барча юқоридаги тугмаларни 2 қатордан текислайди
 
+    # Пастки алоҳида кенг тугмалар
     add_to_group_url = f"https://t.me/{BOT_USERNAME}?startgroup=true"
     builder.row(InlineKeyboardButton(text="➕ Гуруҳга қўшиш", url=add_to_group_url))
 
@@ -56,6 +57,6 @@ def get_districts_keyboard(region_name: str) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for district in UZB_REGIONS.get(region_name, []):
         builder.button(text=f"🏢 {district}", callback_data=DistrictCallback(district_name=district))
-    builder.button(text="⬅️ Вилоятларга қайтиш", callback_data="back_to_regions")
+    builder.row(InlineKeyboardButton(text="⬅️ Вилоятларга қайтиш", callback_data="back_to_regions"))
     builder.adjust(2) 
     return builder.as_markup()
