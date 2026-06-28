@@ -1,13 +1,13 @@
 from transliterate import to_cyrillic
 from aiogram import types, F
-from data import SAVOL_JAVOBLAR
+from data import savol_javoblar
 
 # Foydalanuvchi tanlovi (buni bazada yoki user_data da saqlashingiz kerak)
 # Hozircha misol uchun:
 user_lang = "cyrillic" # yoki "latin"
 
 async def show_faq_answer(callback: types.CallbackQuery, faq_index: int):
-    item = SAVOL_JAVOBLAR[faq_index]
+    item = savol_javoblar[faq_index]
     
     savol = item['savol']
     javob = item['javob']
