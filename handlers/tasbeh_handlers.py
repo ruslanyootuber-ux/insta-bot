@@ -1,70 +1,41 @@
-# handlers/tasbeh_handlers.py
+# handlers/tasbeeh_handlers.py (ёки тегишли файл)
 
-import time
 from aiogram import Router, F
-from aiogram.types import CallbackQuery
-from keyboards.tasbeh_kb import get_tasbeh_keyboard
-from data.tasbeh_data import TASBEH_ZIKRLARI
+from aiogram.types import CallbackQuery, WebAppInfo
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 router = Router()
-user_tasbeh = {}
 
-@router.callback_query(F.data == "menu_tasbeh")
-async def start_tasbeh(callback: CallbackQuery):
-    user_id = callback.from_user.id
-    user_tasbeh[user_id] = {"count": 0, "index": 0, "last_click": 0}
-    await callback.message.edit_text(
-        f"📿 <b>Elektron Tasbeh</b>\n\nZikr: <b>{TASBEH_ZIKRLARI[0]['name']}</b>",
-        reply_markup=get_tasbeh_keyboard(0, 0),
-        parse_mode="HTML"
-    )
+@router.callback_query(F.data == "menu_tasbeeh") # "menu_tasbeeh" ўрнига ўзингиздаги callback'ни қўйинг
+async def process_tasbeeh(callback: CallbackQuery):
     await callback.answer()
 
-@router.callback_query(F.data == "count_tasbeh")
-async def count_tasbeh(callback: CallbackQuery):
-    user_id = callback.from_user.id
-    now = time.time()
+    builder = InlineKeyboardBuilder()
 
-    if user_id in user_tasbeh and (now - user_tasbeh[user_id].get("last_click", 0) < 0.3):
-        await callback.answer("❗ Juda tez bosmang!", show_alert=True)
-        return
+    # Тасбеҳ иловасини очиш (Линкнинг охирига tasbeeh.html қўшилди)
+    builder.button(
+        text="📿 ✨ SMART TASBEEH ОЧИШ ✨ 📿", 
+        web_app=WebAppInfo(url="https://ruslanyootuber-ux.github.io/insta-bot/tasbeeh.html") 
+    )
+    builder.button(text="⬅️ Асосий Меню", callback_data="back_to_main")
+    builder.adjust(1)
 
-    user_tasbeh[user_id]["last_click"] = now
-
-    user_tasbeh[user_id]["count"] += 1
-    if user_tasbeh[user_id]["count"] >= 33:
-        user_tasbeh[user_id]["count"] = 0
-        user_tasbeh[user_id]["index"] = (user_tasbeh[user_id]["index"] + 1) % len(TASBEH_ZIKRLARI)
-        await callback.answer("✅ 33 ga yetdi, zikr almashtirildi!", show_alert=True)
-
-    data = user_tasbeh[user_id]
-    await callback.message.edit_text(
-        f"📿 <b>Elektron Tasbeh</b>\n\nZikr: <b>{TASBEH_ZIKRLARI[data['index']]['name']}</b>",
-        reply_markup=get_tasbeh_keyboard(data["count"], data["index"]),
-        parse_mode="HTML"
+    text = (
+        "⚡ <b>⚜️ ULTRA PREMIUM SMART TASBEEH ⚜️</b> ⚡\n"
+        "───────────────────────────────\n\n"
+        "📿 <b>Рақамли ақлли тасбеҳга хуш келибсиз!</b>\n\n"
+        "Қуйидаги тугмани босиш орқали бот ичида замонавий, хотирага эга ва "
+        "визуал эффектларга бой тасбеҳни ишга туширинг.\n\n"
+        "<b>💎 Илова имкониятлари:</b>\n"
+        "┌ 🔄 <i>Автоматик 33/66/99 зикр алмашинуви</i>\n"
+        "├ 💾 <i>Саноқни қурилма хотирасида сақлаш</i>\n"
+        "├ 📳 <i>Ҳар 33 тада Smart Haptic вибрация ва товуш</i>\n"
+        "└ 🌙 <i>Кўзни толиқтирмас Dark Glassmorphism дизайн</i>\n\n"
+        "───────────────────────────────"
     )
 
-@router.callback_query(F.data == "reset_tasbeh")
-async def reset_tasbeh(callback: CallbackQuery):
-    user_id = callback.from_user.id
-    if user_id in user_tasbeh:
-        user_tasbeh[user_id]["count"] = 0
-        await callback.message.edit_text(
-            f"📿 <b>Elektron Tasbeh</b>\n\nZikr: <b>{TASBEH_ZIKRLARI[user_tasbeh[user_id]['index']]['name']}</b>",
-            reply_markup=get_tasbeh_keyboard(0, user_tasbeh[user_id]["index"]),
-            parse_mode="HTML"
-        )
-    await callback.answer("🔄 Sanoq nollandi!", show_alert=False)
-
-@router.callback_query(F.data == "change_zikr")
-async def change_zikr_manual(callback: CallbackQuery):
-    user_id = callback.from_user.id
-    if user_id in user_tasbeh:
-        user_tasbeh[user_id]["index"] = (user_tasbeh[user_id]["index"] + 1) % len(TASBEH_ZIKRLARI)
-        user_tasbeh[user_id]["count"] = 0
-        await callback.message.edit_text(
-            f"📿 <b>Elektron Tasbeh</b>\n\nZikr: <b>{TASBEH_ZIKRLARI[user_tasbeh[user_id]['index']]['name']}</b>",
-            reply_markup=get_tasbeh_keyboard(0, user_tasbeh[user_id]["index"]),
-            parse_mode="HTML"
-        )
-    await callback.answer("Zikr o'zgardi")
+    await callback.message.edit_text(
+        text=text,
+        reply_markup=builder.as_markup(),
+        parse_mode="HTML"
+    )
