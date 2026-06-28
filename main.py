@@ -11,8 +11,8 @@ from loader import bot, dp
 # Data papkasidagi fayllarni import qilish
 from data import asmaul_husna_data, hadis_data, zikr_data, tasbeh_data, duo_data
 
-# Handlerlarni import qilish
-from handlers import start, menu_handlers, extra_handlers, admin_handlers, savol_handlers, faq_handlers
+# Handlerlarni import qilish (savol_handlers o'chirildi)
+from handlers import start, menu_handlers, extra_handlers, admin_handlers, faq_handlers
 from handlers.extra_handlers import check_and_send_reminders
 from handlers.zikr_handlers import router as zikr_router
 from handlers.ramadan_handlers import router as ramadan_router
@@ -30,7 +30,7 @@ async def main():
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
     scheduler.start()
 
-    # Routerlar
+    # Routerlar (faq_handlers qoldirildi, savol_handlers o'chirildi)
     dp.include_routers(
         start.router, 
         menu_handlers.router, 
@@ -43,8 +43,7 @@ async def main():
         tasbeh_router, 
         asmaul_router, 
         duo_router, 
-        faq_handlers.router, # faq_router o'rniga faq_handlers.router 
-        savol_handlers.router
+        faq_handlers.router 
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
