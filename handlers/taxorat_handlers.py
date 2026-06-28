@@ -45,3 +45,9 @@ async def show_taxorat_step(callback: CallbackQuery):
         )
         
     await callback.answer()
+    # Buni handlers/taxorat_handlers.py faylining oxiriga qo'shing
+@router.message(F.animation)
+async def get_gif_file_id(message: Message):
+    """Botga yuborilgan har qanday GIF'ning file_id'sini qaytaradi"""
+    gif_id = message.animation.file_id
+    await message.reply(f"Siz yuborgan GIF'ning ID'si:\n\n<code>{gif_id}</code>", parse_mode="HTML")
