@@ -4,8 +4,6 @@ from keyboards.callbacks import RegionCallback, DistrictCallback
 from utils.locations import UZB_REGIONS
 from urllib.parse import quote
 # FAYL NOMI VA O'ZGARUVCHI NOMI BIR XIL BO'LISHI SHART!
-from data.data_savol_javob import SAVOL_JAVOBLAR
-
 BOT_USERNAME = "NamozTaqvimi_Uz_Bot" 
 
 # 1. ASOSIY MENYU
@@ -44,20 +42,6 @@ def get_faq_menu_kb(page: int = 0) -> InlineKeyboardMarkup:
     start = page * items_per_page
     end = start + items_per_page
     
-    # Savollar tugmalari (SAVOL_JAVOBLAR o'zgaruvchisidan foydalandik)
-    for i in range(start, min(end, len(SAVOL_JAVOBLAR))):
-        builder.button(text=f"{i + 1}. {SAVOL_JAVOBLAR[i]['savol'][:20]}...", callback_data=f"faq_ans_{i}")
-    
-    # Navigatsiya
-    nav_buttons = []
-    if page > 0:
-        nav_buttons.append(InlineKeyboardButton(text="⬅️ Orqaga", callback_data=f"faq_page_{page-1}"))
-    if end < len(SAVOL_JAVOBLAR):
-        nav_buttons.append(InlineKeyboardButton(text="Oldinga ➡️", callback_data=f"faq_page_{page+1}"))
-        
-    if nav_buttons:
-        builder.row(*nav_buttons)
-        
     builder.row(InlineKeyboardButton(text="⬅️ Bosh menyuga", callback_data="back_to_main"))
     builder.adjust(1)
     return builder.as_markup()
