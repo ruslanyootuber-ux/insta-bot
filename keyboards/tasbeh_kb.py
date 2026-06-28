@@ -10,7 +10,7 @@ def get_tasbeh_keyboard(count: int, index: int):
     builder.row(InlineKeyboardButton(text=f"🔢 {count}", callback_data="count_tasbeh"))
     builder.row(
         InlineKeyboardButton(text="🔄 Nollash", callback_data="reset_tasbeh"),
-        InlineKeyboardButton(text="⬅️ Menyu", callback_data="back_to_menu")
+        InlineKeyboardButton(text="⬅️ Menyu", callback_data="back_to_main")
     )
     
     return builder.as_markup()
