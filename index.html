@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Ultra Premium Qibla Compass</title>
+    <title>Dynamic Qibla Compass</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -14,221 +14,71 @@
             --glass-panel: rgba(255, 255, 255, 0.02);
             --border-glow: 0 0 20px rgba(212, 175, 55, 0.1);
         }
-
         body {
-            margin: 0;
-            padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom) 20px;
-            background-color: var(--bg-dark);
-            color: #ffffff;
+            margin: 0; padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom) 20px;
+            background-color: var(--bg-dark); color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            height: 100vh;
-            box-sizing: border-box;
-            overflow: hidden;
-            -webkit-user-select: none;
-            user-select: none;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+            height: 100vh; box-sizing: border-box; overflow: hidden; user-select: none;
         }
-
         .phone-frame {
-            position: absolute;
-            top: 10px; bottom: 10px; left: 10px; right: 10px;
-            border: 2px solid rgba(212, 175, 55, 0.15);
-            border-radius: 40px;
-            pointer-events: none;
-            z-index: 100;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+            position: absolute; top: 10px; bottom: 10px; left: 10px; right: 10px;
+            border: 2px solid rgba(212, 175, 55, 0.15); border-radius: 40px;
+            pointer-events: none; z-index: 100; box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
         }
-
-        .header {
-            text-align: center;
-            margin-top: 40px;
-            z-index: 10;
-        }
-
+        .header { text-align: center; margin-top: 40px; z-index: 10; }
         .header h1 {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            margin: 0 0 8px 0;
-            background: var(--gold-metallic);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            font-size: 24px; font-weight: 800; letter-spacing: 2px; margin: 0 0 8px 0;
+            background: var(--gold-metallic); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        .header p {
-            font-size: 12px;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin: 0;
-        }
-
-        .compass-container {
-            position: relative;
-            width: 320px;
-            height: 320px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
+        .header p { font-size: 12px; color: #64748b; margin: 0; }
+        .compass-container { position: relative; width: 320px; height: 320px; display: flex; align-items: center; justify-content: center; }
         .top-selector {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0; height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 15px solid var(--gold-solid);
-            z-index: 50;
-            filter: drop-shadow(0 0 5px var(--gold-solid));
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 15px solid var(--gold-solid);
+            z-index: 50; filter: drop-shadow(0 0 5px var(--gold-solid));
         }
-
         .outer-ring {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            position: absolute;
+            width: 300px; height: 300px; border-radius: 50%; border: 1px solid rgba(212, 175, 55, 0.2); position: absolute;
             box-shadow: var(--border-glow), inset 0 0 40px rgba(0,0,0,0.9);
             background: radial-gradient(circle, rgba(13,18,35,0.2) 0%, rgba(7,10,19,1) 100%);
         }
-
-        .compass-disc {
-            width: 270px;
-            height: 270px;
-            border-radius: 50%;
-            position: relative;
-            will-change: transform;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
+        .compass-disc { width: 270px; height: 270px; border-radius: 50%; position: relative; will-change: transform; border: 1px solid rgba(255, 255, 255, 0.05); }
         .compass-disc::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 50%;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%;
             background: repeating-conic-gradient(from 0deg, rgba(255,255,255,0.1) 0deg 1deg, transparent 1deg 10deg);
-            -webkit-mask: radial-gradient(circle, transparent 92%, black 93%);
-            mask: radial-gradient(circle, transparent 92%, black 93%);
+            -webkit-mask: radial-gradient(circle, transparent 92%, black 93%); mask: radial-gradient(circle, transparent 92%, black 93%);
         }
-
-        .direction {
-            position: absolute;
-            font-weight: 800;
-            font-size: 18px;
-            color: #475569;
-            transform: translateX(-50%);
-        }
-        .dir-n { top: 15px; left: 50%; color: #ff4757; text-shadow: 0 0 10px rgba(255,71,87,0.4); }
-        .dir-e { top: 50%; right: 15px; transform: translateY(-50%); }
-        .dir-s { bottom: 15px; left: 50%; }
-        .dir-w { top: 50%; left: 30px; transform: translateY(-50%); }
-
-        .qibla-pointer {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-        }
-
-        .kaaba-box {
-            position: absolute;
-            top: -20px; left: 50%;
-            transform: translateX(-50%);
-            font-size: 32px;
-            filter: drop-shadow(0 0 10px var(--gold-solid));
-            z-index: 40;
-        }
-
-        .luxury-line {
-            position: absolute;
-            top: 20px; left: 50%;
-            width: 2px; height: 115px;
-            background: linear-gradient(to bottom, var(--gold-solid), transparent);
-            transform: translateX(-50%);
-        }
-
+        .direction { position: absolute; font-weight: 800; font-size: 18px; color: #475569; transform: translateX(-50%); }
+        .dir-n { top: 15px; left: 50%; color: #ff4757; } .dir-e { top: 50%; right: 15px; transform: translateY(-50%); }
+        .dir-s { bottom: 15px; left: 50%; } .dir-w { top: 50%; left: 30px; transform: translateY(-50%); }
+        .qibla-pointer { position: absolute; top: 0; left: 0; right: 0; bottom: 0; transition: transform 0.5s ease; }
+        .kaaba-box { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 32px; filter: drop-shadow(0 0 10px var(--gold-solid)); z-index: 40; }
+        .luxury-line { position: absolute; top: 20px; left: 50%; width: 2px; height: 115px; background: linear-gradient(to bottom, var(--gold-solid), transparent); transform: translateX(-50%); }
         .digital-core {
-            position: absolute;
-            width: 110px;
-            height: 110px;
-            background: #090d16;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            z-index: 60;
+            position: absolute; width: 110px; height: 110px; background: #090d16; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: 2px solid rgba(212, 175, 55, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 60;
         }
-
-        .dig-num {
-            font-size: 28px;
-            font-weight: 900;
-            color: #ffffff;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .dig-lbl {
-            font-size: 10px;
-            color: var(--gold-solid);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 2px;
-        }
-
+        .dig-num { font-size: 28px; font-weight: 900; color: #ffffff; }
+        .dig-lbl { font-size: 10px; color: var(--gold-solid); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
         .status-panel {
-            width: 90%;
-            background: var(--glass-panel);
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 18px;
-            margin-bottom: 40px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            z-index: 10;
+            width: 90%; background: var(--glass-panel); border: 1px solid rgba(212, 175, 55, 0.1); backdrop-filter: blur(20px);
+            border-radius: 24px; padding: 18px; margin-bottom: 40px; text-align: center; z-index: 10;
         }
-
-        .panel-title {
-            font-size: 12px;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-        }
-
-        .panel-value {
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
-            transition: color 0.3s ease;
-        }
-
-        .perfect-match {
-            color: var(--emerald-neon) !important;
-            animation: goldGlow 1.5s infinite ease-in-out;
-        }
-
-        @keyframes goldGlow {
-            0% { filter: drop-shadow(0 0 5px var(--emerald-neon)); }
-            50% { filter: drop-shadow(0 0 20px var(--emerald-neon)); }
-            100% { filter: drop-shadow(0 0 5px var(--emerald-neon)); }
-        }
+        .panel-title { font-size: 12px; color: #64748b; margin-bottom: 6px; }
+        .panel-value { font-size: 15px; font-weight: 700; color: #ffffff; transition: all 0.3s ease; }
+        .perfect-match { color: var(--emerald-neon) !important; animation: goldGlow 1.5s infinite ease-in-out; }
+        @keyframes goldGlow { 0% { filter: drop-shadow(0 0 5px var(--emerald-neon)); } 50% { filter: drop-shadow(0 0 20px var(--emerald-neon)); } 100% { filter: drop-shadow(0 0 5px var(--emerald-neon)); } }
     </style>
 </head>
 <body>
-
     <div class="phone-frame"></div>
+    
+    <audio id="successAudio" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
     <div class="header">
         <h1>QIBLA COMPASS</h1>
-        <p>Ultra Luxury Edition</p>
+        <p id="locationText">Аниқланмоқда...</p>
     </div>
 
     <div class="compass-container">
@@ -246,7 +96,7 @@
             <div class="direction dir-s">S</div>
             <div class="direction dir-w">W</div>
             
-            <div class="qibla-pointer" style="transform: rotate(240deg);">
+            <div class="qibla-pointer" id="qiblaPointer" style="transform: rotate(0deg);">
                 <div class="kaaba-box" id="kaabaBox">🕋</div>
                 <div class="luxury-line"></div>
             </div>
@@ -255,7 +105,7 @@
 
     <div class="status-panel">
         <div class="panel-title">Қурилма йўналиши</div>
-        <div class="panel-value" id="statusText">Компас датчиги кутилмоқда...</div>
+        <div class="panel-value" id="statusText">Телефонни секин буринг</div>
     </div>
 
     <script>
@@ -267,40 +117,43 @@
         const liveDegree = document.getElementById('liveDegree');
         const statusText = document.getElementById('statusText');
         const kaabaBox = document.getElementById('kaabaBox');
+        const qiblaPointer = document.getElementById('qiblaPointer');
+        const locationText = document.getElementById('locationText');
+        const successAudio = document.getElementById('successAudio');
 
-        const TARGET_QIBLA = 240; 
+        // URL'дан бот юборган динамик градусни олиш
+        const urlParams = new URLSearchParams(window.location.search);
+        let TARGET_QIBLA = 240; // Default
+        
+        if (urlParams.has('qibla')) {
+            TARGET_QIBLA = parseFloat(urlParams.get('qibla'));
+            locationText.innerText = `Мақсад: ${TARGET_QIBLA.toFixed(1)}°`;
+        }
+
+        qiblaPointer.style.transform = `rotate(${TARGET_QIBLA}deg)`;
         
         let currentHeading = 0;
-        // КЛИНИК СЕЗГИРЛИКНИ НОРМАЛ ҚИЛИШ (0.04 - Энг оптимал кўрсаткич)
         const kFilteringFactor = 0.04; 
         let lastVibeTime = 0;
+        let isMatched = false; // Рингтон бир марта чалинишини назорат қилиш учун
 
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientationabsolute', onOrientationChange, true);
             window.addEventListener('deviceorientation', onOrientationChange, true);
         } else {
             statusText.innerText = "Датчик топилмади.";
-            statusText.style.color = "#ff4757";
         }
 
         function onOrientationChange(event) {
             let rawHeading = event.alpha;
-            if (event.webkitCompassHeading) {
-                rawHeading = event.webkitCompassHeading; 
-            }
+            if (event.webkitCompassHeading) { rawHeading = event.webkitCompassHeading; }
 
             if (rawHeading !== null && rawHeading !== undefined) {
-                // Айланишдаги 0 ва 360 чегарасидаги сакрашни силлиқлаш
                 let diffHeading = rawHeading - currentHeading;
-                if (diffHeading > 180) {
-                    currentHeading += 360;
-                } else if (diffHeading < -180) {
-                    currentHeading -= 360;
-                }
+                if (diffHeading > 180) currentHeading += 360;
+                else if (diffHeading < -180) currentHeading -= 360;
 
-                // Математик фильтр (Энди диск қалтирамайди, оғир ва вазмин айланади)
                 currentHeading = currentHeading + kFilteringFactor * (rawHeading - currentHeading);
-                
                 let finalHeading = (currentHeading + 360) % 360;
                 let displayHeading = Math.round(finalHeading);
 
@@ -309,18 +162,27 @@
 
                 let diff = Math.abs(displayHeading - TARGET_QIBLA);
 
-                if (diff <= 3 || diff >= 357) {
-                    statusText.innerText = "🕋 КАЪБА ТЎҒРИДА! НАМОЗ ВАҚТИ";
+                if (diff <= 2 || diff >= 358) {
+                    // Йўналиш топилди!
+                    statusText.innerText = "ЯХШИ! ТЎХТАНГ, ҚИБЛА ТОПИЛДИ!";
                     statusText.classList.add('perfect-match');
                     kaabaBox.classList.add('perfect-match');
                     
-                    let now = Date.now();
-                    if (now - lastVibeTime > 1500) { // Вибрация оралиғи ҳам нормал қилинди
-                        if (navigator.vibrate) navigator.vibrate(50);
-                        if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-                        lastVibeTime = now;
+                    if (!isMatched) {
+                        // Топилган заҳоти мусиқани чалиш ва виброблокни ишлатиш
+                        isMatched = true;
+                        successAudio.currentTime = 0;
+                        successAudio.play().catch(e => console.log("Audio autoplay blocked"));
+                        
+                        if (tg.HapticFeedback) {
+                            tg.HapticFeedback.notificationOccurred('success');
+                        } else if (navigator.vibrate) {
+                            navigator.vibrate([100, 50, 100]); // Uzun-qisqa-uzun vibratsiya
+                        }
                     }
                 } else {
+                    // Йўналишдан чиқиб кетса
+                    isMatched = false;
                     statusText.innerText = "Қиблани топиш учун телефонни буринг";
                     statusText.classList.remove('perfect-match');
                     statusText.style.color = "#ffffff";
