@@ -2,81 +2,287 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jonli Qibla Kompasi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Premium Qibla Compass</title>
+    <!-- Telegram WebApp JS -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        :root {
+            --bg-color: #0d1117;
+            --premium-gold: #d4af37;
+            --islamic-green: #00e676;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
         body {
             margin: 0;
-            background-color: #1a1a1a;
-            color: white;
-            font-family: sans-serif;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: #ffffff;
+            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Юқори қисм */
+        .header {
+            text-align: center;
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0 0 5px 0;
+            background: linear-gradient(135deg, #ffffff 0%, #b0bec5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: #8b949e;
+            margin: 0;
+        }
+
+        /* Компас контейнери */
+        .compass-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--glass-bg);
+            border-radius: 50%;
+            box-shadow: var(--card-shadow), inset 0 0 20px rgba(255,255,255,0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Асосий айланувчи диск */
+        .compass-disc {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            position: relative;
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Дунё томонлари ҳарфлари (N, E, S, W) */
+        .direction {
+            position: absolute;
+            font-weight: 900;
+            font-size: 16px;
+            color: #8b949e;
+            transform: translateX(-50%);
+        }
+        .dir-n { top: 10px; left: 50%; color: #ff5252; }
+        .dir-e { top: 50%; right: 10px; transform: translateY(-50%); }
+        .dir-s { bottom: 10px; left: 50%; }
+        .dir-w { top: 50%; left: 25px; transform: translateY(-50%); }
+
+        /* Каъбанинг премиум стрелкаси */
+        .qibla-pointer {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+        }
+
+        .kaaba-icon {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            filter: drop-shadow(0 0 8px var(--premium-gold));
+            z-index: 10;
+        }
+
+        .gold-line {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            width: 3px;
+            height: 135px;
+            background: linear-gradient(to bottom, var(--premium-gold), transparent);
+            transform: translateX(-50%);
+        }
+
+        /* Марказий рақамли кўрсаткич */
+        .center-display {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: #161b22;
+            border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 2px solid rgba(255,255,255,0.05);
+            z-index: 5;
         }
-        .compass-container {
-            position: relative;
-            width: 280px;
-            height: 280px;
+
+        .degree-num {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
         }
-        .compass {
-            width: 100%;
-            height: 100%;
-            background: url('https://i.imgur.com/vXof7Xm.png') no-repeat center; /* Компас расми */
-            background-size: contain;
-            transition: transform 0.1s ease-out;
+
+        .degree-unit {
+            font-size: 11px;
+            color: var(--premium-gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 2px;
         }
-        .kaaba-needle {
-            position: absolute;
-            top: 0; left: 50%;
-            width: 4px; height: 50%;
-            background-color: #gold;
-            transform-origin: bottom center;
-            transform: translateX(-50%);
+
+        /* Пастки статус қисми */
+        .footer-status {
+            width: 85%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .status { margin-top: 20px; font-size: 18px; text-align: center; padding: 0 10px;}
+
+        .status-title {
+            font-size: 14px;
+            color: #8b949e;
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--islamic-green);
+        }
+
+        .matched {
+            color: var(--islamic-green) !important;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--islamic-green)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 10px var(--islamic-green)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--islamic-green)); }
+        }
     </style>
 </head>
 <body>
 
-    <h2>Qibla Yo'nalishi (Jonli)</h2>
-    <div class="compass-container">
-        <div class="compass" id="compass"></div>
-        <div class="kaaba-needle" id="needle"></div>
+    <div class="header">
+        <h1>ҚИБЛА КОМПАСИ</h1>
+        <p>Реал вақт режимидаги аниқ йўналиш</p>
     </div>
-    <div class="status" id="status">Joylashuv aniqlanmoqda...</div>
+
+    <!-- Компас визуал қисми -->
+    <div class="compass-wrapper">
+        <div class="center-display">
+            <span class="degree-num" id="degText">0°</span>
+            <span class="degree-unit">Бурчак</span>
+        </div>
+        
+        <!-- Айланувчи асосий диск -->
+        <div class="compass-disc" id="compassDisc">
+            <div class="direction dir-n">N</div>
+            <div class="direction dir-e">E</div>
+            <div class="direction dir-s">S</div>
+            <div class="direction dir-w">W</div>
+            
+            <!-- Диск ичидаги Каъба кўрсаткичи -->
+            <!-- Ўзбекистон учун ўртача Қибла бурчаги 240° га созланган -->
+            <div class="qibla-pointer" style="transform: rotate(240deg);">
+                <div class="kaaba-icon" id="kaabaIcon">🕋</div>
+                <div class="gold-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Пастки маълумотлар панели -->
+    <div class="footer-status">
+        <div class="status-title" id="statusTitle">Қурилма ҳолати</div>
+        <div class="status-value" id="statusDesc">Датчик кутилмоқда...</div>
+    </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
-        tg.expand(); // Экранни тўлиқ ёйиш
+        tg.expand(); // Экранни максимал катталикда очиш
 
-        const compass = document.getElementById('compass');
-        const status = document.getElementById('status');
+        const compassDisc = document.getElementById('compassDisc');
+        const degText = document.getElementById('degText');
+        const statusDesc = document.getElementById('statusDesc');
+        const kaabaIcon = document.getElementById('kaabaIcon');
 
-        // Телефон датчигидан маълумот олиш
-        window.addEventListener('deviceorientationabsolute', handler, true);
-        window.addEventListener('deviceorientation', handler, true);
+        // Ўзбекистон учун стандарт Қибла йўналиши бурчаги (Шимолдан бошлаб)
+        const QIBLA_ANGLE = 240; 
+        let lastVibrated = 0;
 
-        function handler(e) {
-            let heading = e.alpha || e.webkitCompassHeading;
-            if (heading !== undefined) {
-                // Масалан, Ўзбекистон учун тахминий Қибла бурчаги 240°
-                let qiblaAngle = 240; 
-                
-                // Компасни телефон айланишига қараб бурамиз
-                compass.style.transform = `rotate(${-heading}deg)`;
-                
-                // Каъба кўрсаткичини тўғрилаймиз
-                let finalNeedleAngle = qiblaAngle - heading;
-                
-                status.innerHTML = `Компас: ${Math.round(heading)}°<br>Қибла: ${qiblaAngle}°`;
+        // Датчикларни текшириш ва уланиш
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+            window.addEventListener('deviceorientation', handleOrientation, true);
+        } else {
+            statusDesc.style.color = '#ff5252';
+            statusDesc.innerText = "Қурилмада компас датчиги топилмади.";
+        }
+
+        function handleOrientation(event) {
+            // Android ва iOS учун градусни тўғри ушлаб олиш
+            let heading = event.alpha;
+            
+            if (event.webkitCompassHeading) {
+                heading = event.webkitCompassHeading; // iOS (iPhone) учун махсус
+            }
+
+            if (heading !== null && heading !== undefined) {
+                let roundedHeading = Math.round(heading);
+                degText.innerText = `${roundedHeading}°`;
+
+                // Дискни телефон бурилишига тескари йўналишда айлантирамиз
+                compassDisc.style.transform = `rotate(${-heading}deg)`;
+
+                // Каъба айнан тепага (тўғрига) келган ҳолатини ҳисоблаш
+                // Телефоннинг тепаси Қиблага қараганда (heading + 120) % 360 тахминан QIBLA_ANGLE га тенг бўлади
+                let difference = Math.abs(roundedHeading - QIBLA_ANGLE);
+
+                if (difference <= 3 || difference >= 357) {
+                    statusDesc.innerText = "🕋 Каъба тўғрида! (Намоз ўқиш мумкин)";
+                    statusDesc.style.color = "#00e676";
+                    kaabaIcon.classList.add('matched');
+                    
+                    // Тўғри келганда енгил титраш (Vibration/Haptic) - ҳар 1 сонияда бир марта
+                    let now = Date.now();
+                    if (now - lastVibrated > 1000) {
+                        if (navigator.vibrate) navigator.vibrate(80);
+                        if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+                        lastVibrated = now;
+                    }
+                } else {
+                    statusDesc.innerText = `Қибла чап ёки ўнгда (Телефонни буринг)`;
+                    statusDesc.style.color = "#ffffff";
+                    kaabaIcon.classList.remove('matched');
+                }
             } else {
-                status.innerText = "Илтимос, қурилма компасини созланг ёки бошқа браузердан киринг.";
+                statusDesc.innerText = "Компас калибровка қилинмоқда...";
             }
         }
     </script>
