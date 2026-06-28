@@ -12,7 +12,7 @@ from loader import bot, dp
 from data import asmaul_husna_data, hadis_data, zikr_data, tasbeh_data, duo_data
 
 # Handlerlarni import qilish (savol_handlers o'chirildi)
-from handlers import start, menu_handlers, extra_handlers, admin_handlers,
+from handlers import start, menu_handlers, extra_handlers, admin_handlers
 from handlers.extra_handlers import check_and_send_reminders
 from handlers.zikr_handlers import router as zikr_router
 from handlers.ramadan_handlers import router as ramadan_router
