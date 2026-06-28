@@ -11,7 +11,6 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     
     builder.button(text="🕌 Namoz vaqtlari", callback_data="menu_regions")
-    builder.button(text="❓ Savol-Javob", callback_data="faq_page_0")
     builder.button(text="✨ Allohning 99 ismi", callback_data="menu_asmaul")
     builder.button(text="📿 Elektron tasbeh", callback_data="menu_tasbeh")
     builder.button(text="🤲 Kunlik duolar", callback_data="menu_duo")
