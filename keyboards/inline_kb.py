@@ -3,16 +3,16 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from keyboards.callbacks import RegionCallback, DistrictCallback
 from utils.locations import UZB_REGIONS
 from urllib.parse import quote
+from data import SAVOL_JAVOBLAR # Savol-javoblar joylashgan fayl
 
-# !!! DIQQAT !!!
-# BU YERGA O'Z BOTINGIZNING USERNAME'INI "@" BELGISISIZ YOZING
 BOT_USERNAME = "NamozTaqvimi_Uz_Bot" 
 
-# ASOSIY MENYU
+# 1. ASOSIY MENYU
 def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     
     builder.button(text="🕌 Namoz vaqtlari", callback_data="menu_regions")
+    builder.button(text="❓ Savol-Javob", callback_data="faq_page_0") # Yangi tugma
     builder.button(text="✨ Allohning 99 ismi", callback_data="menu_asmaul")
     builder.button(text="📿 Elektron tasbeh", callback_data="menu_tasbeh")
     builder.button(text="🤲 Kunlik duolar", callback_data="menu_duo")
@@ -23,33 +23,55 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder.button(text="🔔 Eslatma belgilash", callback_data="menu_reminder")
     builder.button(text="☪️ Mazhabni tanlash", callback_data="menu_settings")
     builder.button(text="👨‍💻 Bog'lanish", callback_data="menu_creator")
-    builder.button(text="⭐ Botni baholash", callback_data="menu_rate")
 
-    # Guruhga qo'shish
+    # Guruhga qo'shish va Ulashish
     add_to_group_url = f"https://t.me/{BOT_USERNAME}?startgroup=true"
     builder.row(InlineKeyboardButton(text="➕ Guruhga qo'shish", url=add_to_group_url))
     
-    # Do'stlarga ulashish (URL kodlangan)
-    share_text = "🕌 «Namoz Vaqtlari» zikrlar va islomiy ibodatlar uchun shaxsiy yordamchingiz. 🕋📿"
+    share_text = "🕌 «Namoz Vaqtlari» zikrlar va islomiy ibodatlar uchun shaxsiy yordamchingiz."
     encoded_text = quote(share_text)
     share_url = f"https://t.me/share/url?url=https://t.me/{BOT_USERNAME}&text={encoded_text}"
     builder.row(InlineKeyboardButton(text="📲 Do'stlarga ulashish", url=share_url))
 
-    # Tugmalar joylashuvi
-    builder.adjust(2, 2, 2, 2, 2, 2, 1, 1) 
+    builder.adjust(2) 
     return builder.as_markup()
 
-# VILOYATLAR MENYUSI
+# 2. SAVOL-JAVOB MENYUSI (Paginatsiya bilan)
+def get_faq_menu_kb(page: int = 0) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    items_per_page = 5 
+    
+    start = page * items_per_page
+    end = start + items_per_page
+    
+    # Savollar tugmalari
+    for i, item in enumerate(SAVOL_JAVOBLAR[start:end]):
+        # index orqali callback yaratamiz (keyinchalik handlersda ishlatish uchun)
+        builder.button(text=f"{start + i + 1}. {item['savol'][:20]}...", callback_data=f"faq_ans_{start + i}")
+    
+    # Navigatsiya tugmalari
+    nav_buttons = []
+    if page > 0:
+        nav_buttons.append(InlineKeyboardButton(text="⬅️ Orqaga", callback_data=f"faq_page_{page-1}"))
+    if end < len(SAVOL_JAVOBLAR):
+        nav_buttons.append(InlineKeyboardButton(text="Oldinga ➡️", callback_data=f"faq_page_{page+1}"))
+        
+    if nav_buttons:
+        builder.row(*nav_buttons)
+        
+    builder.row(InlineKeyboardButton(text="⬅️ Bosh menyuga", callback_data="back_to_main"))
+    builder.adjust(1)
+    return builder.as_markup()
+
+# 3. VILOYATLAR VA TUMANLAR (O'zgarishsiz)
 def get_regions_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for region in UZB_REGIONS.keys():
         builder.button(text=f"📍 {region}", callback_data=RegionCallback(region_name=region))
-    
     builder.row(InlineKeyboardButton(text="⬅️ Bosh menyuga qaytish", callback_data="back_to_main"))
     builder.adjust(2) 
     return builder.as_markup()
 
-# TUMANLAR MENYUSI
 def get_districts_keyboard(region_name: str) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for district in UZB_REGIONS.get(region_name, []):
