@@ -446,7 +446,7 @@ SURALAR_LIST = [
         "audio_id": "CQACAgIAAxkBAAIB4GpBgxHyZPE08A_1V_Smk9vEWOp3AAL-oAAC6NQRSt6KaX838OMwPAQ"
     },
     {
-        "id": 9,
+        "id": 10,
         "name": "Муъминун сураси",
         "text": "<b>📖 Муъминун сураси</b>\n\n<b>Maъно таржимаси:</b>\n1. Албатта, мўминлар нажот топдилар.\n2. Улар ўз намозларида хушуъли бўлувчилардир.\n3. Улар беҳуда нарсалардан юз ўгирувчилардир.\n4. Улар закотни адо қилувчилардир.\n5. Улар ўз фаржларини сақловчилардир.",
         "audio_id": "CQACAgIAAxkBAAIB9GpBhRI5eIAGJ1EkFuLTn1otXtg1AAIOoQAC6NQRSh9fIeRjkM6oPAQ"
