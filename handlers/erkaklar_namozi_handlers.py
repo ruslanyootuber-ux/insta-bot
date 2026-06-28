@@ -38,3 +38,12 @@ async def show_erkaklar_namozi_step(callback: CallbackQuery):
         )
 
     await callback.answer()
+@router.message(F.animation)
+async def get_gif_file_id(message: Message):
+    """Фойдаланувчи ГИФ юборганда унинг file_id сини қайтаради"""
+    gif_id = message.animation.file_id
+    await message.reply(
+        text=f"<b>Сурат/ГИФ ИД рақами:</b>\n\n<code>{gif_id}</code>\n\n"
+             f"Ушбу кодни нусхалаб, taxorat_data.py файлидаги тегишли жойга қўйинг.",
+        parse_mode="HTML"
+    )
