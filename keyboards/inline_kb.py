@@ -4,7 +4,7 @@ from keyboards.callbacks import RegionCallback, DistrictCallback
 from utils.locations import UZB_REGIONS
 from urllib.parse import quote
 # FAYL NOMI VA O'ZGARUVCHI NOMI BIR XIL BO'LISHI SHART!
-from data.data_savol_javob import SAVOL_JAVOBLAR 
+from data.data_savol_javob import SAVOL_JAVOBLAR
 
 BOT_USERNAME = "NamozTaqvimi_Uz_Bot" 
 
