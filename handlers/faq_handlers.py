@@ -2,8 +2,9 @@ from aiogram import Router, F, types
 from aiogram.types import CallbackQuery
 from transliterate import to_cyrillic
 from data.data_savol_javob import SAVOL_JAVOBLAR
-from keyboards.inline_kb import get_faq_menu_kb
-from database import get_language # database.py faylingizdan
+# Klaviaturalarni bitta joydan chaqiring (inline_kb.py yoki savol_kb.py)
+from keyboards.inline_kb import get_faq_menu_kb 
+from database import get_language, set_language
 
 router = Router()
 
@@ -19,34 +20,26 @@ async def show_faq_answer(callback: CallbackQuery):
     index = int(callback.data.split("_")[2])
     item = SAVOL_JAVOBLAR[index]
     
-    # Bazadan foydalanuvchi tilini olish
     user_lang = get_language(callback.from_user.id)
-    
     savol = item['savol']
     javob = item['javob']
     
-    # Tilni o'zgartirish
     if user_lang == "cyrillic":
         savol = to_cyrillic(savol)
         javob = to_cyrillic(javob)
         
-    # Tsitata (blockquote) formatida yuborish
     text = f"❓ <b>{savol}</b>\n\n<blockquote>{javob}</blockquote>"
     
-    # Orqaga qaytish tugmasi
     from aiogram.utils.keyboard import InlineKeyboardBuilder
     builder = InlineKeyboardBuilder()
     builder.button(text="⬅️ Orqaga", callback_data="faq_page_0")
     
     await callback.message.edit_text(text, parse_mode="HTML", reply_markup=builder.as_markup())
 
-# 3. Tilni almashtirish handler'i
+# 3. Tilni almashtirish
 @router.callback_query(F.data.startswith("lang_"))
 async def change_lang(callback: CallbackQuery):
-    from database import set_language
     lang = callback.data.split("_")[1]
     set_language(callback.from_user.id, lang)
-    
-    # Til muvaffaqiyatli o'zgartirilganini bildirish
     msg = "Til o'zgartirildi!" if lang == "latin" else "Тил ўзгартирилди!"
     await callback.answer(msg, show_alert=True)
