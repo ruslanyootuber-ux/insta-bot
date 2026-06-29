@@ -32,3 +32,12 @@ def delete_user(user_id):
     cursor.execute('DELETE FROM users WHERE user_id = ?', (user_id,))
     conn.commit()
     conn.close()
+
+# Barcha foydalanuvchilar IDlarini ro'yxat ko'rinishida olish
+def get_all_users_ids():
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT user_id FROM users')
+    users = [row[0] for row in cursor.fetchall()]
+    conn.close()
+    return users
