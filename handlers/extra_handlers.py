@@ -4,7 +4,7 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from datetime import datetime, timedelta
-from loader import bot, db
+from loader import bot
 from utils.aladhan_api import get_prayer_times
 
 router = Router()
