@@ -2,16 +2,14 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message
 from aiogram.filters import Command
 
-# Baza va klaviaturalar importi
-from data.statistika_data import add_user
+# Baza importi olib tashlandi
 from keyboards.inline_kb import get_main_menu_kb, get_regions_keyboard
 
 router = Router()
 
 @router.message(Command("start"))
 async def start_handler(message: Message):
-    # Foydalanuvchini bazaga qo'shamiz
-    add_user(message.from_user.id)
+    # add_user(message.from_user.id) olib tashlandi
     
     await message.answer(
         "Assalomu alaykum! Kerakli bo'limni tanlang 👇", 
