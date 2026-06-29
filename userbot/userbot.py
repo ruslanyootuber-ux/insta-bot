@@ -1,20 +1,29 @@
 import asyncio
-import random
 import os
+import random
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 
-# Muhit o'zgaruvchilari
-api_id_raw = os.getenv("API_ID")
-api_hash = os.getenv("API_HASH")
-session_str = os.getenv("SESSION_STRING")
+# Global o'zgaruvchilarni o'rniga ularni funksiya ichida o'qitamiz
+def get_client():
+    api_id = os.getenv("API_ID")
+    api_hash = os.getenv("API_HASH")
+    session_str = os.getenv("SESSION_STRING")
 
-if not api_id_raw or not api_hash or not session_str:
-    raise ValueError("Xatolik: API_ID, API_HASH yoki SESSION_STRING topilmadi! Fly.io secrets ni tekshiring.")
+    if not api_id or not api_hash or not session_str:
+        raise ValueError("API_ID, API_HASH yoki SESSION_STRING topilmadi!")
+    
+    return TelegramClient(StringSession(session_str), int(api_id), api_hash)
 
-api_id = int(api_id_raw)
-
-client = TelegramClient(StringSession(session_str), api_id, api_hash)
+# Reklama funksiyasini ham funksiya ichida clientni chaqiradigan qilamiz
+async def advertiser():
+    client = get_client()
+    await client.start()
+    
+    # Reklama mantiqi...
+    while True:
+        # ... kodlaringiz ...
+        await asyncio.sleep(300)
 
 ads = [
     "✨ Assalomu alaykum! Namoz — dinning ustuni. Namoz vaqtlari va tartibini o'rganishda yordam beradigan botimiz: @bot_username",
