@@ -4,7 +4,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 # Baza va loader importlari
 from data.statistika_data import init_db
-from loader import bot, dp
+from loader import bot,
 
 # Handler importlari
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
