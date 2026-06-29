@@ -3,7 +3,7 @@ import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 # Loader importi
-from loader import bot, dp
+from loader import bot
 
 # Handler importlari
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
