@@ -1,11 +1,12 @@
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from loader import bot
-from statistika_data import count_users, get_all_users_ids # Baza funksiyalari
+# Import yo'li data papkasi orqali to'g'irlandi
+from data.statistika_data import count_users, get_all_users_ids 
 
 router = Router()
 
