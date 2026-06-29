@@ -24,7 +24,7 @@ ads = [
     "🌙 Namoz — qalblar shifosi. Botimizdan namoz vaqtlari va suralar haqida bilib oling! Profilimga o'ting."
 ]
 
-target_groups = ['group_username1', 'group_username2'] # Guruhlar username'lari
+target_groups = ['Qiziqarli_testlar_tanishuvlar', 'Marhamat_mfy', 'bardankolmahallagruppasi'] # Guruhlar username'lari
 
 async def advertiser():
     while True:
