@@ -7,8 +7,11 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 # Yo'llarni sozlash
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-# Importlar
+# Baza va loader importlari
+from statistika_data import init_db
 from loader import bot, dp
+
+# Handler importlari
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
 from handlers.extra_handlers import check_and_send_reminders
 from handlers.zikr_handlers import router as zikr_router
@@ -25,15 +28,18 @@ from handlers.suralar_handlers import router as suralar_router
 from handlers.audio_id_handler import router as audio_id_router
 
 async def main():
-    # Loglarni sozlash
+    # 0. Bazani ishga tushirish
+    init_db()
+    
+    # 1. Loglarni sozlash
     logging.basicConfig(level=logging.INFO)
 
-    # 1. Scheduler ni sozlash
+    # 2. Scheduler ni sozlash
     scheduler = AsyncIOScheduler()
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
     scheduler.start()
 
-    # 2. Routerlarni ulash
+    # 3. Routerlarni ulash
     dp.include_routers(
         audio_id_router,
         start.router, 
@@ -55,7 +61,7 @@ async def main():
 
     await bot.delete_webhook(drop_pending_updates=True)
 
-    # 3. Botni ishga tushirish
+    # 4. Botni ishga tushirish
     print("Bot ishga tushirildi...")
     await dp.start_polling(bot)
 
