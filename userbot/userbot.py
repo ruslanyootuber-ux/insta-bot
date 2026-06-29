@@ -1,52 +1,46 @@
 import asyncio
 import random
-from telethon import TelegramClient, events
+import os
+from telethon import TelegramClient
+from telethon.sessions import StringSession
 
-# API ma'lumotlaringiz
-api_id = 'YOUR_API_ID'
-api_hash = 'YOUR_API_HASH'
-session_str = 'YOUR_SESSION_STRING'
+# Muhit o'zgaruvchilari
+api_id = int(os.getenv("API_ID"))
+api_hash = os.getenv("API_HASH")
+session_str = os.getenv("SESSION_STRING")
 
 client = TelegramClient(StringSession(session_str), api_id, api_hash)
 
-# Reklama qilinadigan guruhlar ro'yxati
-target_groups = ['group_username1', 'group_username2', 'group_username3']
-
-# Qiziqarli Islomiy reklamalar ro'yxati
 ads = [
-    "✨ Assalomu alaykum! Namoz — dinning ustuni. Namoz vaqtlari va tartibini o'rganishda yordam beradigan botimizga marhamat: @namoz_bot_username",
-    "🌙 Namozga befarq bo'lmang! Har kunlik namozlaringizni o'z vaqtida o'qish uchun ajoyib ko'makchi: @namoz_bot_username",
-    "🤲 Namoz — Alloh bilan muloqotdir. Botimiz orqali namoz o'qishni mukammal o'rganing: @namoz_bot_username"
+    "✨ Assalomu alaykum! Namoz — dinning ustuni. Namoz vaqtlari va tartibini o'rganishda yordam beradigan botimiz: @bot_username",
+    "🕌 Namoz o'qishni boshlamoqchimisiz? Botimiz sizga eng oson yo'llarni ko'rsatadi. Profilimga qarang!",
+    "🌙 Har bir kunimiz namoz bilan go'zal! Namoz vaqtlarini o'tkazib yubormaslik uchun botimizdan foydalaning: @bot_username",
+    "🤲 Namoz — Alloh bilan muloqot. Botimiz orqali namozni mukammal o'rganing. Batafsil botimizda!",
+    "📖 Namozni qanday to'g'ri o'qishni bilasizmi? Bizning botimizda barcha ma'lumotlar bor. @bot_username ga kiring.",
+    "💡 Namoz — iymonning nuri. Namozingizni o'z vaqtida o'qishga yordam beruvchi bot: @bot_username",
+    "🕌 Botim orqali namoz vaqtlarini kuzatib boring! Profilimda batafsil ma'lumot qoldirganman.",
+    "✨ Islomiy odoblar va namoz tartiblari! Botimiz bilan har bir kuningiz yanada mazmunli bo'ladi: @bot_username",
+    "🤲 Namoz — najot! Namoz o'qishni endi boshlayotganlar uchun maxsus bot: @bot_username",
+    "🌙 Namoz — qalblar shifosi. Botimizdan namoz vaqtlari va suralar haqida bilib oling! Profilimga o'ting."
 ]
+
+target_groups = ['group_username1', 'group_username2'] # Guruhlar username'lari
 
 async def advertiser():
     while True:
         try:
             for group in target_groups:
-                # Reklama yuborish
                 msg = random.choice(ads)
                 await client.send_message(group, msg)
-                print(f"Xabar yuborildi: {group}")
                 
-                # Tasodifiy reply qismi (har doim ham emas, 30% ehtimollik bilan)
+                # Reply qilish ehtimoli (30%)
                 if random.random() < 0.3:
-                    # Guruhdagi oxirgi xabarga reply qilish
                     async for message in client.iter_messages(group, limit=1):
-                        await message.reply("To'g'ri aytasiz, namoz eng muhimi! 🕌")
+                        await message.reply("Barakalloh, judayam foydali ma'lumotlar!")
                 
-                # Har bir yuborish orasida biroz kutish (spam cheklovini kamaytirish uchun)
-                await asyncio.sleep(60) 
+                await asyncio.sleep(60) # Har bir yuborish orasida kutish
             
-            # 5 daqiqalik sikl
-            await asyncio.sleep(240)
+            await asyncio.sleep(240) # Sikl uchun qolgan vaqt (jami 5 daqiqa)
         except Exception as e:
             print(f"Xatolik: {e}")
             await asyncio.sleep(60)
-
-# Userbotni ishga tushirish
-async def main():
-    await client.start()
-    await advertiser()
-
-if __name__ == '__main__':
-    asyncio.run(main())
