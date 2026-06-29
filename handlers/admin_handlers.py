@@ -1,26 +1,23 @@
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
+import asyncio
 
-
-# Import yo'li data papkasi orqali to'g'irlandi
-from data.statistika_data import count_users, get_all_users_ids 
+# Importlar
+from data.statistika_data import count_users, get_all_users_ids, delete_user
 
 router = Router()
 
-# O'z IDingiz
 ADMIN_ID = 8727877170 
 
-# Xabar yuborish uchun holatlar (FSM)
 class Mailing(StatesGroup):
     text = State()
 
 @router.message(Command("admin"))
 async def admin_panel(message: Message):
     if message.from_user.id == ADMIN_ID:
-        # Bazadan haqiqiy sonni olamiz
         users_count = count_users()
         await message.answer(
             f"👑 <b>Admin Panel</b>\n\n"
@@ -40,18 +37,21 @@ async def mailing_start(message: Message, state: FSMContext):
 
 @router.message(Mailing.text)
 async def mailing_process(message: Message, state: FSMContext):
-    # Bazadan barcha ID larni ro'yxat ko'rinishida olamiz
     users = get_all_users_ids() 
     count = 0
     
-    await message.answer("⏳ Xabar yuborilmoqda, kuting...")
+    msg = await message.answer("⏳ Xabar yuborilmoqda, kuting...")
     
     for user_id in users:
         try:
-            await bot.send_message(user_id, message.text)
+            # message.bot orqali bot instansiyasini chaqiramiz
+            await message.bot.send_message(user_id, message.text)
             count += 1
+            # Telegram limitlariga tushmaslik uchun kichik pauza
+            await asyncio.sleep(0.05) 
         except Exception:
-            continue
+            # Agar foydalanuvchi botni bloklagan bo'lsa, bazadan o'chirib tashlaymiz
+            delete_user(user_id)
             
-    await message.answer(f"✅ Xabar {count} ta foydalanuvchiga muvaffaqiyatli yuborildi!")
+    await msg.edit_text(f"✅ Xabar {count} ta foydalanuvchiga muvaffaqiyatli yuborildi!")
     await state.clear()
