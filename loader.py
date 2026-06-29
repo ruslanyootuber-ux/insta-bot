@@ -1,10 +1,13 @@
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
+from aiogram.fsm.storage.memory import MemoryStorage
 from config import BOT_TOKEN
 
-# BOT_TOKEN config faylidan keladi
-bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
-dp = Dispatcher()
+# MemoryStorage - FSM (holatlar) uchun vaqtinchalik xotira
+storage = MemoryStorage()
 
-# Eski Database klassi va importi olib tashlandi.
-# Endi funksiyalarni to'g'ridan-to'g'ri data.statistika_data dan chaqiramiz.
+# Bot instansiyasi
+bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
+
+# Dispatcherga storage ni ulaymiz
+dp = Dispatcher(storage=storage)
