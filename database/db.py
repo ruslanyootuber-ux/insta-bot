@@ -2,7 +2,7 @@ import sqlite3
 
 class Database:
     def __init__(self, db_file):
-        self.connection = sqlite3.connect(db_file)
+        self.connection = sqlite3.connect(db_file, check_same_thread=False)
         self.cursor = self.connection.cursor()
         self.create_table()
 
@@ -17,11 +17,6 @@ class Database:
                 rating INTEGER DEFAULT 0
             )
         """)
-        # Agar oldindan jadval yaratilgan bo'lsa, xato bermasligi uchun try-except ishlatamiz
-        try:
-            self.cursor.execute("ALTER TABLE users ADD COLUMN rating INTEGER DEFAULT 0")
-        except:
-            pass
         self.connection.commit()
 
     def add_user(self, user_id, full_name):
@@ -48,21 +43,15 @@ class Database:
         self.cursor.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
         return self.cursor.fetchone()
 
-    # Yangi: Foydalanuvchi bahosini saqlash
     def update_rating(self, user_id, rating):
         self.cursor.execute("UPDATE users SET rating = ? WHERE user_id = ?", (rating, user_id))
         self.connection.commit()
 
-    # Yangi: Umumiy reytingni hisoblash
     def get_rating_stats(self):
         self.cursor.execute("SELECT rating FROM users WHERE rating > 0")
         ratings = self.cursor.fetchall()
-        
         if not ratings:
-            return 0.0, 0  # O'rtacha baho, Odamlar soni
-            
+            return 0.0, 0
         total_voters = len(ratings)
         total_score = sum([r[0] for r in ratings])
-        average = total_score / total_voters
-        
-        return round(average, 1), total_voters
+        return round(total_score / total_voters, 1), total_voters
