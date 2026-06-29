@@ -1,16 +1,14 @@
-# main.py
-
 import sys
 import os
 import asyncio
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
+# Yo'llarni sozlash
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
+# Importlar
 from loader import bot, dp
-from data import asmaul_husna_data, hadis_data, zikr_data, tasbeh_data, duo_data, suralar_data
-
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
 from handlers.extra_handlers import check_and_send_reminders
 from handlers.zikr_handlers import router as zikr_router
@@ -26,14 +24,19 @@ from handlers.ayollar_namozi_handlers import router as ayollar_namozi_router
 from handlers.suralar_handlers import router as suralar_router
 from handlers.audio_id_handler import router as audio_id_router
 
+# Userbot importlari
+from userbot.userbot import client as userbot_client, advertiser
+
 async def main():
+    # Loglarni sozlash
     logging.basicConfig(level=logging.INFO)
 
+    # 1. Scheduler ni sozlash
     scheduler = AsyncIOScheduler()
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
     scheduler.start()
 
-    # Роутерлар кетма-кетлиги тўғриланди. Глобал тугмалар тепада туради
+    # 2. Routerlarni ulash
     dp.include_routers(
         audio_id_router,
         start.router, 
@@ -54,10 +57,19 @@ async def main():
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
+
+    # 3. Userbotni ishga tushirish
+    await userbot_client.start()
+
+    # 4. Bot va Userbotni parallel ishga tushirish
+    print("Bot va Userbot ishga tushirildi...")
+    await asyncio.gather(
+        dp.start_polling(bot),
+        advertiser()
+    )
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
         print("Dastur to'xtatildi.")
