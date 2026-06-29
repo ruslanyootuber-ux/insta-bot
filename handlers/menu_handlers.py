@@ -4,7 +4,6 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from datetime import datetime
-from data.statistika_data import count_users 
 from keyboards.callbacks import RegionCallback, DistrictCallback
 from keyboards.inline_kb import get_regions_keyboard, get_districts_keyboard, get_main_menu_kb
 from utils.aladhan_api import get_prayer_times
@@ -12,18 +11,16 @@ from utils.aladhan_api import get_prayer_times
 router = Router()
 
 # =====================================================================
-# 1. АСОСИЙ МЕНЮГА БАТАМОМ ҚАЙТИШ (Ҳамма бўлимлар учун ягона ва тўғри йўл)
+# 1. АСОСИЙ МЕНЮГА БАТАМОМ ҚАЙТИШ
 # =====================================================================
 @router.callback_query(F.data == "back_to_main")
 async def process_back_to_main(callback: CallbackQuery):
-    await callback.answer()  # Соат айланиб қотишини тўхтатади
+    await callback.answer()
     text = "Assalomu alaykum! Kerakli bo'limni tanlang 👇"
     
     try:
-        # Биринчи навбатда оддий матн сифатида таҳрирлайди
         await callback.message.edit_text(text=text, reply_markup=get_main_menu_kb(), parse_mode="HTML")
     except Exception:
-        # Агар хабар тури бошқача бўлса (Расм, Аудио ва ҳ.к.), эскисини ўчириб янги тоза меню очиб беради
         try:
             await callback.message.delete()
         except Exception:
@@ -32,7 +29,7 @@ async def process_back_to_main(callback: CallbackQuery):
 
 
 # =====================================================================
-# 2. ФАҚАТ НАМОЗ ВАҚТЛАРИ ИЧИДАН ВИЛОЯТЛАР РЎЙХАТИГА ҚАЙТИШ
+# 2. ВИЛОЯТЛАР РЎЙХАТИГА ҚАЙТИШ
 # =====================================================================
 @router.callback_query(F.data == "back_to_regions")
 async def back_to_menu_regions(callback: CallbackQuery):
@@ -50,7 +47,7 @@ async def back_to_menu_regions(callback: CallbackQuery):
 
 
 # =====================================================================
-# 3. ВИЛОЯТ ТАНЛАНГАНДА (Туманлар рўйхати чиқади)
+# 3. ВИЛОЯТ ТАНЛАНГАНДА
 # =====================================================================
 @router.callback_query(RegionCallback.filter())
 async def process_region_selection(callback: CallbackQuery, callback_data: RegionCallback):
@@ -61,33 +58,30 @@ async def process_region_selection(callback: CallbackQuery, callback_data: Regio
 
 
 # =====================================================================
-# 4. ТУМАН ТАНЛАНГАНДА (Намоз вақтлари чиқади)
+# 4. ТУМАН ТАНЛАНГАНДА
 # =====================================================================
 @router.callback_query(DistrictCallback.filter())
 async def process_district_selection(callback: CallbackQuery, callback_data: DistrictCallback):
     await callback.answer()
 
     district_name = callback_data.district_name
-    db.update_district(callback.from_user.id, district_name)
-
-    user_data = db.get_user_data(callback.from_user.id)
-    school = user_data[4] if user_data else 0
+    
+    # Baza qismi o'chirildi
+    school = 0 
 
     await callback.message.edit_text("⏳ <i>Namoz vaqtlari yuklanmoqda...</i>", parse_mode="HTML")
 
     times = await get_prayer_times(district_name, school=school)
 
     builder = InlineKeyboardBuilder()
-    # Сиз айтган тугмалар мантиғи шу ерда ажратилди:
-    builder.button(text="⬅️ Viloyatlarga qaytish", callback_data="back_to_regions") # <-- back_to_regions бўлди
-    builder.button(text="🏠 Asosiy menu", callback_data="back_to_main")        # <-- Бош менюга тўғри йўл
+    builder.button(text="⬅️ Viloyatlarga qaytish", callback_data="back_to_regions")
+    builder.button(text="🏠 Asosiy menu", callback_data="back_to_main")
     builder.adjust(1)
 
     if times:
         today = datetime.now().strftime("%d.%m.%Y")
         text = (
             f"🕌 <b>{district_name}</b> uchun namoz vaqtlari:\n"
-            f"Mazhab: {'Shafi\'i' if school == 1 else 'Hanafi'}\n"
             f"📅 Sana: {today}\n\n"
             f"🌅 <b>Bomdod:</b> {times['Bomdod']}\n"
             f"🌄 <b>Quyosh:</b> {times['Quyosh']}\n"
@@ -103,31 +97,14 @@ async def process_district_selection(callback: CallbackQuery, callback_data: Dis
 
 
 # =====================================================================
-# 5. ҒУСЛ, ТАЯММУМ ВА ДУОЛАР УЧУН ОГОҲЛАНТИРИШ БЎЛИМИ
+# 5. ОГОҲЛАНТИРИШ БЎЛИМИ
 # =====================================================================
 @router.callback_query(F.data.in_({"ghusl", "tayammum", "duolar"}))
 async def process_under_construction(callback: CallbackQuery):
     await callback.answer()
-    
-    text = (
-        "✨ <b>Ҳурматли фойдаланувчи!</b> ✨\n\n"
-        "⚠️ Ушбу бўлим ҳозирда <b>техник ишлар</b> ва маълумотларни янгилаш жараёнида. "
-        "Тез орада сизга тўлиқ ва сифатли ҳолатда тақдим этилади.\n\n"
-        "⏳ Навбатдаги янгиланишгача ботимизнинг бошқа фойдали бўлимларидан "
-        "фойдаланиб туришингизни тавсия этамиз.\n\n"
-        "✍️ Ҳар қандай савол, таклиф ёки мулоҳазаларингиз бўлса, бизга мурожаат қилишингиз мумкин:\n"
-        "➡️ <b>Администратор:</b> @mrxruslann\n\n"
-        "<i>Тушунганингиз учун ташаккур!</i> 🙏"
-    )
+    text = "⚠️ <b>Texnik ishlar olib borilmoqda.</b> Tushunganingiz uchun rahmat!"
     
     builder = InlineKeyboardBuilder()
     builder.button(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main")
     
-    try:
-        await callback.message.edit_text(text=text, reply_markup=builder.as_markup(), parse_mode="HTML")
-    except Exception:
-        try:
-            await callback.message.delete()
-        except Exception:
-            pass
-        await callback.message.answer(text=text, reply_markup=builder.as_markup(), parse_mode="HTML")
+    await callback.message.edit_text(text=text, reply_markup=builder.as_markup(), parse_mode="HTML")
