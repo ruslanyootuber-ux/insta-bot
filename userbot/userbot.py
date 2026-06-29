@@ -4,7 +4,7 @@ import random
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 
-# 10 ta xilma-xil reklama matnlari
+# Reklama matnlari
 ADS = [
     "✨ Assalomu alaykum! Namoz — dinning ustuni. Namoz vaqtlari va tartibini o'rganishda yordam beradigan botimiz: @bot_username",
     "🕌 Namoz o'qishni boshlamoqchimisiz? Botimiz sizga eng oson yo'llarni ko'rsatadi. Profilimga qarang!",
@@ -18,7 +18,7 @@ ADS = [
     "🌙 Namoz — qalblar shifosi. Botimizdan namoz vaqtlari va suralar haqida bilib oling! Profilimga o'ting."
 ]
 
-TARGET_GROUPS = ['bardankolmahallagruppasi', 'Qiziqarli_testlar_tanishuvlar', 'Marhamat_mfy'] # Guruhlar manzili
+TARGET_GROUPS = ['bardankolmahallagruppasi', 'Qiziqarli_testlar_tanishuvlar', 'Marhamat_mfy']
 
 async def advertiser():
     api_id = os.getenv("API_ID")
@@ -28,6 +28,9 @@ async def advertiser():
     if not api_id or not api_hash or not session_str:
         print("Xatolik: API ma'lumotlari topilmadi!")
         return
+
+    # Sessiya kodini tozalash (probel va yangi qatorlarni olib tashlash)
+    session_str = session_str.strip().replace(" ", "").replace("\n", "").replace("\r", "")
 
     client = TelegramClient(StringSession(session_str), int(api_id), api_hash)
     await client.start()
@@ -39,14 +42,14 @@ async def advertiser():
                 msg = random.choice(ADS)
                 await client.send_message(group, msg)
                 
-                # 30% ehtimollik bilan reply qilish
+                # Tasodifiy reply
                 if random.random() < 0.3:
                     async for message in client.iter_messages(group, limit=1):
                         await message.reply("To'g'ri aytasiz, namoz eng muhimi! 🕌")
                 
-                await asyncio.sleep(60) # Har bir xabar oralig'i
+                await asyncio.sleep(60)
             
-            await asyncio.sleep(240) # Sikl uchun pauza
+            await asyncio.sleep(240)
         except Exception as e:
             print(f"Userbotda xatolik: {e}")
             await asyncio.sleep(60)
