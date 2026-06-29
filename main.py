@@ -24,9 +24,6 @@ from handlers.ayollar_namozi_handlers import router as ayollar_namozi_router
 from handlers.suralar_handlers import router as suralar_router
 from handlers.audio_id_handler import router as audio_id_router
 
-# YANGILANDI: Userbotdan faqat funksiyani import qilamiz
-from userbot.userbot import advertiser
-
 async def main():
     # Loglarni sozlash
     logging.basicConfig(level=logging.INFO)
@@ -58,13 +55,9 @@ async def main():
 
     await bot.delete_webhook(drop_pending_updates=True)
 
-    # 3. Bot va Userbotni parallel ishga tushirish
-    # Eslatma: userbot_client.start() endi advertiser() ichida bajariladi
-    print("Bot va Userbot ishga tushirildi...")
-    await asyncio.gather(
-        dp.start_polling(bot),
-        advertiser()
-    )
+    # 3. Botni ishga tushirish
+    print("Bot ishga tushirildi...")
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
     try:
