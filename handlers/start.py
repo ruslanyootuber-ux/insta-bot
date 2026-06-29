@@ -3,7 +3,8 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.filters import Command
 
 # Baza va klaviaturalar importi
-from statistika_data import add_user
+# Endi import 'data' papkasi orqali amalga oshiriladi
+from data.statistika_data import add_user
 from keyboards.inline_kb import get_main_menu_kb, get_regions_keyboard
 
 router = Router()
