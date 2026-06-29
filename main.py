@@ -4,7 +4,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 # Baza va loader importlari
 from data.statistika_data import init_db
-from loader import bot
+from loader import bot, dp  # dp ni ham import qildik
 
 # Handler importlari
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
@@ -23,21 +23,14 @@ from handlers.suralar_handlers import router as suralar_router
 from handlers.audio_id_handler import router as audio_id_router
 
 async def on_startup():
-    """Bot ishga tushganda bajariladigan funksiyalar"""
     init_db()
     logging.info("Ma'lumotlar bazasi ishga tushirildi.")
 
 async def main():
-    # Loglarni sozlash
-    logging.basicConfig(
-        level=logging.INFO, 
-        format='%(asctime)s - %(levelname)s - %(message)s'
-    )
+    logging.basicConfig(level=logging.INFO)
     
-    # Bazani ishga tushirish
     await on_startup()
 
-    # Scheduler ni sozlash (Har 1 daqiqada tekshirish)
     scheduler = AsyncIOScheduler()
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
     scheduler.start()
@@ -62,15 +55,10 @@ async def main():
         suralar_router
     )
 
-    # Webhookni tozalash va botni ishga tushirish
     await bot.delete_webhook(drop_pending_updates=True)
     logging.info("Bot ishga tushirildi...")
     
-    try:
-        await dp.start_polling(bot)
-    finally:
-        # Bot to'xtaganda sessiyani yopish
-        await bot.session.close()
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
     try:
