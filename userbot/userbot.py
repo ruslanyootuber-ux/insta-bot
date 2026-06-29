@@ -18,7 +18,7 @@ ADS = [
     "🌙 Namoz — qalblar shifosi. Botimizdan namoz vaqtlari va suralar haqida bilib oling! Profilimga o'ting."
 ]
 
-TARGET_GROUPS = ['group_username1', 'group_username2'] # Guruhlar manzili
+TARGET_GROUPS = ['bardankolmahallagruppasi', 'Qiziqarli_testlar_tanishuvlar', 'Marhamat_mfy'] # Guruhlar manzili
 
 async def advertiser():
     api_id = os.getenv("API_ID")
