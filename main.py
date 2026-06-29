@@ -4,10 +4,6 @@ import asyncio
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-# Loyihaning ildiz (root) papkasini PYTHONPATH ga qo'shamiz, 
-# shunda 'data' va 'handlers' papkalarini bemalol topadi.
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 # Baza (data papkasidan) va loader importlari
 from data.statistika_data import init_db
 from loader import bot, dp
