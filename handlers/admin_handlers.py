@@ -1,11 +1,10 @@
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-import asyncio
 
-# Importlar
+# Baza funksiyalari
 from data.statistika_data import count_users, get_all_users_ids, delete_user
 
 router = Router()
@@ -40,18 +39,14 @@ async def mailing_process(message: Message, state: FSMContext):
     users = get_all_users_ids() 
     count = 0
     
-    msg = await message.answer("⏳ Xabar yuborilmoqda, kuting...")
+    await message.answer("⏳ Xabar yuborilmoqda, kuting...")
     
     for user_id in users:
         try:
-            # message.bot orqali bot instansiyasini chaqiramiz
             await message.bot.send_message(user_id, message.text)
             count += 1
-            # Telegram limitlariga tushmaslik uchun kichik pauza
-            await asyncio.sleep(0.05) 
         except Exception:
-            # Agar foydalanuvchi botni bloklagan bo'lsa, bazadan o'chirib tashlaymiz
             delete_user(user_id)
             
-    await msg.edit_text(f"✅ Xabar {count} ta foydalanuvchiga muvaffaqiyatli yuborildi!")
+    await message.answer(f"✅ Xabar {count} ta foydalanuvchiga muvaffaqiyatli yuborildi!")
     await state.clear()
