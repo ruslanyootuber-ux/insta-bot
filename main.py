@@ -2,9 +2,8 @@ import asyncio
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-# Baza va loader importlari
-from data.statistika_data import init_db
-from loader import bot, dp  # dp ni ham import qildik
+# Loader importi
+from loader import bot, dp
 
 # Handler importlari
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
@@ -22,15 +21,10 @@ from handlers.ayollar_namozi_handlers import router as ayollar_namozi_router
 from handlers.suralar_handlers import router as suralar_router
 from handlers.audio_id_handler import router as audio_id_router
 
-async def on_startup():
-    init_db()
-    logging.info("Ma'lumotlar bazasi ishga tushirildi.")
-
 async def main():
     logging.basicConfig(level=logging.INFO)
     
-    await on_startup()
-
+    # Scheduler ni sozlash
     scheduler = AsyncIOScheduler()
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
     scheduler.start()
