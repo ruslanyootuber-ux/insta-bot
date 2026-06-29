@@ -1,43 +1,36 @@
 import sqlite3
 
-# Bazani yaratish (fayl mavjud bo'lmasa, yaratadi)
+DB_NAME = 'users.db'
+
 def init_db():
-    conn = sqlite3.connect('users.db')
-    cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY)''')
-    conn.commit()
-    conn.close()
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute('''CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY)''')
+        conn.commit()
 
-# Foydalanuvchini bazaga qo'shish
 def add_user(user_id):
-    conn = sqlite3.connect('users.db')
-    cursor = conn.cursor()
-    cursor.execute('INSERT OR IGNORE INTO users (user_id) VALUES (?)', (user_id,))
-    conn.commit()
-    conn.close()
+    try:
+        with sqlite3.connect(DB_NAME) as conn:
+            cursor = conn.cursor()
+            cursor.execute('INSERT OR IGNORE INTO users (user_id) VALUES (?)', (user_id,))
+            conn.commit()
+    except sqlite3.Error as e:
+        print(f"Xatolik yuz berdi: {e}")
 
-# Barcha foydalanuvchilar sonini olish
 def count_users():
-    conn = sqlite3.connect('users.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT COUNT(*) FROM users')
-    count = cursor.fetchone()[0]
-    conn.close()
-    return count
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT COUNT(*) FROM users')
+        return cursor.fetchone()[0]
 
-# Foydalanuvchini bazadan o'chirish
 def delete_user(user_id):
-    conn = sqlite3.connect('users.db')
-    cursor = conn.cursor()
-    cursor.execute('DELETE FROM users WHERE user_id = ?', (user_id,))
-    conn.commit()
-    conn.close()
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM users WHERE user_id = ?', (user_id,))
+        conn.commit()
 
-# Barcha foydalanuvchilar IDlarini ro'yxat ko'rinishida olish
 def get_all_users_ids():
-    conn = sqlite3.connect('users.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT user_id FROM users')
-    users = [row[0] for row in cursor.fetchall()]
-    conn.close()
-    return users
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT user_id FROM users')
+        return [row[0] for row in cursor.fetchall()]
