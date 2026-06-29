@@ -4,11 +4,12 @@ import asyncio
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-# Yo'llarni sozlash
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+# Loyihaning ildiz (root) papkasini PYTHONPATH ga qo'shamiz, 
+# shunda 'data' va 'handlers' papkalarini bemalol topadi.
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Baza va loader importlari
-from statistika_data import init_db
+# Baza (data papkasidan) va loader importlari
+from data.statistika_data import init_db
 from loader import bot, dp
 
 # Handler importlari
@@ -62,7 +63,10 @@ async def main():
     await bot.delete_webhook(drop_pending_updates=True)
 
     # 4. Botni ishga tushirish
-    print("Bot ishga tushirildi...")
+    bot_info = await bot.get_me()
+    logging.info(f"Bot ishga tushirildi: @{bot_info.username}")
+    print(f"Bot @{bot_info.username} ishga tushirildi...")
+    
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
