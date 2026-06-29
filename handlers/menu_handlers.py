@@ -4,7 +4,7 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from datetime import datetime
-from loader import db 
+from data.statistika_data import count_users 
 from keyboards.callbacks import RegionCallback, DistrictCallback
 from keyboards.inline_kb import get_regions_keyboard, get_districts_keyboard, get_main_menu_kb
 from utils.aladhan_api import get_prayer_times
