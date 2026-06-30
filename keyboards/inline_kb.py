@@ -8,18 +8,19 @@ from urllib.parse import quote
 
 BOT_USERNAME = "NamozTaqvimi_Uz_Bot" 
 
-# 1. PREMIUM ASOSIY BOSH MENYU (8 ta tugma bilan yangilandi)
+# 1. PREMIUM ASOSIY BOSH MENYU (Masjid tugmasi bilan yangilandi)
 def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(text="🕌 Намоз вақтлари", callback_data="menu_regions")
     builder.button(text="🕋 Қиблани топиш", callback_data="menu_qibla")
+    builder.button(text="🕌 Masjidlar va Manzillar", callback_data="menu_find_masjid") # Qo'shildi
     builder.button(text="📖 Ибодат йўриқномаси", callback_data="submenu_ibodat")
     builder.button(text="📜 Ҳадис ва Зикрлар", callback_data="submenu_ilm")
     builder.button(text="🌙 Рамазон тақвими", callback_data="menu_ramadan")
     builder.button(text="📿 Электрон тасбеҳ", callback_data="menu_tasbeh")
     builder.button(text="⚙️ Шахсий созламалар", callback_data="submenu_sozlamalar")
     builder.button(text="📞 Ёрдам ва Алоқа", callback_data="menu_creator")
-    builder.adjust(2) # Har qatorda 2 ta tugma bilan premium ko'rinish
+    builder.adjust(2) # 2 tadan qilib taxlaydi
     return builder.as_markup()
 
 # 2. ИБОДАТ МАСАЛАЛАРИ ИЧКИ МЕНЮСИ
@@ -47,12 +48,12 @@ def get_ilm_menu_kb() -> InlineKeyboardMarkup:
     builder.adjust(2, 2, 2, 1)
     return builder.as_markup()
 
-# 4. НАМОЗ ВА ТАҚВИМ ИЧКИ МЕНЮСИ (Masjid funksiyasi saqlandi)
+# 4. НАМОЗ ВА ТАҚВИМ ИЧКИ МЕНЮСИ
 def get_taqvim_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(text="🕌 Намоз вақтлари", callback_data="menu_regions")
     builder.button(text="🕋 Қиблани топиш", callback_data="menu_qibla")
-    builder.button(text="🕌 Масжидга йўл", callback_data="menu_find_masjid")
+    builder.button(text="🕌 Масжид қидириш", callback_data="menu_find_masjid")
     builder.button(text="🌙 Рамазон тақвими", callback_data="menu_ramadan")
     builder.button(text="☪️ Мазҳабни танлаш", callback_data="menu_settings")
     builder.row(InlineKeyboardButton(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main"))
