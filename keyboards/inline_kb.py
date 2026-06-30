@@ -1,7 +1,7 @@
 # keyboards/inline_kb.py
 
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
 from keyboards.callbacks import RegionCallback, DistrictCallback
 from utils.locations import UZB_REGIONS
 from urllib.parse import quote
@@ -43,15 +43,16 @@ def get_ilm_menu_kb() -> InlineKeyboardMarkup:
     builder.adjust(2, 2, 2, 1)
     return builder.as_markup()
 
-# 4. НАМОЗ ВА ТАҚВИМ ИЧКИ МЕНЮСИ
+# 4. НАМОЗ ВА ТАҚВИМ ИЧКИ МЕНЮСИ (Masjidga yo'l tugmasi qo'shildi)
 def get_taqvim_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(text="🕌 Намоз вақтлари", callback_data="menu_regions")
     builder.button(text="🕋 Қиблани топиш", callback_data="menu_qibla")
+    builder.button(text="🕌 Масжидга йўл", callback_data="menu_find_masjid")  # <-- Yangi qo'shilgan tugma
     builder.button(text="🌙 Рамазон тақвими", callback_data="menu_ramadan")
     builder.button(text="☪️ Мазҳабни танлаш", callback_data="menu_settings")
     builder.row(InlineKeyboardButton(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main"))
-    builder.adjust(2, 2, 1)
+    builder.adjust(2, 1, 2, 1) # Tugmalar tekstiga qarab chiroyli tekislash
     return builder.as_markup()
 
 # 5. СОЗЛАМАЛАР ВА АЛОҚА ИЧКИ МЕНЮСИ
@@ -59,7 +60,7 @@ def get_sozlamalar_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(text="🔔 Эслатма белгилаш", callback_data="menu_reminder")
     builder.button(text="👨‍💻 Боғланиш", callback_data="menu_creator")
-    
+
     add_to_group_url = f"https://t.me/{BOT_USERNAME}?startgroup=true"
     builder.row(InlineKeyboardButton(text="➕ Гуруҳга қўшиш", url=add_to_group_url))
 
@@ -67,12 +68,12 @@ def get_sozlamalar_menu_kb() -> InlineKeyboardMarkup:
     encoded_text = quote(share_text)
     share_url = f"https://t.me/share/url?url=https://t.me/{BOT_USERNAME}&text={encoded_text}"
     builder.row(InlineKeyboardButton(text="📲 Дўстларга улашиш", url=share_url))
-    
+
     builder.row(InlineKeyboardButton(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main"))
     builder.adjust(2, 1, 1, 1)
     return builder.as_markup()
 
-# Вилоят ва туманлар учун эски код ўзгаришсиз қолди
+# Вилоят ва туманлар учун клавиатуралар
 def get_regions_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for region in UZB_REGIONS.keys():
@@ -88,3 +89,13 @@ def get_districts_keyboard(region_name: str) -> InlineKeyboardMarkup:
     builder.row(InlineKeyboardButton(text="⬅️ Вилоятларга қайтиш", callback_data="back_to_regions"))
     builder.adjust(2) 
     return builder.as_markup()
+
+# 📍 Joylashuvni yuborish uchun maxsus Reply Tugma
+def get_location_keyboard() -> ReplyKeyboardMarkup:
+    button = KeyboardButton(text="📍 Joylashuvni yuborish", request_location=True)
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=[[button]],
+        resize_keyboard=True,
+        one_time_keyboard=True
+    )
+    return keyboard
