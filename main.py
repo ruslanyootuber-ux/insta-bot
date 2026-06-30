@@ -1,3 +1,5 @@
+# main.py
+
 import asyncio
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -23,7 +25,7 @@ from handlers.audio_id_handler import router as audio_id_router
 
 async def main():
     logging.basicConfig(level=logging.INFO)
-    
+
     # Scheduler ni sozlash
     scheduler = AsyncIOScheduler()
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
@@ -49,10 +51,16 @@ async def main():
         suralar_router
     )
 
+    # Polling boshlanishidan oldin eski kelib qolgan so'rovlarni tozalaymiz
     await bot.delete_webhook(drop_pending_updates=True)
     logging.info("Bot ishga tushirildi...")
-    
-    await dp.start_polling(bot)
+
+    try:
+        # Botni ishga tushirish
+        await dp.start_polling(bot)
+    finally:
+        # Bot yopilayotganda aiohttp sessiyasini xavfsiz yopamiz (Network error oldini olish uchun)
+        await bot.session.close()
 
 if __name__ == "__main__":
     try:
