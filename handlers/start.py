@@ -7,7 +7,7 @@ from keyboards.inline_kb import get_main_menu_kb, get_regions_keyboard
 
 # Bazadan hududni olish funksiyasi va API ni import qilamiz
 # Eslatma: get_user_region bazangizdagi funksiya deb faraz qilindi
-from utils.db import get_user_region 
+from database.db import get_user_region 
 from utils.alahdan_api import get_prayer_times
 
 router = Router()
