@@ -37,7 +37,12 @@ async def process_qibla_menu(callback: CallbackQuery, state: FSMContext):
         one_time_keyboard=True
     )
     
-    await callback.message.delete()
+    # Eski menyuni o'chirib, joylashuv so'raydigan klaviaturani chiqaramiz
+    try:
+        await callback.message.delete()
+    except:
+        pass
+        
     await callback.message.answer(
         "🕋 <b>Қибла йўналишини аниқлаш</b>\n\n"
         "Сиз турган жойга кўра Қиблани аниқ ҳисоблаш учун, илтимос, пастдаги тугма орқали <b>жойлашувингизни (GPS)</b> юборинг.",
@@ -54,6 +59,15 @@ async def handle_location(message: Message, state: FSMContext):
 
     await state.clear() # Xotirani tozalash
 
+    # 1. Klaviaturani yashirish uchun vaqtincha xabar yuboramiz
+    temp_msg = await message.answer("...", reply_markup=ReplyKeyboardRemove())
+    
+    # 2. Xabarni va klaviaturani darhol o'chirib tashlaymiz
+    try:
+        await temp_msg.delete()
+    except:
+        pass
+
     builder = InlineKeyboardBuilder()
     builder.button(text="✨ 🧭 ЖОНЛИ КОМПАСНИ ОЧИШ 🧭 ✨", web_app=WebAppInfo(url=dynamic_url))
     builder.button(text="⬅️ Асосий Меню", callback_data="back_to_main")
@@ -65,6 +79,5 @@ async def handle_location(message: Message, state: FSMContext):
         "Пастдаги тугмани босинг ва <b>Жонли компас</b> орқали Қиблани топинг!"
     )
 
-    # ReplyKeyboardRemove() ni aynan xabar bilan birga yuboramiz
+    # 3. Asosiy natijani yuboramiz
     await message.answer(text=text, reply_markup=builder.as_markup(), parse_mode="HTML")
-    await message.answer("📍 <i>Klaviaturani yopish...</i>", reply_markup=ReplyKeyboardRemove())
