@@ -2,22 +2,24 @@
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
-from aiogram.client.session.aiohttp import AiohttpSession  # Yangi import
+from aiogram.client.session.aiohttp import AiohttpSession
+from aiogram.fsm.storage.memory import MemoryStorage  # 1. Yangi import
 from config import BOT_TOKEN
-from database.db import Database  # Ma'lumotlar bazasi klassini import qilamiz
+from database.db import Database 
 
 # Tarmoq ulanishi vaqtini (timeout) 60 soniyagacha uzaytiramiz
-session = AiohttpSession(timeout=60)
+session = AiohttpStorage = AiohttpSession(timeout=60)
 
-# Bot instansiyasi (HTML rejimida va xavfsiz sessiya bilan)
+# Bot instansiyasi
 bot = Bot(
     token=BOT_TOKEN, 
     session=session, 
     default=DefaultBotProperties(parse_mode="HTML")
 )
 
-# Dispatcher instansiyasi
-dp = Dispatcher()
+# 2. MemoryStorage ni Dispatcher ga ulaymiz
+storage = MemoryStorage()
+dp = Dispatcher(storage=storage)
 
-# Ma'lumotlar bazasini ishga tushiramiz va 'db' o'zgaruvchisini yaratamiz
-db = Database("data/main.db")  # Agar baza fayli boshqa yerda bo'lsa, manzilni o'zgartirishingiz mumkin
+# Ma'lumotlar bazasini ishga tushiramiz
+db = Database("data/main.db")
