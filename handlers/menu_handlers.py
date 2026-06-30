@@ -5,10 +5,64 @@ from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from datetime import datetime
 from keyboards.callbacks import RegionCallback, DistrictCallback
-from keyboards.inline_kb import get_regions_keyboard, get_districts_keyboard, get_main_menu_kb
+# Klaviaturadan yangi sub-menyu funksiyalarini import qilamiz
+from keyboards.inline_kb import (
+    get_regions_keyboard, 
+    get_districts_keyboard, 
+    get_main_menu_kb,
+    get_ibodat_menu_kb,
+    get_ilm_menu_kb,
+    get_taqvim_menu_kb,
+    get_sozlamalar_menu_kb
+)
 from utils.aladhan_api import get_prayer_times
 
 router = Router()
+
+# =====================================================================
+# 新 SUB-MENYULARNI BOSHQARISH (Yangi qo'shilgan qism)
+# =====================================================================
+
+# 1. Ибодат масалалари суб-менюсини очиш
+@router.callback_query(F.data == "submenu_ibodat")
+async def open_ibodat_menu(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.edit_text(
+        text="🟢 <b>Ибодат масалалари бўлими</b>\n\nKerakli mavzuni tanlang:",
+        reply_markup=get_ibodat_menu_kb(),
+        parse_mode="HTML"
+    )
+
+# 2. Илм va Zikr суб-менюсини очиш
+@router.callback_query(F.data == "submenu_ilm")
+async def open_ilm_menu(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.edit_text(
+        text="📖 <b>Илм ва Зикр бурчаги</b>\n\nKerakli bo'limni tanlang:",
+        reply_markup=get_ilm_menu_kb(),
+        parse_mode="HTML"
+    )
+
+# 3. Намоз ва Тақвим суб-менюсини очиш
+@router.callback_query(F.data == "submenu_taqvim")
+async def open_taqvim_menu(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.edit_text(
+        text="🗺️ <b>Намоз ва Тақвим бўлими</b>\n\nKerakli bo'limni tanlang:",
+        reply_markup=get_taqvim_menu_kb(),
+        parse_mode="HTML"
+    )
+
+# 4. Созламалар ва Алоқа суб-менюсини очиш
+@router.callback_query(F.data == "submenu_sozlamalar")
+async def open_sozlamalar_menu(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.edit_text(
+        text="⚙️ <b>Созламалар ва Алоқа бўлими</b>\n\nKerakli bo'limni tanlang:",
+        reply_markup=get_sozlamalar_menu_kb(),
+        parse_mode="HTML"
+    )
+
 
 # =====================================================================
 # 1. АСОСИЙ МЕНЮГА БАТАМОМ ҚАЙТИШ
@@ -17,7 +71,7 @@ router = Router()
 async def process_back_to_main(callback: CallbackQuery):
     await callback.answer()
     text = "Assalomu alaykum! Kerakli bo'limni tanlang 👇"
-    
+
     try:
         await callback.message.edit_text(text=text, reply_markup=get_main_menu_kb(), parse_mode="HTML")
     except Exception:
@@ -35,7 +89,7 @@ async def process_back_to_main(callback: CallbackQuery):
 async def back_to_menu_regions(callback: CallbackQuery):
     await callback.answer()
     text = "👇 <i>Iltimos, o'zingizga kerakli viloyatni tanlang:</i>"
-    
+
     try:
         await callback.message.edit_text(text=text, reply_markup=get_regions_keyboard(), parse_mode="HTML")
     except Exception:
@@ -65,8 +119,6 @@ async def process_district_selection(callback: CallbackQuery, callback_data: Dis
     await callback.answer()
 
     district_name = callback_data.district_name
-    
-    # Baza qismi o'chirildi
     school = 0 
 
     await callback.message.edit_text("⏳ <i>Namoz vaqtlari yuklanmoqda...</i>", parse_mode="HTML")
@@ -103,8 +155,8 @@ async def process_district_selection(callback: CallbackQuery, callback_data: Dis
 async def process_under_construction(callback: CallbackQuery):
     await callback.answer()
     text = "⚠️ <b>Texnik ishlar olib borilmoqda.</b> Tushunganingiz uchun rahmat!"
-    
+
     builder = InlineKeyboardBuilder()
     builder.button(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main")
-    
+
     await callback.message.edit_text(text=text, reply_markup=builder.as_markup(), parse_mode="HTML")
