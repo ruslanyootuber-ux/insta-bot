@@ -22,6 +22,7 @@ from handlers.erkaklar_namozi_handlers import router as erkaklar_namozi_router
 from handlers.ayollar_namozi_handlers import router as ayollar_namozi_router
 from handlers.suralar_handlers import router as suralar_router
 from handlers.audio_id_handler import router as audio_id_router
+from handlers.masjid_handlers import router as masjid_router
 
 async def main():
     logging.basicConfig(level=logging.INFO)
@@ -37,7 +38,8 @@ async def main():
         admin_handlers.router,
         audio_id_router,
         menu_handlers.router, 
-        extra_handlers.router, 
+        extra_handlers.router,
+        masjid_router,
         zikr_router, 
         qibla_router, 
         ramadan_router, 
