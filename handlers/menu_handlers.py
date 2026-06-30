@@ -53,20 +53,8 @@ async def open_submenus(callback: CallbackQuery):
     await callback.answer()
 
 # =====================================================================
-# MASJID VA ASOSIY MENYULAR
+# ASOSIY VA HUDUD MENYULARI
 # =====================================================================
-
-@router.callback_query(F.data == "menu_find_masjid")
-async def process_masjid(callback: CallbackQuery):
-    await callback.answer()
-    builder = InlineKeyboardBuilder()
-    builder.button(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main")
-    
-    await callback.message.edit_text(
-        "🕌 <b>Masjidlar bo'limi</b>\n\nBu yerda sizga eng yaqin masjidlarni topish bo'yicha ma'lumotlar taqdim etiladi.",
-        reply_markup=builder.as_markup(),
-        parse_mode="HTML"
-    )
 
 @router.callback_query(F.data == "back_to_main")
 async def process_back_to_main(callback: CallbackQuery):
