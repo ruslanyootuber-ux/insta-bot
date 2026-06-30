@@ -60,7 +60,7 @@ async def process_location(message: Message, state: FSMContext):
     builder.adjust(1)
 
     text = (
-        "✨ <b>Alhamdulillah, joylashuv muvaffaqiyatli aniqlandi!</b>\n\n"
+        "✨ <b>Joylashuv muvaffaqiyatli aniqlandi!</b>\n\n"
         "Atrofingizdagi jome masjidlarini ko'rish va ulargacha bo'lgan eng yaqin yo'lni (marshrut) chizish uchun "
         "quyidagi xaritalardan birini tanlang 👇"
     )
