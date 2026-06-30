@@ -8,14 +8,18 @@ from urllib.parse import quote
 
 BOT_USERNAME = "NamozTaqvimi_Uz_Bot" 
 
-# 1. ASOSIY BOSH MENYU (Faqat 4 ta asosiy bo'lim)
+# 1. PREMIUM ASOSIY BOSH MENYU (8 ta tugma bilan yangilandi)
 def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    builder.button(text="🟢 Ибодат масалалари", callback_data="submenu_ibodat")
-    builder.button(text="📖 Илм ва Зикр бурчаги", callback_data="submenu_ilm")
-    builder.button(text="🗺️ Намоз ва Тақвим", callback_data="submenu_taqvim")
-    builder.button(text="⚙️ Созламалар ва Алоқа", callback_data="submenu_sozlamalar")
-    builder.adjust(1) # Ustma-ust chiroyli chiqishi uchun
+    builder.button(text="🕌 Намоз вақтлари", callback_data="menu_regions")
+    builder.button(text="🕋 Қиблани топиш", callback_data="menu_qibla")
+    builder.button(text="📖 Ибодат йўриқномаси", callback_data="submenu_ibodat")
+    builder.button(text="📜 Ҳадис ва Зикрлар", callback_data="submenu_ilm")
+    builder.button(text="🌙 Рамазон тақвими", callback_data="menu_ramadan")
+    builder.button(text="📿 Электрон тасбеҳ", callback_data="menu_tasbeh")
+    builder.button(text="⚙️ Шахсий созламалар", callback_data="submenu_sozlamalar")
+    builder.button(text="📞 Ёрдам ва Алоқа", callback_data="menu_creator")
+    builder.adjust(2) # Har qatorda 2 ta tugma bilan premium ko'rinish
     return builder.as_markup()
 
 # 2. ИБОДАТ МАСАЛАЛАРИ ИЧКИ МЕНЮСИ
@@ -43,16 +47,16 @@ def get_ilm_menu_kb() -> InlineKeyboardMarkup:
     builder.adjust(2, 2, 2, 1)
     return builder.as_markup()
 
-# 4. НАМОЗ ВА ТАҚВИМ ИЧКИ МЕНЮСИ (Masjidga yo'l tugmasi qo'shildi)
+# 4. НАМОЗ ВА ТАҚВИМ ИЧКИ МЕНЮСИ (Masjid funksiyasi saqlandi)
 def get_taqvim_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(text="🕌 Намоз вақтлари", callback_data="menu_regions")
     builder.button(text="🕋 Қиблани топиш", callback_data="menu_qibla")
-    builder.button(text="🕌 Масжидга йўл", callback_data="menu_find_masjid")  # <-- Yangi qo'shilgan tugma
+    builder.button(text="🕌 Масжидга йўл", callback_data="menu_find_masjid")
     builder.button(text="🌙 Рамазон тақвими", callback_data="menu_ramadan")
     builder.button(text="☪️ Мазҳабни танлаш", callback_data="menu_settings")
     builder.row(InlineKeyboardButton(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main"))
-    builder.adjust(2, 1, 2, 1) # Tugmalar tekstiga qarab chiroyli tekislash
+    builder.adjust(2, 1, 2, 1)
     return builder.as_markup()
 
 # 5. СОЗЛАМАЛАР ВА АЛОҚА ИЧКИ МЕНЮСИ
@@ -64,7 +68,7 @@ def get_sozlamalar_menu_kb() -> InlineKeyboardMarkup:
     add_to_group_url = f"https://t.me/{BOT_USERNAME}?startgroup=true"
     builder.row(InlineKeyboardButton(text="➕ Гуруҳга қўшиш", url=add_to_group_url))
 
-    share_text = "🕌 «Намоз Вақтлари» зикрлар ва исломий ибодатлар учун шахсий ёрдамчингиз."
+    share_text = "🕌 «Намоз Вақтлари» зикрлар va islomiy ibodatlar uchun shaxsiy yordamchingiz."
     encoded_text = quote(share_text)
     share_url = f"https://t.me/share/url?url=https://t.me/{BOT_USERNAME}&text={encoded_text}"
     builder.row(InlineKeyboardButton(text="📲 Дўстларга улашиш", url=share_url))
