@@ -14,7 +14,7 @@ from keyboards.inline_kb import (
     get_taqvim_menu_kb,
     get_sozlamalar_menu_kb
 )
-from utils.alahdan_api import get_prayer_times
+from utils.aladhan_api import get_prayer_times
 from loader import db 
 
 router = Router()
