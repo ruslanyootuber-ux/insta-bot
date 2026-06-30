@@ -6,7 +6,7 @@ from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from keyboards.inline_kb import get_location_keyboard, get_main_menu_kb
+from keyboards.inline_kb import get_location_keyboard
 
 router = Router()
 
@@ -19,10 +19,11 @@ class MasjidState(StatesGroup):
 async def ask_location_for_masjid(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
     
-    # Bot xotirasiga "Bu odam masjid uchun lokatsiya tashlaydi" deb belgilab qo'yamiz
+    # Bot xotirasiga holatni yozib qo'yamiz
     await state.set_state(MasjidState.waiting_for_location)
     
     try:
+        # Eski inline menyuni o'chirib tashlaymiz
         await callback.message.delete()
     except Exception as e:
         logging.error(f"Xabarni o'chirishda xatolik: {e}")
@@ -41,14 +42,21 @@ async def process_location(message: Message, state: FSMContext):
     lat = message.location.latitude
     lon = message.location.longitude
 
-    # Ish bitgach, bot xotirasini tozalab qo'yamiz (keyingi safar adashmasligi uchun)
+    # Ish bitgach, bot xotirasini tozalab qo'yamiz
     await state.clear()
 
-    xabar = await message.answer(
+    # 1. Klaviaturani yashirish uchun vaqtincha xabar yuboramiz
+    temp_msg = await message.answer(
         text="⏳ <i>Joylashuv qabul qilindi, xaritalar tayyorlanmoqda...</i>", 
         reply_markup=ReplyKeyboardRemove(),
         parse_mode="HTML"
     )
+
+    # 2. Xabarni darhol o'chirib tashlaymiz (klaviatura ham o'chadi)
+    try:
+        await temp_msg.delete()
+    except:
+        pass
 
     yandex_url = f"https://yandex.com/maps/?text=masjid&ll={lon},{lat}&z=14"
     google_url = f"https://www.google.com/maps/search/masjid/@{lat},{lon},14z"
@@ -65,13 +73,9 @@ async def process_location(message: Message, state: FSMContext):
         "quyidagi xaritalardan birini tanlang 👇"
     )
 
+    # 3. Asosiy natijani yuboramiz
     await message.answer(
         text=text, 
         reply_markup=builder.as_markup(), 
         parse_mode="HTML"
     )
-    
-    try:
-        await xabar.delete()
-    except:
-        pass
