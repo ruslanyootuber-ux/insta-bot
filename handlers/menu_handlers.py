@@ -24,7 +24,7 @@ async def get_live_prayer_text(user_id):
         region = db.get_district(user_id)
         times = await get_prayer_times(region)
         if times and "next_prayer" in times:
-            return f"⏰ Navbatdagi: <b>{times['next_prayer']}</b>"
+            return f"🕌 Keyingi namoz: <b>{times['next_prayer']}</b>"
     except Exception:
         pass
     return "⏰ Namoz vaqtlari yuklanmoqda..."
@@ -53,8 +53,20 @@ async def open_submenus(callback: CallbackQuery):
     await callback.answer()
 
 # =====================================================================
-# ASOSIY VA HUDUD MENYULARI
+# MASJID VA ASOSIY MENYULAR
 # =====================================================================
+
+@router.callback_query(F.data == "menu_find_masjid")
+async def process_masjid(callback: CallbackQuery):
+    await callback.answer()
+    builder = InlineKeyboardBuilder()
+    builder.button(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main")
+    
+    await callback.message.edit_text(
+        "🕌 <b>Masjidlar bo'limi</b>\n\nBu yerda sizga eng yaqin masjidlarni topish bo'yicha ma'lumotlar taqdim etiladi.",
+        reply_markup=builder.as_markup(),
+        parse_mode="HTML"
+    )
 
 @router.callback_query(F.data == "back_to_main")
 async def process_back_to_main(callback: CallbackQuery):
