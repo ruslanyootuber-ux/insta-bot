@@ -1,5 +1,3 @@
-# main.py
-
 import asyncio
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -24,8 +22,15 @@ from handlers.suralar_handlers import router as suralar_router
 from handlers.audio_id_handler import router as audio_id_router
 from handlers.masjid_handlers import router as masjid_router
 
+async def on_startup():
+    logging.info("Bot muvaffaqiyatli ishga tushirildi!")
+
 async def main():
-    logging.basicConfig(level=logging.INFO)
+    # Logging sozlamalari
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
 
     # Scheduler ni sozlash
     scheduler = AsyncIOScheduler()
@@ -36,8 +41,8 @@ async def main():
     dp.include_routers(
         start.router, 
         admin_handlers.router,
+        menu_handlers.router,
         audio_id_router,
-        menu_handlers.router, 
         extra_handlers.router,
         masjid_router,
         zikr_router, 
@@ -53,15 +58,14 @@ async def main():
         suralar_router
     )
 
-    # Polling boshlanishidan oldin eski kelib qolgan so'rovlarni tozalaymiz
+    # Eski so'rovlarni tozalash
     await bot.delete_webhook(drop_pending_updates=True)
-    logging.info("Bot ishga tushirildi...")
-
+    
+    # Ishga tushirish
+    await on_startup()
     try:
-        # Botni ishga tushirish
         await dp.start_polling(bot)
     finally:
-        # Bot yopilayotganda aiohttp sessiyasini xavfsiz yopamiz (Network error oldini olish uchun)
         await bot.session.close()
 
 if __name__ == "__main__":
