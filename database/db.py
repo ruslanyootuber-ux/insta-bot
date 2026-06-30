@@ -1,3 +1,5 @@
+# database/db.py
+
 import sqlite3
 
 class Database:
@@ -31,6 +33,13 @@ class Database:
         self.cursor.execute("UPDATE users SET district = ? WHERE user_id = ?", (district, user_id))
         self.connection.commit()
     
+    # Yangi qo'shilgan yordamchi funksiya: Jonli namoz vaqti uchun hududni olish
+    def get_district(self, user_id):
+        self.cursor.execute("SELECT district FROM users WHERE user_id = ?", (user_id,))
+        result = self.cursor.fetchone()
+        # Agar hudud topilmasa yoki bo'sh bo'lsa, standart "Toshkent" qaytaradi
+        return result[0] if result and result[0] else "Toshkent"
+
     def update_reminder(self, user_id, time):
         self.cursor.execute("UPDATE users SET reminder_time = ? WHERE user_id = ?", (time, user_id))
         self.connection.commit()
