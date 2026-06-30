@@ -13,7 +13,7 @@ async def get_live_prayer_text(user_id):
 
     times = await get_prayer_times(region)
     if times and "next_prayer" in times:
-        return f"⏰ Navbatdagi: <b>{times['next_prayer']}</b>"
+        return f"⏳🕌 Navbatdagi namoz vaqti: <b>{times['next_prayer']}</b>"
     return "⏰ Namoz vaqtlari yuklanmoqda..."
 
 @router.message(Command("start"))
