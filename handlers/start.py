@@ -18,7 +18,7 @@ async def start_handler(message: Message):
         "Biz sizga kundalik ibodatlaringizni oson va tartibli bajarishda ko'maklashamiz.\n\n"
         "┌───────────────\n"
         "├ 🕌 Aniq namoz vaqtlari\n"
-        "├ 🕋 Qibla yo'nalishi (Live)\n"
+        "├ 🕋 Qibla yo'nalishi (Jonli)\n"
         "├ 📿 Zikr va Tasbehlar\n"
         "└───────────────\n\n"
         "<i>Quyidagi menyudan kerakli bo'limni tanlang:</i>"
