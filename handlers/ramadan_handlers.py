@@ -2,7 +2,8 @@
 
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
-from loader import db, bot
+from loader import bot  # Botni loader'dan olamiz
+from database.db import db  # Bazani o'zining faylidan olamiz
 from utils.aladhan_api import get_prayer_times
 from data.ramadan_data import SAHARLIK_DUO, IFTORLIK_DUO
 from keyboards.ramadan_kb import get_ramadan_keyboard
