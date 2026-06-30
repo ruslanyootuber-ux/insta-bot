@@ -37,7 +37,7 @@ async def process_qibla_menu(callback: CallbackQuery, state: FSMContext):
         one_time_keyboard=True
     )
     
-    # Eski menyuni o'chirib, joylashuv so'raydigan klaviaturani chiqaramiz
+    # Eski xabarni o'chirish
     try:
         await callback.message.delete()
     except:
@@ -59,10 +59,9 @@ async def handle_location(message: Message, state: FSMContext):
 
     await state.clear() # Xotirani tozalash
 
-    # 1. Klaviaturani yashirish uchun vaqtincha xabar yuboramiz
+    # 1. Klaviaturani yashirish uchun vaqtincha xabar yuborib, darhol o'chiramiz
     temp_msg = await message.answer("...", reply_markup=ReplyKeyboardRemove())
     
-    # 2. Xabarni va klaviaturani darhol o'chirib tashlaymiz
     try:
         await temp_msg.delete()
     except:
@@ -76,8 +75,8 @@ async def handle_location(message: Message, state: FSMContext):
     text = (
         "✅ <b>Жойлашув муваффақиятли қабул қилинди!</b>\n\n"
         f"📍 Сизнинг координатангизга асосан Қибла бурчаги: <code>{angle:.2f}°</code>\n\n"
-        "Пастдаги тугмани босинг ва <b>Жонли компас</b> орқали Қиблани топинг!"
+        "Пастдаги тугмани босинг va <b>Жонли компас</b> орқали Қиблани топинг!"
     )
 
-    # 3. Asosiy natijani yuboramiz
+    # 2. Asosiy natijani yuboramiz
     await message.answer(text=text, reply_markup=builder.as_markup(), parse_mode="HTML")
