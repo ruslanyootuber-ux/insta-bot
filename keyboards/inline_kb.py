@@ -8,33 +8,58 @@ from urllib.parse import quote
 
 BOT_USERNAME = "NamozTaqvimi_Uz_Bot" 
 
+# 1. ASOSIY BOSH MENYU (Faqat 4 ta asosiy bo'lim)
 def get_main_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
+    builder.button(text="🟢 Ибодат масалалари", callback_data="submenu_ibodat")
+    builder.button(text="📖 Илм ва Зикр бурчаги", callback_data="submenu_ilm")
+    builder.button(text="🗺️ Намоз ва Тақвим", callback_data="submenu_taqvim")
+    builder.button(text="⚙️ Созламалар ва Алоқа", callback_data="submenu_sozlamalar")
+    builder.adjust(1) # Ustma-ust chiroyli chiqishi uchun
+    return builder.as_markup()
 
-    # 🕌 Намоз ва ибодатлар бўлими
+# 2. ИБОДАТ МАСАЛАЛАРИ ИЧКИ МЕНЮСИ
+def get_ibodat_menu_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
     builder.button(text="💧 Таҳорат", callback_data="taxorat_0")
     builder.button(text="🚿 Ғусл", callback_data="ghusl")
     builder.button(text="🏜 Таяммум", callback_data="tayammum")
     builder.button(text="🧎 Эркаклар намози", callback_data="erkaklar_namozi_0")
     builder.button(text="🧎‍♀️ Аёллар намози", callback_data="ayollar_namozi_0")
-    builder.button(text="📖 Суралар", callback_data="suralar")  # <-- Суралар тугмаси шу ерга қўшилди
+    builder.row(InlineKeyboardButton(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main"))
+    builder.adjust(2, 2, 1, 1)
+    return builder.as_markup()
+
+# 3. ИЛМ ВА ЗИКР ИЧКИ МЕНЮСИ
+def get_ilm_menu_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(text="📖 Суралар", callback_data="suralar")
     builder.button(text="🤲 Дуолар", callback_data="duolar")
-
-    # ⚙️ Қўшимча хизматлар
-    builder.button(text="🕌 Намоз вақтлари", callback_data="menu_regions")
     builder.button(text="✨ Аллоҳнинг 99 исми", callback_data="menu_asmaul")
+    builder.button(text="📜 Кунлик ҳадис", callback_data="menu_hadis")
     builder.button(text="📿 Электрон тасбеҳ", callback_data="menu_tasbeh")
-    builder.button(text="📖 Кунлик ҳадис", callback_data="menu_hadis")
-    builder.button(text="🕋 Қиблани топиш", callback_data="menu_qibla")
     builder.button(text="🤲 Кунлик зикрлар", callback_data="menu_zikr_main")
+    builder.row(InlineKeyboardButton(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main"))
+    builder.adjust(2, 2, 2, 1)
+    return builder.as_markup()
+
+# 4. НАМОЗ ВА ТАҚВИМ ИЧКИ МЕНЮСИ
+def get_taqvim_menu_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(text="🕌 Намоз вақтлари", callback_data="menu_regions")
+    builder.button(text="🕋 Қиблани топиш", callback_data="menu_qibla")
     builder.button(text="🌙 Рамазон тақвими", callback_data="menu_ramadan")
-    builder.button(text="🔔 Эслатма белгилаш", callback_data="menu_reminder")
     builder.button(text="☪️ Мазҳабни танлаш", callback_data="menu_settings")
+    builder.row(InlineKeyboardButton(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main"))
+    builder.adjust(2, 2, 1)
+    return builder.as_markup()
+
+# 5. СОЗЛАМАЛАР ВА АЛОҚА ИЧКИ МЕНЮСИ
+def get_sozlamalar_menu_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(text="🔔 Эслатма белгилаш", callback_data="menu_reminder")
     builder.button(text="👨‍💻 Боғланиш", callback_data="menu_creator")
-
-    builder.adjust(2)  # Барча юқоридаги тугмаларни 2 қатордан текислайди
-
-    # Пастки алоҳида кенг тугмалар
+    
     add_to_group_url = f"https://t.me/{BOT_USERNAME}?startgroup=true"
     builder.row(InlineKeyboardButton(text="➕ Гуруҳга қўшиш", url=add_to_group_url))
 
@@ -42,9 +67,12 @@ def get_main_menu_kb() -> InlineKeyboardMarkup:
     encoded_text = quote(share_text)
     share_url = f"https://t.me/share/url?url=https://t.me/{BOT_USERNAME}&text={encoded_text}"
     builder.row(InlineKeyboardButton(text="📲 Дўстларга улашиш", url=share_url))
-
+    
+    builder.row(InlineKeyboardButton(text="⬅️ Бош менюга қайтиш", callback_data="back_to_main"))
+    builder.adjust(2, 1, 1, 1)
     return builder.as_markup()
 
+# Вилоят ва туманлар учун эски код ўзгаришсиз қолди
 def get_regions_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for region in UZB_REGIONS.keys():
