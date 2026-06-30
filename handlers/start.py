@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message
 from aiogram.filters import Command
 from keyboards.inline_kb import get_main_menu_kb, get_regions_keyboard
-from utils.alahdan_api import get_prayer_times
+from utils.aladhan_api import get_prayer_times
 from loader import db 
 
 router = Router()
