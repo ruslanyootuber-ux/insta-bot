@@ -1,8 +1,13 @@
+# handlers/admin.py
+
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
+
+# Loader orqali db ni import qilamiz
+from loader import db, bot 
 
 router = Router()
 
@@ -14,9 +19,11 @@ class Mailing(StatesGroup):
 @router.message(Command("admin"))
 async def admin_panel(message: Message):
     if message.from_user.id == ADMIN_ID:
+        users = db.get_all_users()
         await message.answer(
             f"👑 <b>Admin Panel</b>\n\n"
-            f"Barcha foydalanuvchilarga xabar yuborish uchun /send buyrug'ini bosing."
+            f"👥 Jami foydalanuvchilar: <b>{len(users)}</b> ta\n\n"
+            f"Habar yuborish uchun <b>/send</b> buyrug'ini yozing."
         )
     else:
         await message.answer("❌ Siz admin emassiz!")
@@ -31,8 +38,17 @@ async def mailing_start(message: Message, state: FSMContext):
 
 @router.message(Mailing.text)
 async def mailing_process(message: Message, state: FSMContext):
-    # Eslatma: Bazadan foydalanuvchilarni ololmaymiz, chunki baza funksiyalari o'chirilgan.
-    # Agar xabar yuborish kerak bo'lsa, foydalanuvchilar ro'yxati (IDs) qayerdandir kelishi kerak.
+    text = message.text
+    users = db.get_all_users() # Baza orqali barcha userlarni olamiz
     
-    await message.answer("⚠️ Baza ulanmagani uchun xabar yuborish funksiyasi cheklangan.")
+    count = 0
+    for user in users:
+        user_id = user[0] # Bazadagi birinchi ustun (user_id)
+        try:
+            await bot.send_message(chat_id=user_id, text=text)
+            count += 1
+        except Exception:
+            continue
+            
+    await message.answer(f"✅ Xabar <b>{count}</b> ta foydalanuvchiga yuborildi.")
     await state.clear()
