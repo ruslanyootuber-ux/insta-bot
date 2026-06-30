@@ -10,24 +10,19 @@ from keyboards.inline_kb import get_location_keyboard
 
 router = Router()
 
-# Masjid qidirish holatini xotirada saqlash uchun State yaratamiz
+# Masjid qidirish uchun holat
 class MasjidState(StatesGroup):
     waiting_for_location = State()
 
-# 1. Foydalanuvchi "Masjidga yo'l" tugmasini bosganda
+# 1. Foydalanuvchi "Masjidlar va Manzillar" tugmasini bosganda
 @router.callback_query(F.data == "menu_find_masjid")
 async def ask_location_for_masjid(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
     
-    # Bot xotirasiga holatni yozib qo'yamiz
+    # Holatni o'rnatamiz
     await state.set_state(MasjidState.waiting_for_location)
     
-    try:
-        # Eski inline menyuni o'chirib tashlaymiz
-        await callback.message.delete()
-    except Exception as e:
-        logging.error(f"Xabarni o'chirishda xatolik: {e}")
-
+    # Xabarni yuboramiz
     await callback.message.answer(
         text="📌 <b>Yaqin atrofdagi masjidlarni topish uchun:</b>\n\n"
              "Pastdagi <code>📍 Joylashuvni yuborish</code> tugmasini bosing.\n\n"
@@ -42,21 +37,12 @@ async def process_location(message: Message, state: FSMContext):
     lat = message.location.latitude
     lon = message.location.longitude
 
-    # Ish bitgach, bot xotirasini tozalab qo'yamiz
+    # Ish bitgach, bot xotirasini tozalaymiz
     await state.clear()
 
-    # 1. Klaviaturani yashirish uchun vaqtincha xabar yuboramiz
-    temp_msg = await message.answer(
-        text="⏳ <i>Joylashuv qabul qilindi, xaritalar tayyorlanmoqda...</i>", 
-        reply_markup=ReplyKeyboardRemove(),
-        parse_mode="HTML"
-    )
-
-    # 2. Xabarni darhol o'chirib tashlaymiz (klaviatura ham o'chadi)
-    try:
-        await temp_msg.delete()
-    except:
-        pass
+    # Reply klaviaturani yashiramiz
+    await message.answer("⏳ <i>Joylashuv qabul qilindi, xaritalar tayyorlanmoqda...</i>", 
+                         reply_markup=ReplyKeyboardRemove(), parse_mode="HTML")
 
     yandex_url = f"https://yandex.com/maps/?text=masjid&ll={lon},{lat}&z=14"
     google_url = f"https://www.google.com/maps/search/masjid/@{lat},{lon},14z"
@@ -69,11 +55,10 @@ async def process_location(message: Message, state: FSMContext):
 
     text = (
         "✨ <b>Joylashuv muvaffaqiyatli aniqlandi!</b>\n\n"
-        "Atrofingizdagi jome masjidlarini ko'rish va ulargacha bo'lgan eng yaqin yo'lni (marshrut) chizish uchun "
+        "Atrofingizdagi jome masjidlarini ko'rish va ulargacha bo'lgan eng yaqin yo'lni chizish uchun "
         "quyidagi xaritalardan birini tanlang 👇"
     )
 
-    # 3. Asosiy natijani yuboramiz
     await message.answer(
         text=text, 
         reply_markup=builder.as_markup(), 
