@@ -1,25 +1,27 @@
-# loader.py
-
+import os
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.client.session.aiohttp import AiohttpSession
-from aiogram.fsm.storage.memory import MemoryStorage  # 1. Yangi import
+from aiogram.fsm.storage.memory import MemoryStorage
 from config import BOT_TOKEN
 from database.db import Database 
 
-# Tarmoq ulanishi vaqtini (timeout) 60 soniyagacha uzaytiramiz
-session = AiohttpStorage = AiohttpSession(timeout=60)
+# 1. Tarmoq ulanishi vaqtini (timeout) 60 soniyagacha uzaytiramiz
+session = AiohttpSession(timeout=60)
 
-# Bot instansiyasi
+# 2. Bot instansiyasi
 bot = Bot(
     token=BOT_TOKEN, 
     session=session, 
     default=DefaultBotProperties(parse_mode="HTML")
 )
 
-# 2. MemoryStorage ni Dispatcher ga ulaymiz
+# 3. MemoryStorage ni Dispatcher ga ulaymiz
 storage = MemoryStorage()
 dp = Dispatcher(storage=storage)
 
-# Ma'lumotlar bazasini ishga tushiramiz
+# 4. Ma'lumotlar bazasini ishga tushiramiz (data papkasi yo'q bo'lsa yaratamiz)
+if not os.path.exists("data"):
+    os.makedirs("data")
+
 db = Database("data/main.db")
