@@ -34,7 +34,14 @@ async def process_location(message: Message):
     lat = message.location.latitude
     lon = message.location.longitude
 
-    # Yandex va Google xaritalari uchun koordinata bo'yicha masjid qidirish linklari
+    # 1-QADAM: Avval pastdagi qotib qoladigan klaviaturani o'chirib yuboruvchi qisqa xabar jo'natamiz
+    xabar = await message.answer(
+        text="⏳ <i>Joylashuv qabul qilindi, xaritalar tayyorlanmoqda...</i>", 
+        reply_markup=ReplyKeyboardRemove(),
+        parse_mode="HTML"
+    )
+
+    # 2-QADAM: Yandex va Google xaritalari uchun koordinata bo'yicha masjid qidirish linklari
     yandex_url = f"https://yandex.com/maps/?text=masjid&ll={lon},{lat}&z=14"
     google_url = f"https://www.google.com/maps/search/masjid/@{lat},{lon},14z"
 
@@ -45,14 +52,20 @@ async def process_location(message: Message):
     builder.adjust(1)
 
     text = (
-        "✨ <b>Alhamdulillah, joylashuv muvaffaqiyatli aniqlandi!</b>\n\n"
+        "✨ <b>Joylashuv muvaffaqiyatli aniqlandi!</b>\n\n"
         "Atrofingizdagi jome masjidlarini ko'rish va ulargacha bo'lgan eng yaqin yo'lni (marshrut) chizish uchun "
         "quyidagi xaritalardan birini tanlang 👇"
     )
 
-    # ReplyKeyboardRemove() orqali "Joylashuvni yuborish" yozuvli katta tugmani klaviaturadan yo'qotamiz
+    # 3-QADAM: Endi bemalol Inline tugmali xabarni yuboramiz
     await message.answer(
         text=text, 
         reply_markup=builder.as_markup(), 
         parse_mode="HTML"
     )
+    
+    # (Qo'shimcha): Boyagi "kutib turing" degan qisqa xabarni o'chirib yuboramiz, chiroyli turishi uchun
+    try:
+        await xabar.delete()
+    except:
+        pass
