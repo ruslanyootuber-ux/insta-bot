@@ -3,59 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Premium Islamic Tasbeh</title>
+    <title>Premium Tasbeh</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { margin: 0; background: #000; color: #d4af37; font-family: 'Georgia', serif; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-        
-        /* Исломий фон */
-        .bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1542816417-0983c9c9ad53?q=80&w=1000') center/cover; filter: blur(8px) brightness(0.3); z-index: -1; }
+        :root {
+            --bg-color: #0b1311;
+            --primary-gold: #d4af37;
+            --accent-green: #112a24;
+            --text-light: #f5f5f7;
+        }
 
-        .counter { font-size: 80px; font-weight: bold; margin-bottom: 20px; text-shadow: 0 0 20px rgba(212,175,55,0.5); }
-        .zikr-name { font-size: 24px; margin-bottom: 30px; letter-spacing: 2px; }
+        * {
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        /* Реал тасбеҳ тасвири */
-        .tasbeh-img { width: 300px; height: 300px; background: url('https://png.pngtree.com/png-vector/20231018/ourmid/pngtree-tasbih-beads-vector-png-image_10260275.png') center/contain no-repeat; transition: transform 0.1s; cursor: pointer; }
-        .tasbeh-img:active { transform: scale(0.95); }
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            padding: 40px 20px;
+        }
 
-        .btn-reset { margin-top: 30px; padding: 10px 25px; background: rgba(212,175,55,0.2); border: 1px solid #d4af37; color: #fff; border-radius: 20px; cursor: pointer; }
+        /* Murakkab va mayin islomiy fon */
+        .bg-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(17, 42, 36, 0.6) 0%, rgba(11, 19, 17, 1) 100%);
+            z-index: -1;
+        }
+
+        /* Yuqori panel sozlamalari */
+        .top-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .sound-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(214, 175, 55, 0.3);
+            color: var(--primary-gold);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
+        }
+
+        /* Zikr matni displayi */
+        .zikr-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .zikr-name {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--primary-gold);
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 15px rgba(214, 175, 55, 0.3);
+            transition: opacity 0.3s ease;
+        }
+
+        .zikr-sub {
+            font-size: 14px;
+            color: rgba(245, 245, 247, 0.5);
+            margin-top: 5px;
+        }
+
+        /* Asosiy Premium hisoblagich doirasi (Click Area) */
+        .main-bead {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, var(--accent-green) 0%, #060a09 100%);
+            box-shadow: 
+                inset 0 0 20px rgba(214, 175, 55, 0.2),
+                0 15px 35px rgba(0, 0, 0, 0.6),
+                0 0 0 8px rgba(214, 175, 55, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.05s cubic-bezier(0.1, 0.8, 0.2, 1);
+        }
+
+        .main-bead:active {
+            transform: scale(0.96);
+            box-shadow: 
+                inset 0 0 30px rgba(214, 175, 55, 0.3),
+                0 8px 20px rgba(0, 0, 0, 0.7),
+                0 0 0 5px rgba(214, 175, 55, 0.2);
+        }
+
+        .counter {
+            font-size: 72px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-light);
+            line-height: 1;
+        }
+
+        .counter-max {
+            font-size: 14px;
+            color: var(--primary-gold);
+            margin-top: 5px;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        /* Pastki boshqaruv tugmalari */
+        .controls {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn-action {
+            padding: 14px 28px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(245, 245, 247, 0.15);
+            color: var(--text-light);
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:active {
+            background: rgba(214, 175, 55, 0.1);
+            border-color: var(--primary-gold);
+            color: var(--primary-gold);
+        }
     </style>
 </head>
 <body>
-    <div class="bg"></div>
-    <div class="zikr-name" id="zikrText">Субҳаналлоҳ</div>
-    <div class="counter" id="count">0</div>
-    <div class="tasbeh-img" id="tapArea"></div>
-    <button class="btn-reset" onclick="reset()">🔄 Нолга тушириш</button>
+    <div class="bg-overlay"></div>
 
-    <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio> <audio id="audioZikr" src=""></audio>
+    <div class="top-bar">
+        <div style="font-size: 13px; color: rgba(245,245,247,0.4)">🔄 Avtomatik almashish: 33</div>
+        <button class="sound-toggle" id="soundBtn" onclick="toggleSound()">🔊 Ovoz: Yoqilgan</button>
+    </div>
+
+    <div class="zikr-container">
+        <div class="zikr-name" id="zikrText">Субҳаналлоҳ</div>
+        <div class="zikr-sub" id="zikrSub">1-raund (0 / 33)</div>
+    </div>
+
+    <div class="main-bead" id="tapArea">
+        <div class="counter" id="count">0</div>
+        <div class="counter-max">/ 33</div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-action" onclick="resetCounter()">🔄 Qayta tiklash</button>
+    </div>
+
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
 
     <script>
-        const zikrs = [
-            { name: "Субҳаналлоҳ", audio: "https://example.com/subhanallah.mp3" },
-            { name: "Алҳамдулиллаҳ", audio: "https://example.com/alhamdulillah.mp3" },
-            { name: "Астағфируллоҳ", audio: "https://example.com/astaghfirullah.mp3" }
-        ];
-        let count = 0, zikrIdx = 0;
-        const countEl = document.getElementById('count'), zikrEl = document.getElementById('zikrText');
-        
-        // Фон мусиқаси
-        const bg = document.getElementById('bgMusic');
-        bg.volume = 0.1;
-        document.body.addEventListener('click', () => bg.play(), {once: true});
+        // Telegram WebApp ni sozlash
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand(); // App oynasini to'liq ekranga ochadi
 
-        document.getElementById('tapArea').onclick = () => {
+        const zikrs = ["Субҳаналлоҳ", "Алҳамдулиллаҳ", "Аллоҳу Акбар", "Астағфируллоҳ"];
+        let count = 0;
+        let zikrIdx = 0;
+        let totalRounds = 1;
+        let isSoundOn = true;
+
+        const countEl = document.getElementById('count');
+        const zikrEl = document.getElementById('zikrText');
+        const zikrSubEl = document.getElementById('zikrSub');
+        const clickSound = document.getElementById('clickSound');
+
+        // Klik funksiyasi
+        document.getElementById('tapArea').addEventListener('click', () => {
             count++;
-            if(count > 33) { count = 1; zikrIdx = (zikrIdx + 1) % 3; }
-            countEl.innerText = count;
-            zikrEl.innerText = zikrs[zikrIdx].name;
             
-            let audio = new Audio(zikrs[zikrIdx].audio);
-            audio.play();
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-        };
+            if (count > 33) {
+                count = 1;
+                zikrIdx = (zikrIdx + 1) % zikrs.length;
+                if (zikrIdx === 0) totalRounds++;
+                
+                // Zikr o'zgarganda kuchliroq tebranish
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            } else {
+                // Har bir oddiy bosishda mayin tebranish (iOS/Android native his)
+                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+            }
 
-        function reset() { count = 0; countEl.innerText = 0; }
+            // Ovoz chiqarish
+            if (isSoundOn) {
+                clickSound.currentTime = 0;
+                clickSound.play().catch(() => {});
+            }
+
+            // UI ni yangilash
+            countEl.innerText = count;
+            zikrEl.innerText = zikrs[zikrIdx];
+            zikrSubEl.innerText = `${totalRounds}-raund (${count} / 33)`;
+        });
+
+        // Ovozni yoqish / o'chirish
+        function toggleSound() {
+            isSoundOn = !isSoundOn;
+            document.getElementById('soundBtn').innerText = isSoundOn ? "🔊 Ovoz: Yoqilgan" : "🔇 Ovoz: O'chirilgan";
+            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+        }
+
+        // Tozalash
+        function resetCounter() {
+            count = 0;
+            zikrIdx = 0;
+            totalRounds = 1;
+            countEl.innerText = 0;
+            zikrEl.innerText = zikrs[0];
+            zikrSubEl.innerText = "1-raund (0 / 33)";
+            if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('warning');
+        }
     </script>
 </body>
 </html>
