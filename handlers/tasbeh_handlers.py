@@ -12,7 +12,7 @@ async def process_tasbeh(callback: CallbackQuery):
     
     # Premium WebApp tugmasi
     builder.button(
-        text="📿 PREMIUM TASBEHNI OCHISH", 
+        text="📿 TASBEHNI OCHISH", 
         web_app=WebAppInfo(url="https://ruslanyootuber-ux.github.io/insta-bot/tasbeh.html") 
     )
     # Orqaga qaytish tugmasi
@@ -23,13 +23,14 @@ async def process_tasbeh(callback: CallbackQuery):
     builder.adjust(1)
 
     text = (
-        "✨ <b>Premium Islomiy Tasbeh</b> ✨\n\n"
-        "Ruhoniy xotirjamlik va zikrlar darsi uchun maxsus yaratilgan inline ilova.\n\n"
-        "🟢 <b>Imkoniyatlari:</b>\n"
-        "• Haqiqiy qurilma tebranishi (Haptic Feedback)\n"
-        "• Chiroyli iOS & Android UI-dizayni\n"
-        "• Har 33 talikda avtomatik almashuvchi zikrlar"
-    )
+    "✨ <b>Islomiy Tasbeh</b> ✨\n\n"
+    "Qalblar halovati va Allohning zikri ila munavvar bo'lishi uchun maxsus tayyorlangan raqamli tasbeh.\n\n"
+    "🪄 <b>Imkoniyatlari:</b>\n"
+    "• Haqiqiy tasbeh hissini beruvchi mayin tebranish\n"
+    "• Ko'zlarni charchatmaydigan va ko'ngilga xotirjamlik bag'ishlovchi Premium dizayn\n"
+    "• Har 33 ta zikrda avtomatik ravishda yangilanadigan tasbeh duolari"
+)
+
 
     await callback.message.edit_text(
         text=text,
