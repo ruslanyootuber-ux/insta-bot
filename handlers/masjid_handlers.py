@@ -4,22 +4,29 @@ import logging
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.fsm.context import FSMContext
+from aiogram.fsm.state import State, StatesGroup
 from keyboards.inline_kb import get_location_keyboard, get_main_menu_kb
 
 router = Router()
 
+# Masjid qidirish holatini xotirada saqlash uchun State yaratamiz
+class MasjidState(StatesGroup):
+    waiting_for_location = State()
+
 # 1. Foydalanuvchi "Masjidga yo'l" tugmasini bosganda
 @router.callback_query(F.data == "menu_find_masjid")
-async def ask_location_for_masjid(callback: CallbackQuery):
+async def ask_location_for_masjid(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
     
+    # Bot xotirasiga "Bu odam masjid uchun lokatsiya tashlaydi" deb belgilab qo'yamiz
+    await state.set_state(MasjidState.waiting_for_location)
+    
     try:
-        # Eski inline menyuli xabarni o'chirib yuboramiz (chalkashlik bo'lmasligi uchun)
         await callback.message.delete()
     except Exception as e:
         logging.error(f"Xabarni o'chirishda xatolik: {e}")
 
-    # Joylashuv so'raydigan Reply tugmani yuboramiz
     await callback.message.answer(
         text="📌 <b>Yaqin atrofdagi masjidlarni topish uchun:</b>\n\n"
              "Pastdagi <code>📍 Joylashuvni yuborish</code> tugmasini bosing.\n\n"
@@ -28,20 +35,21 @@ async def ask_location_for_masjid(callback: CallbackQuery):
         parse_mode="HTML"
     )
 
-# 2. Foydalanuvchi geolokatsiyani yuborganida uni tutib olish
-@router.message(F.location)
-async def process_location(message: Message):
+# 2. Lokatsiya kelganda, FAQATGINA "MasjidState" kutilayotgan bo'lsa ishlaydi
+@router.message(F.location, MasjidState.waiting_for_location)
+async def process_location(message: Message, state: FSMContext):
     lat = message.location.latitude
     lon = message.location.longitude
 
-    # 1-QADAM: Avval pastdagi qotib qoladigan klaviaturani o'chirib yuboruvchi qisqa xabar jo'natamiz
+    # Ish bitgach, bot xotirasini tozalab qo'yamiz (keyingi safar adashmasligi uchun)
+    await state.clear()
+
     xabar = await message.answer(
         text="⏳ <i>Joylashuv qabul qilindi, xaritalar tayyorlanmoqda...</i>", 
         reply_markup=ReplyKeyboardRemove(),
         parse_mode="HTML"
     )
 
-    # 2-QADAM: Yandex va Google xaritalari uchun koordinata bo'yicha masjid qidirish linklari
     yandex_url = f"https://yandex.com/maps/?text=masjid&ll={lon},{lat}&z=14"
     google_url = f"https://www.google.com/maps/search/masjid/@{lat},{lon},14z"
 
@@ -52,19 +60,17 @@ async def process_location(message: Message):
     builder.adjust(1)
 
     text = (
-        "✨ <b>Joylashuv muvaffaqiyatli aniqlandi!</b>\n\n"
+        "✨ <b>Alhamdulillah, joylashuv muvaffaqiyatli aniqlandi!</b>\n\n"
         "Atrofingizdagi jome masjidlarini ko'rish va ulargacha bo'lgan eng yaqin yo'lni (marshrut) chizish uchun "
         "quyidagi xaritalardan birini tanlang 👇"
     )
 
-    # 3-QADAM: Endi bemalol Inline tugmali xabarni yuboramiz
     await message.answer(
         text=text, 
         reply_markup=builder.as_markup(), 
         parse_mode="HTML"
     )
     
-    # (Qo'shimcha): Boyagi "kutib turing" degan qisqa xabarni o'chirib yuboramiz, chiroyli turishi uchun
     try:
         await xabar.delete()
     except:
