@@ -1,7 +1,4 @@
 aiogram==3.15.0
 pydantic>=2.5.0,<2.8.0
-instagrapi
-telethon
-Pillow
 python-dotenv
 apscheduler
