@@ -63,10 +63,11 @@ async def main():
     # Xavfsiz yuklash: agar None bo'lsa, xato bermaydi
     raw_api_id = os.getenv("API_ID")
     API_HASH = os.getenv("API_HASH")
+    SESSION_STRING = os.getenv("SESSION_STRING")
     CHANNEL_USERNAME = "@postbazauz"
 
-    if raw_api_id is None or API_HASH is None:
-        logging.error("XATOLIK: API_ID yoki API_HASH topilmadi! Fly secrets ni tekshiring.")
+    if raw_api_id is None or API_HASH is None or SESSION_STRING is None:
+        logging.error("XATOLIK: API_ID, API_HASH yoki SESSION_STRING topilmadi! Fly secrets ni tekshiring.")
         return # Dasturni to'xtatish
 
     API_ID = int(raw_api_id)
@@ -75,7 +76,7 @@ async def main():
     try:
         await asyncio.gather(
             run_namoz_bot(),
-            monitor_channel(API_ID, API_HASH, CHANNEL_USERNAME)
+            monitor_channel(API_ID, API_HASH, CHANNEL_USERNAME, SESSION_STRING)
         )
     finally:
         await bot.session.close()
