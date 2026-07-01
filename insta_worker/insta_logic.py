@@ -4,6 +4,7 @@ from instagrapi import Client
 client = Client()
 
 # Instagram bot ekanligini sezmasligi uchun qurilma sozlamalari
+# Bu sozlamalar Instagramga "Android telefonidan kiryapti" degan taassurot qoldiradi
 client.set_device({
     "app_version": "275.0.0.27.98",
     "android_version": 29,
@@ -16,23 +17,31 @@ client.set_device({
 
 def insta_login():
     try:
-        session_id = os.getenv("INSTA_SESSIONID")
-        if not session_id:
-            print("XATOLIK: INSTA_SESSIONID topilmadi!")
-            return
+        username = os.getenv("INSTA_USERNAME")
+        password = os.getenv("INSTA_PASSWORD")
         
-        client.login_by_sessionid(session_id)
+        if not username or not password:
+            print("XATOLIK: INSTA_USERNAME yoki INSTA_PASSWORD secretlarda topilmadi!")
+            return False
+        
+        print(f"Instagramga {username} orqali kirishga urinilmoqda...")
+        client.login(username, password)
         print("Instagram login muvaffaqiyatli!")
+        return True
     except Exception as e:
         print(f"DIQQAT: Instagramga kirishda xatolik: {e}")
+        return False
 
 def upload_to_insta(path, caption):
     try:
-        # Sessiya faolligini tekshirish
+        # Agar mijoz hali login qilmagan bo'lsa, login qilamiz
         if not client.user_id:
-            insta_login()
+            if not insta_login():
+                return
             
         client.photo_upload(path, caption)
-        print("Post Instagramga yuklandi!")
+        print("Post Instagramga muvaffaqiyatli yuklandi!")
     except Exception as e:
         print(f"Instagram yuklashda xatolik: {e}")
+        # Agar xatolik bo'lsa, sessiyani tozalab, keyingi safar qayta urinish uchun
+        client.user_id = None
