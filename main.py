@@ -9,14 +9,11 @@ import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from dotenv import load_dotenv
 
-# .env ni yuklash (serverda secret'lar bo'lsa ham, bu mahalliy test uchun kerak)
+# .env ni yuklash (mahalliy test uchun)
 load_dotenv()
 
-# Loader va boshqa importlar
+# Loader va handler importlari
 from loader import bot, dp
-from insta_worker.monitor import monitor_channel
-
-# Handler importlari
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
 from handlers.extra_handlers import check_and_send_reminders
 from handlers.zikr_handlers import router as zikr_router
@@ -36,17 +33,19 @@ from handlers.masjid_handlers import router as masjid_router
 async def on_startup():
     logging.info("Bot muvaffaqiyatli ishga tushirildi!")
 
-async def run_namoz_bot():
-    """Namoz bot qismi"""
+async def main():
+    """Asosiy bot ishga tushirish funksiyasi"""
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
 
+    # Scheduler ni sozlash
     scheduler = AsyncIOScheduler()
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
     scheduler.start()
 
+    # Routerlarni ulash
     dp.include_routers(
         start.router, admin_handlers.router, menu_handlers.router,
         audio_id_router, extra_handlers.router, masjid_router,
@@ -55,29 +54,12 @@ async def run_namoz_bot():
         erkaklar_namozi_router, ayollar_namozi_router, suralar_router
     )
 
+    # Botni ishga tushirish
     await bot.delete_webhook(drop_pending_updates=True)
     await on_startup()
-    await dp.start_polling(bot)
-
-async def main():
-    # Xavfsiz yuklash: agar None bo'lsa, xato bermaydi
-    raw_api_id = os.getenv("API_ID")
-    API_HASH = os.getenv("API_HASH")
-    SESSION_STRING = os.getenv("SESSION_STRING")
-    CHANNEL_USERNAME = "@postbazauz"
-
-    if raw_api_id is None or API_HASH is None or SESSION_STRING is None:
-        logging.error("XATOLIK: API_ID, API_HASH yoki SESSION_STRING topilmadi! Fly secrets ni tekshiring.")
-        return # Dasturni to'xtatish
-
-    API_ID = int(raw_api_id)
-
-    # Ikkala botni parallel ishga tushirish
+    
     try:
-        await asyncio.gather(
-            run_namoz_bot(),
-            monitor_channel(API_ID, API_HASH, CHANNEL_USERNAME, SESSION_STRING)
-        )
+        await dp.start_polling(bot)
     finally:
         await bot.session.close()
 
