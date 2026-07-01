@@ -1,17 +1,24 @@
+import os
 import asyncio
 import random
-import os
 from telethon import TelegramClient, events
 from telethon.sessions import StringSession
 from .insta_logic import upload_to_insta, insta_login
 
 async def monitor_channel(api_id, api_hash, channel_username):
-    # Serverdan SESSION_STRING ni o'qib olamiz
+    # Secret nomini tekshiring: Fly.io da qanday kiritgan bo'lsangiz shunday bo'lishi kerak
     session_str = os.getenv("SESSION_STRING")
     
-    # StringSession yordamida ulanamiz (Fayl yaratilmaydi, bu resursni tejaydi)
+    # AGAR session_str bo'sh bo'lsa, kod ishlashni to'xtatishi kerak
+    if not session_str:
+        print("XATOLIK: SESSION_STRING topilmadi!")
+        return
+
+    # StringSession obyektini to'g'ri yaratish
     client = TelegramClient(StringSession(session_str), api_id, api_hash)
     
+    # start() ichida bot tokeni bo'lmasa, u login so'raydi. 
+    # Agar bu UserBot bo'lsa, string session bo'lishi shart.
     await client.start()
     insta_login()
     
@@ -19,27 +26,16 @@ async def monitor_channel(api_id, api_hash, channel_username):
 
     @client.on(events.NewMessage(chats=channel_username))
     async def handler(event):
-        # Faqat rasm (photo) bo'lsa ishlaydi
         if event.message.photo:
-            # 1. Rasmni yuklab olish
             path = await event.download_media()
             caption = event.message.message or "Yangi post"
-            
-            # 2. Random vaqt kutish (3600-7200 sekund)
             wait_time = random.randint(3600, 7200)
             print(f"Rasm olindi. {wait_time//60} daqiqadan keyin yuklanadi...")
-            
-            # Kutish jarayonida bot ishlashda davom etadi
             await asyncio.sleep(wait_time)
-            
-            # 3. Instagramga yuklash
             try:
                 upload_to_insta(path, caption)
-            except Exception as e:
-                print(f"Xatolik yuz berdi: {e}")
             finally:
                 if os.path.exists(path):
-                    os.remove(path) # Xotirani tozalash
+                    os.remove(path)
 
-    # Bot uzilib qolmasligi uchun
     await client.run_until_disconnected()
