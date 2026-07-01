@@ -1,6 +1,11 @@
+import sys
+import os
+
+# Papkani Python yo'liga qo'shish (Xatolikni yo'qotish uchun)
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 import asyncio
 import logging
-import os
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from dotenv import load_dotenv
 
@@ -25,7 +30,7 @@ from handlers.suralar_handlers import router as suralar_router
 from handlers.audio_id_handler import router as audio_id_router
 from handlers.masjid_handlers import router as masjid_router
 
-# .env ni yuklash (API_ID, HASH larni olish uchun)
+# .env ni yuklash
 load_dotenv()
 
 async def on_startup():
@@ -33,18 +38,15 @@ async def on_startup():
 
 async def run_namoz_bot():
     """Namoz bot qismi"""
-    # Logging sozlamalari
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
 
-    # Scheduler ni sozlash
     scheduler = AsyncIOScheduler()
     scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
     scheduler.start()
 
-    # Routerlarni ulash
     dp.include_routers(
         start.router, admin_handlers.router, menu_handlers.router,
         audio_id_router, extra_handlers.router, masjid_router,
@@ -58,12 +60,10 @@ async def run_namoz_bot():
     await dp.start_polling(bot)
 
 async def main():
-    # Instagram uchun sozlamalar (bularni .env dan olish yaxshi)
     API_ID = int(os.getenv("API_ID"))
     API_HASH = os.getenv("API_HASH")
-    CHANNEL_USERNAME = "@postbazauz" # Kanalingiz ID yoki Username-i
+    CHANNEL_USERNAME = "@postbazauz"
 
-    # Ikkala botni parallel ishga tushirish
     try:
         await asyncio.gather(
             run_namoz_bot(),
