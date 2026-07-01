@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 # Loader va boshqa importlar
 from loader import bot, dp
-from instagram_bot.monitor import monitor_channel
+from insta_worker.monitor import monitor_channel
 
 # Handler importlari
 from handlers import start, menu_handlers, extra_handlers, admin_handlers
