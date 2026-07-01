@@ -7,3 +7,4 @@ transliterate
 cyrtranslit
 instagrapi
 telethon
+Pillow
