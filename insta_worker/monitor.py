@@ -7,7 +7,13 @@ from .insta_logic import upload_to_insta, insta_login
 
 async def monitor_channel(api_id, api_hash, channel_username):
     # Secret nomini tekshiring: Fly.io da qanday kiritgan bo'lsangiz shunday bo'lishi kerak
-    session_str = os.getenv("SESSION_STRING")
+    session_str = os.environ.get("SESSION_STRING")
+    
+    if not session_str:
+        # Agar bu xabar chiqsa, demak secret haqiqatan ham "tushmagan"
+        print("XATOLIK: SESSION_STRING environment variable mavjud emas!")
+    else:
+        print("SESSION_STRING topildi!")
     
     # AGAR session_str bo'sh bo'lsa, kod ishlashni to'xtatishi kerak
     if not session_str:
