@@ -10,6 +10,9 @@ def insta_login():
     print("Instagram login muvaffaqiyatli!")
 
 def upload_to_insta(path, caption):
-    # Rasm yuklash
-    client.photo_upload(path, caption)
-    print("Post Instagramga yuklandi!")
+    try:
+        client.photo_upload(path, caption)
+        print("Post Instagramga yuklandi!")
+    except Exception as e:
+        print(f"Instagram yuklashda xatolik: {e}")
+        # Agar xatolik bo'lsa, qayta login qilishni sinab ko'rishi mumkin
