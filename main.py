@@ -61,7 +61,7 @@ async def main():
     # Instagram uchun sozlamalar (bularni .env dan olish yaxshi)
     API_ID = int(os.getenv("API_ID"))
     API_HASH = os.getenv("API_HASH")
-    CHANNEL_USERNAME = "KANAL_USERNAME" # Kanalingiz ID yoki Username-i
+    CHANNEL_USERNAME = "@postbazauz" # Kanalingiz ID yoki Username-i
 
     # Ikkala botni parallel ishga tushirish
     try:
