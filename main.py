@@ -1,13 +1,16 @@
 import sys
 import os
 
-# Papkani Python yo'liga qo'shish (Xatolikni yo'qotish uchun)
+# Papkani Python yo'liga qo'shish
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import asyncio
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from dotenv import load_dotenv
+
+# .env ni yuklash (serverda secret'lar bo'lsa ham, bu mahalliy test uchun kerak)
+load_dotenv()
 
 # Loader va boshqa importlar
 from loader import bot, dp
@@ -29,9 +32,6 @@ from handlers.ayollar_namozi_handlers import router as ayollar_namozi_router
 from handlers.suralar_handlers import router as suralar_router
 from handlers.audio_id_handler import router as audio_id_router
 from handlers.masjid_handlers import router as masjid_router
-
-# .env ni yuklash
-load_dotenv()
 
 async def on_startup():
     logging.info("Bot muvaffaqiyatli ishga tushirildi!")
@@ -60,10 +60,18 @@ async def run_namoz_bot():
     await dp.start_polling(bot)
 
 async def main():
-    API_ID = int(os.getenv("API_ID"))
+    # Xavfsiz yuklash: agar None bo'lsa, xato bermaydi
+    raw_api_id = os.getenv("API_ID")
     API_HASH = os.getenv("API_HASH")
     CHANNEL_USERNAME = "@postbazauz"
 
+    if raw_api_id is None or API_HASH is None:
+        logging.error("XATOLIK: API_ID yoki API_HASH topilmadi! Fly secrets ni tekshiring.")
+        return # Dasturni to'xtatish
+
+    API_ID = int(raw_api_id)
+
+    # Ikkala botni parallel ishga tushirish
     try:
         await asyncio.gather(
             run_namoz_bot(),
