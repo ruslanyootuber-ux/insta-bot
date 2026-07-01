@@ -5,3 +5,5 @@ pydantic==2.7.1
 apscheduler
 transliterate
 cyrtranslit
+instagrapi
+telethon
